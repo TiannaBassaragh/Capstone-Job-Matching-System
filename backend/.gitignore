@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+bin/
+lib/
+include/
+
+# Environment variables (secrets)
+.env
+.flaskenv
+
+# Editor/OS Files
+.DS_Store
+.vscode/
+.idea/
+.cache/
+.mypy_cache/
+.pytest_cache/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Logs and databases
+*.log
+test.db
+site/
+htmlcov/
+.coverage*
+coverage.xml
