@@ -1,35 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import './index.css';      // or .scss
+import { Dashboard, Matches, MatchDetails, Notifications, Settings, Profile } from './pages';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <BrowserRouter>
+      <div className='App'>
+        <Routes>
 
-export default App
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          
+          <Route path="/dashboard" element={<Dashboard />} />
+          
+          <Route path="/matches">
+            <Route index element={<Matches />} />
+            <Route path="match-details" element={<MatchDetails />} />
+          </Route>
+          
+          <Route path="/notifications" element={<Notifications />} />
+          
+          <Route path="/settings">
+            <Route index element={<Settings />} />
+            <Route path="edit-profile" element={<Profile />} />
+          </Route>
+        
+        </Routes>
+      </div>
+    </BrowserRouter>
+  );
+}
