@@ -85,6 +85,8 @@ class CompetencyResponse(BaseModel):
   competency_id: int
   competency_name: str
   category: Optional[str] = None
+  onet_element_id: Optional[str] = None
+  description: Optional[str] = None
 
   class Config:
     from_attributes = True
@@ -96,8 +98,9 @@ class MatchResponse(BaseModel):
   match_id: int
   candidate_id: int
   job_id: int
-  qualification_status: Optional[str] = None
   match_score: Optional[float] = None
+  knockout_failed: bool = False
+  gap_profile: Optional[dict] = None
   explanation: Optional[str] = None
   created_at: datetime
 

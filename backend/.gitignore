@@ -37,3 +37,6 @@ site/
 htmlcov/
 .coverage*
 coverage.xml
+
+# Misc
+Tables.sql

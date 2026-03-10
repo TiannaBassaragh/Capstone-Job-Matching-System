@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
 from app.database import get_db
-from app.models.models import Match, Candidate, Employer, User
+from app.models.models import Match, Candidate, Employer, JobPost, User
 from app.schemas.schemas import MatchResponse
 from app.core.dependencies import get_current_user, require_applicant, require_recruiter
 
@@ -42,8 +42,9 @@ def trigger_matching(
         "match_id": 1,
         "candidate_id": 1,
         "job_id": 1,
-        "qualification_status": "qualified",
         "match_score": 0.87,
+        "knockout_failed": False,
+        "gap_profile": None,
         "explanation": "Stub match result — pipeline not yet implemented"
       }
     ]
@@ -75,10 +76,14 @@ def get_matches_for_job(
 ):
   employer = get_employer_or_404(current_user, db)
 
-  job = db.query(Match).filter(Match.job_id == job_id).first()
-  if job and job.candidate_id not in [
-    e.candidate_id for e in db.query(Match).filter(Match.job_id == job_id).all()
-  ]:
+  job = db.query(JobPost).filter(JobPost.job_id == job_id).first()
+  if not job:
+    raise HTTPException(
+      status_code=status.HTTP_404_NOT_FOUND,
+      detail="Job post not found"
+    )
+
+  if job.employer_id != employer.employer_id:
     raise HTTPException(
       status_code=status.HTTP_403_FORBIDDEN,
       detail="You can only view matches for your own job posts"
@@ -109,13 +114,8 @@ def get_match(
       )
   else:
     employer = get_employer_or_404(current_user, db)
-    job_belongs_to_employer = db.query(Match).join(
-      Match.job
-    ).filter(
-      Match.match_id == match_id,
-      Match.job.has(employer_id=employer.employer_id)
-    ).first()
-    if not job_belongs_to_employer:
+    job = db.query(JobPost).filter(JobPost.job_id == match.job_id).first()
+    if not job or job.employer_id != employer.employer_id:
       raise HTTPException(
         status_code=status.HTTP_403_FORBIDDEN,
         detail="You can only view matches for your own job posts"
