@@ -8,11 +8,11 @@ from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.util import Inches, Pt
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 OUT_DIR = ROOT / "docs"
 OUT_PPTX = OUT_DIR / "job-hunt-midsemester-presentation.pptx"
 OUT_NOTES = OUT_DIR / "job-hunt-midsemester-notes.md"
-SITE_MAP = ROOT / "docs" / "Real Site Map.png"
+SITE_MAP = ROOT / "docs" / "Sitemap" / "Real Site Map.png"
 USE_CASE = ROOT / "docs" / "use_case_diagram" / "UseCaseDiagram7.png"
 
 NAVY = RGBColor(17, 33, 62)
