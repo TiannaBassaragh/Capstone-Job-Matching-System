@@ -1650,7 +1650,7 @@
 											"top": 131.5,
 											"width": 136,
 											"height": 13,
-											"text": "Upload Resume or CV"
+											"text": "Upload resume or cv"
 										},
 										{
 											"_type": "LabelView",
@@ -1683,7 +1683,7 @@
 									"font": "Arial;13;0",
 									"left": 324.5,
 									"top": 124.5,
-									"width": 146.525390625,
+									"width": 146,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGcmBWeIzRld30="
@@ -1849,7 +1849,7 @@
 											"top": 307.5,
 											"width": 122,
 											"height": 13,
-											"text": "View Candidate List"
+											"text": "View candidate list"
 										},
 										{
 											"_type": "LabelView",
@@ -1882,7 +1882,7 @@
 									"font": "Arial;13;0",
 									"left": 331.5,
 									"top": 300.5,
-									"width": 132.56689453125,
+									"width": 132,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGcmBb8+DSbm1A="
@@ -3931,7 +3931,7 @@
 											"top": 251.5,
 											"width": 110,
 											"height": 13,
-											"text": "Edit Profile"
+											"text": "Edit profile"
 										},
 										{
 											"_type": "LabelView",
@@ -4980,7 +4980,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGcl/JroDP7THw="
 					},
-					"name": "Upload Resume or CV"
+					"name": "Upload resume or cv"
 				},
 				{
 					"_type": "UMLUseCase",
@@ -4988,7 +4988,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGcl/JroDP7THw="
 					},
-					"name": "View Candidate List",
+					"name": "View candidate list",
 					"ownedElements": [
 						{
 							"_type": "UMLInclude",
@@ -5248,7 +5248,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGcl/JroDP7THw="
 					},
-					"name": "Edit Profile"
+					"name": "Edit profile"
 				},
 				{
 					"_type": "UMLUseCase",
