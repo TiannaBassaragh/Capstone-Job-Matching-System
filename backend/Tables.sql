@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS job_matching_system;
 CREATE DATABASE IF NOT EXISTS job_matching_system;
 USE job_matching_system;
 
