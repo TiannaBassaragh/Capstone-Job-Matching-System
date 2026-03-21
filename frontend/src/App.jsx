@@ -5,11 +5,15 @@ import {
   CandidateDashboard, EmployerDashboard, Matches, MatchDetails, Notifications, Settings, Profile 
 } from './pages';
 import RoleSelect from "./pages/RoleSelect";
+import Sidebar from "./components/Sidebar";
 
 export default function App() {
   return (
     <BrowserRouter>
       <div className='App'>
+        <Sidebar userType="candidate" userName="Alex Johnson" userInitials="AJ" />
+        {/* wire from user state */}
+
         <Routes>
 
           {/* <Route path="/" element={<Navigate to="/dashboard" replace />} /> */}
@@ -22,11 +26,13 @@ export default function App() {
             <Route path="match-details" element={<MatchDetails />} />
           </Route>
           
+          <Route path="/upload-resume" element={<Navigate to ="/" />} />
+
           <Route path="/notifications" element={<Notifications />} />
           
           <Route path="/settings">
             <Route index element={<Settings />} />
-            <Route path="edit-profile" element={<Profile />} />
+            <Route path="profile" element={<Profile />} />
           </Route>
         
         </Routes>
