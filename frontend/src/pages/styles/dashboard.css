@@ -1,0 +1,128 @@
+/* dashboard.css — all rules shared by both dashboards */
+/* Used by: CandidateDashboard.css and EmployerDashboard.css via @import */
+
+/* ── Dashboard root ─────────────────────────────────────────────────────── */
+
+.dash-db {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text);
+  padding: 20px 16px 32px;
+  background: transparent;
+}
+
+.dash-page-wrap {
+  background: #EEF3FD;
+  border-radius: 20px;
+  box-shadow: 0 4px 32px rgba(75,127,227,0.13), 0 1px 4px rgba(75,127,227,0.08);
+  padding: 32px 36px 40px;
+}
+
+/* ── Topbar ─────────────────────────────────────────────────────────────── */
+
+.dash-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.dash-breadcrumb { font-size: 12px; color: var(--muted); margin-bottom: 3px; }
+
+.dash-pagetitle { font-size: 19px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+
+.dash-topbar-right { display: flex; align-items: center; gap: 10px; }
+
+.dash-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--acc-hero); color: #EDF2FD;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; cursor: pointer;
+  border: 2px solid var(--acc-mid);
+}
+
+.dash-chip {
+  font-size: 11px; font-weight: 600; padding: 5px 12px;
+  border-radius: 20px;
+}
+
+/* ── Welcome hero ───────────────────────────────────────────────────────── */
+
+.dash-welcome {
+  background: var(--acc-hero);
+  border-radius: 18px; padding: 22px 24px; margin-bottom: 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; overflow: hidden; position: relative;
+}
+
+.dash-orb1 { position: absolute; width: 180px; height: 180px; border-radius: 50%; background: var(--acc-hero2); opacity: .5; top: -60px; right: 180px; pointer-events: none; }
+.dash-orb2 { position: absolute; width: 110px; height: 110px; border-radius: 50%; background: var(--acc2); opacity: .2; bottom: -35px; right: 50px; pointer-events: none; }
+.dash-orb3 { position: absolute; width: 60px; height: 60px; border-radius: 50%; background: #fff; opacity: .04; top: 10px; right: 30px; pointer-events: none; }
+
+.dash-wleft { position: relative; z-index: 1; }
+.dash-wgreet { font-size: 12px; color: rgba(255,255,255,.65); margin-bottom: 4px; font-weight: 500; }
+.dash-wname { font-size: 23px; font-weight: 700; color: #fff; letter-spacing: -0.4px; margin-bottom: 5px; }
+.dash-wsub { font-size: 12px; color: rgba(255,255,255,.55); }
+
+.dash-wstats { display: flex; gap: 9px; position: relative; z-index: 1; flex-wrap: wrap; justify-content: flex-end; }
+
+.dash-ws {
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 12px; padding: 10px 14px; text-align: center;
+}
+
+.dash-wsv { display: block; font-size: 20px; font-weight: 700; color: #fff; line-height: 1; margin-bottom: 3px; }
+.dash-wsl { display: block; font-size: 10px; color: rgba(255,255,255,.55); font-weight: 500; white-space: nowrap; }
+
+.dash-ws-hi { background: rgba(107,159,248,.25); border-color: rgba(107,159,248,.45); }
+.dash-ws-hi .dash-wsv { color: #c5d9fd; }
+
+/* ── Stat cards ─────────────────────────────────────────────────────────── */
+
+.dash-stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 11px; margin-bottom: 14px;
+}
+
+.dash-scard {
+  background: var(--surface); border-radius: 14px;
+  padding: 14px 16px; border: 1px solid var(--border); box-shadow: var(--shadow);
+}
+
+.dash-sicon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+.dash-sval { font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -0.4px; line-height: 1; margin-bottom: 3px; }
+.dash-slbl { font-size: 11px; color: var(--muted); font-weight: 500; }
+.dash-sdelta { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 6px; display: inline-block; margin-top: 6px; }
+
+/* ── Main grid ──────────────────────────────────────────────────────────── */
+
+.dash-main {
+  display: grid;
+  gap: 13px;
+}
+
+/* ── Panels ─────────────────────────────────────────────────────────────── */
+
+.dash-panel {
+  background: var(--surface); border-radius: 16px;
+  border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden;
+}
+
+.dash-panel-inner { padding: 16px 18px 14px; }
+
+.dash-panel-hdr {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 13px;
+}
+
+.dash-panel-title {
+  font-size: 12px; font-weight: 700; color: var(--text);
+  letter-spacing: .04em; text-transform: uppercase;
+}
+
+/* ── Shared row elements ────────────────────────────────────────────────── */
+
+.dash-bfill { height: 100%; border-radius: 99px; }
+.dash-btrack { border-radius: 99px; background: var(--acc-light); overflow: hidden; }
+.dash-divider { height: 1px; background: var(--acc-light); margin: 1px 0; }
+.dash-rcol { display: flex; flex-direction: column; gap: 13px; }

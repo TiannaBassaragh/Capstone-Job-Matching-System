@@ -1,4 +1,9 @@
-export { default as Dashboard } from './Dashboard';
+// export { default as Landing } from "./Landing";
+// export { default as AboutPage } from "./AboutPage";
+// export { default as ContactPage } from "./ContactPage";
+// export { default as ProfileCreation } from "./ProfileCreation";
+export { default as CandidateDashboard } from './CandidateDashboard';
+export { default as EmployerDashboard } from './EmployerDashboard';
 export { default as MatchDetails } from './MatchDetails';
 export { default as Matches } from './MatchesPage';
 export { default as Notifications } from './Notifications';

@@ -1,6 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './index.css';      // or .scss
-import { Dashboard, Matches, MatchDetails, Notifications, Settings, Profile } from './pages';
+import { 
+  // Landing, AboutPage, ContactPage, ProfileCreation,
+  CandidateDashboard, EmployerDashboard, Matches, MatchDetails, Notifications, Settings, Profile 
+} from './pages';
+import RoleSelect from "./pages/RoleSelect";
 
 export default function App() {
   return (
@@ -8,9 +12,10 @@ export default function App() {
       <div className='App'>
         <Routes>
 
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          
-          <Route path="/dashboard" element={<Dashboard />} />
+          {/* <Route path="/" element={<Navigate to="/dashboard" replace />} /> */}
+          <Route path="/" element={<RoleSelect />} />
+          <Route path="/dashboard-c" element={<CandidateDashboard />} />
+          <Route path="/dashboard-e" element={<EmployerDashboard />} />
           
           <Route path="/matches">
             <Route index element={<Matches />} />
