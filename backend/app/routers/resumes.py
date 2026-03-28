@@ -5,6 +5,7 @@ from app.database import get_db
 from app.models.models import Resume, Candidate, User
 from app.schemas.schemas import ResumeResponse
 from app.core.dependencies import get_current_user, require_applicant
+from app.services.resume_parser import parse_resume_bytes
 
 router = APIRouter(prefix="/resumes", tags=["Resumes"])
 
@@ -92,6 +93,29 @@ def download_resume(
     media_type="application/octet-stream",
     headers={"Content-Disposition": f"attachment; filename=resume_{resume_id}.pdf"}
   )
+
+
+@router.get("/{resume_id}/parse")
+def parse_resume(
+  resume_id: int,
+  db: Session = Depends(get_db),
+  current_user: User = Depends(require_applicant)
+):
+  candidate = get_candidate_or_404(current_user, db)
+  resume = get_resume_or_404(resume_id, db)
+
+  if resume.candidate_id != candidate.candidate_id:
+    raise HTTPException(
+      status_code=status.HTTP_403_FORBIDDEN,
+      detail="You can only parse your own resumes"
+    )
+
+  try:
+    text = parse_resume_bytes(resume.resume_file)
+  except ValueError as e:
+    raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e))
+
+  return {"resume_id": resume_id, "text": text}
 
 
 @router.put("/{resume_id}", response_model=ResumeResponse)
