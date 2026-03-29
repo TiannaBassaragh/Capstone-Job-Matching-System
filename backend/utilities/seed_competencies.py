@@ -56,6 +56,29 @@ def extract_first_value(filepath):
   return set(re.findall(r"VALUES \('([^']+)'", content))
 
 
+def load_level_anchors(filepath):
+  """
+  Parses LV-scale rows from the level_scale_anchors SQL file.
+  Returns list of dicts: {onet_element_id, anchor_value, anchor_description}
+  Only rows with scale_id = 'LV' are included.
+  """
+  with open(filepath, encoding="utf-8") as f:
+    content = f.read()
+
+  pattern = re.compile(
+    r"VALUES \('([^']+)',\s*'LV',\s*(\d+),\s*'((?:[^']|'')*)'\)"
+  )
+
+  rows = []
+  for m in pattern.finditer(content):
+    rows.append({
+      "onet_element_id":    m.group(1),
+      "anchor_value":       int(m.group(2)),
+      "anchor_description": m.group(3).replace("''", "'"),
+    })
+  return rows
+
+
 def load_content_model(filepath):
   """
   Parses every INSERT row from the content model reference file.
@@ -120,6 +143,31 @@ def seed(engine, content_model, leaf_ids):
   print(f"Seeded {len(rows_to_insert)} competencies.")
 
 
+def seed_anchors(engine, anchor_rows):
+  with engine.connect() as conn:
+    result = conn.execute(text("SELECT onet_element_id FROM competencies WHERE onet_element_id IS NOT NULL"))
+    db_ids = {row[0] for row in result}
+
+  rows_to_insert = [r for r in anchor_rows if r["onet_element_id"] in db_ids]
+  missing = {r["onet_element_id"] for r in anchor_rows} - db_ids
+  if missing:
+    print(f"  WARNING: {len(missing)} anchor element_ids not found in competencies, skipping: {sorted(missing)[:5]}...")
+
+  if not rows_to_insert:
+    print("ERROR: No anchor rows to insert.")
+    sys.exit(1)
+
+  with engine.begin() as conn:
+    conn.execute(text("""
+      INSERT INTO level_scale_anchors (onet_element_id, anchor_value, anchor_description)
+      VALUES (:onet_element_id, :anchor_value, :anchor_description)
+      ON DUPLICATE KEY UPDATE
+        anchor_description = VALUES(anchor_description)
+    """), rows_to_insert)
+
+  print(f"Seeded {len(rows_to_insert)} level scale anchors.")
+
+
 def main():
   for path in [CMR_FILE, LSA_FILE]:
     if not os.path.exists(path):
@@ -135,8 +183,12 @@ def main():
   leaf_ids = extract_first_value(LSA_FILE)
   print(f"  {len(leaf_ids)} unique element IDs found.")
 
+  anchor_rows = load_level_anchors(LSA_FILE)
+  print(f"  {len(anchor_rows)} LV-scale anchor rows parsed.")
+
   engine = create_engine(DATABASE_URL)
   seed(engine, content_model, leaf_ids)
+  seed_anchors(engine, anchor_rows)
 
 
 if __name__ == "__main__":

@@ -25,6 +25,7 @@ lxml==6.0.2
 markdown-it-py==4.0.0
 MarkupSafe==3.0.3
 mdurl==0.1.2
+numpy
 passlib==1.7.4
 pdfminer.six==20260107
 pyasn1==0.6.2
@@ -44,9 +45,11 @@ rich==14.3.3
 rich-toolkit==0.19.7
 rignore==0.7.6
 rsa==4.9.1
+sentence-transformers
 sentry-sdk==2.54.0
 shellingham==1.5.4
 six==1.17.0
+spacy
 SQLAlchemy==2.0.48
 starlette==0.52.1
 typer==0.24.1

@@ -94,6 +94,9 @@ class CompetencyResponse(BaseModel):
 
 # ─── MATCHES ──────────────────────────────────────────────────────────────────
 
+class TriggerRequest(BaseModel):
+  job_id: int
+
 class MatchResponse(BaseModel):
   match_id: int
   candidate_id: int
