@@ -6,6 +6,7 @@ from app.models.models import Resume, Candidate, User
 from app.schemas.schemas import ResumeResponse
 from app.core.dependencies import get_current_user, require_applicant
 from app.services.resume_parser import parse_resume_bytes
+from app.services.scorer import score_resume
 
 router = APIRouter(prefix="/resumes", tags=["Resumes"])
 
@@ -52,6 +53,7 @@ async def upload_resume(
   db.add(resume)
   db.commit()
   db.refresh(resume)
+  score_resume(candidate, resume, db)
   return resume
 
 
@@ -143,6 +145,7 @@ async def update_resume(
   resume.resume_file = await file.read()
   db.commit()
   db.refresh(resume)
+  score_resume(candidate, resume, db)
   return resume
 
 

@@ -4,12 +4,10 @@ from typing import List
 from app.database import get_db
 from app.models.models import (
   Match, Candidate, CandidateCompetency, JobCompetency,
-  Competency, Employer, JobPost, Resume, User
+  Competency, Employer, JobPost, User
 )
 from app.schemas.schemas import MatchResponse
 from app.core.dependencies import get_current_user, require_applicant, require_recruiter
-from app.services.resume_parser import parse_resume_bytes
-from app.services.embedder import get_anchor_store, score_document, adjust_levels
 from app.services.scorer import compute_fit_score
 
 router = APIRouter(prefix="/matches", tags=["Matches"])
@@ -31,56 +29,23 @@ def get_employer_or_404(user: User, db: Session) -> Employer:
   return employer
 
 
-def _score_resume(candidate: Candidate, db: Session) -> dict[int, float]:
+def _score_resume(candidate: Candidate, db: Session) -> dict[int, float | None]:
   """
-  Parses and scores the candidate's most recent resume.
-  Writes results to candidate_competencies and returns {competency_id: level_score}.
-  Raises 422 if no resume is on file.
+  Returns the candidate's scored competencies from the DB.
+  Scoring happens at resume upload time; this is a read-only operation.
+  Raises 422 if no competencies have been scored yet (no resume uploaded).
   """
-  resume = (
-    db.query(Resume)
-    .filter(Resume.candidate_id == candidate.candidate_id)
-    .order_by(Resume.upload_date.desc())
-    .first()
-  )
-  if not resume:
-    raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="No resume on file")
-
-  store = get_anchor_store(db)
-  scores = score_document(parse_resume_bytes(resume.resume_file), store)
-  adjust_levels(scores)
-
-  comp_map = {
-    c.onet_element_id: c.competency_id
-    for c in db.query(Competency)
-    .filter(Competency.onet_element_id.in_(list(scores.keys())))
-    .all()
-  }
-
-  for eid, data in scores.items():
-    cid = comp_map.get(eid)
-    if cid is None:
-      continue
-    existing = db.query(CandidateCompetency).filter_by(
-      candidate_id=candidate.candidate_id, competency_id=cid
-    ).first()
-    if existing:
-      existing.level_score = data["estimated_level"]
-    else:
-      db.add(CandidateCompetency(
-        candidate_id=candidate.candidate_id,
-        competency_id=cid,
-        level_score=data["estimated_level"],
-      ))
-
-  db.commit()
-
-  return {
-    row.competency_id: row.level_score
-    for row in db.query(CandidateCompetency)
+  rows = (
+    db.query(CandidateCompetency)
     .filter(CandidateCompetency.candidate_id == candidate.candidate_id)
     .all()
-  }
+  )
+  if not rows:
+    raise HTTPException(
+      status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+      detail="No scored competencies on file. Please upload a resume first."
+    )
+  return {row.competency_id: row.level_score for row in rows}
 
 
 def _upsert_match(candidate_id: int, job_id: int, result: dict, db: Session) -> None:

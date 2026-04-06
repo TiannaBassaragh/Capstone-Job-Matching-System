@@ -105,7 +105,7 @@ class CandidateCompetency(Base):
 
   candidate_id  = Column(Integer, ForeignKey("candidates.candidate_id", ondelete="CASCADE"), primary_key=True)
   competency_id = Column(Integer, ForeignKey("competencies.competency_id"), primary_key=True)
-  level_score   = Column(Float, nullable=False)
+  level_score   = Column(Float, nullable=True)
 
   candidate  = relationship("Candidate",  back_populates="competencies")
   competency = relationship("Competency", back_populates="candidate_competencies")
@@ -116,7 +116,7 @@ class JobCompetency(Base):
 
   job_id           = Column(Integer, ForeignKey("job_post.job_id", ondelete="CASCADE"), primary_key=True)
   competency_id    = Column(Integer, ForeignKey("competencies.competency_id"), primary_key=True)
-  required_level   = Column(Float, nullable=False)
+  required_level   = Column(Float, nullable=True)
   importance       = Column(Float)
   requirement_type = Column(Enum("required", "preferred"))
 
