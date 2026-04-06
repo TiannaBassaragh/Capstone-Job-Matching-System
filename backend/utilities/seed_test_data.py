@@ -22,7 +22,7 @@ from sqlalchemy.orm import Session
 from app.database import SessionLocal
 from app.models.models import User, Candidate, Employer, Resume, JobPost
 from app.core.security import hash_password
-from app.services.scorer import score_job_post
+from app.services.scorer import score_resume, score_job_post
 
 PASSWORD = hash_password("testpass123")
 
@@ -295,7 +295,10 @@ def seed_candidates(db: Session):
 
     existing_resume = db.query(Resume).filter(Resume.candidate_id == candidate.candidate_id).first()
     if not existing_resume:
-      db.add(Resume(candidate_id=candidate.candidate_id, resume_file=make_docx(r["lines"])))
+      resume = Resume(candidate_id=candidate.candidate_id, resume_file=make_docx(r["lines"]))
+      db.add(resume)
+      db.flush()
+      score_resume(candidate, resume, db)
 
     print(f"  {f} {l} (candidate_id={candidate.candidate_id})")
 

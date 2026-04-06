@@ -61,7 +61,18 @@ python seed_competencies.py
 
 This seeds 160 competencies across Abilities, Basic Skills, Cross-Functional Skills, Knowledge, and Work Styles, along with their O\*NET level scale anchors.
 
-### 6. Start the server
+### 6. Seed test data (optional)
+
+Populates the database with 10 candidates (with resumes) and 10 recruiters (with job postings) for development and demo use. All accounts use the password `testpass123`.
+
+```bash
+cd utilities
+python seed_test_data.py
+```
+
+This makes one LLM call per resume and per job post (20 calls total) so it takes a couple of minutes to complete.
+
+### 7. Start the server
 
 ```bash
 cd backend
@@ -168,7 +179,8 @@ backend/
       scorer.py          # score_resume, score_job_post, compute_fit_score
       resume_parser.py   # PDF/DOCX → plain text
   utilities/
-    seed_competencies.py # O*NET seeding script
+    seed_competencies.py # O*NET competency and anchor seeding
+    seed_test_data.py    # 10 candidates + 10 job postings for dev/demo
   Tables.sql             # Canonical DB schema
   requirements.txt
   .env.example
