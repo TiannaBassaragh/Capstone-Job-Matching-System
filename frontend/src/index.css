@@ -3,76 +3,103 @@
 /* ── Variables ──────────────────────────────────────────────────────────── */
 
 :root {
-  --acc: #4B7FE3;
-  --acc2: #6B9FF8;
-  --acc-light: #EDF2FD;
-  --acc-mid: #B4C9F5;
-  --acc-dark: #1D3E9E;
-  --acc-bar: #DDE9FB;
-  --acc-hero: #2152C8;
-  --acc-hero2: #3A6FE8;
-  --muted: #6B85B8;
-  --text: #0d1e3a;
-  --subtext: #3d5280;
-  --bg: #EEF3FD;
-  --surface: #fff;
-  --border: rgba(75, 127, 227, 0.13);
-  --shadow: 0 1px 0 rgba(75,127,227,.05), 0 4px 16px rgba(75,127,227,.09);
+    --acc: #4B7FE3;
+    --acc2: #6B9FF8;
+    --acc-light: #EDF2FD;
+    --acc-mid: #B4C9F5;
+    --acc-dark: #1D3E9E;
+    --acc-bar: #DDE9FB;
+    --acc-hero: #2152C8;
+    --acc-hero2: #3A6FE8;
+    --muted: #6B85B8;
+    --text: #0d1e3a;
+    --subtext: #3d5280;
+    --bg: #EEF3FD;
+    --surface: #fff;
+    --border: rgba(75, 127, 227, 0.13);
+    --shadow: 0 1px 0 rgba(75,127,227,.05), 0 4px 16px rgba(75,127,227,.09);
 }
 
 /* ── Reset ──────────────────────────────────────────────────────────────── */
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
 
 /* ── Page shell ─────────────────────────────────────────────────────────── */
 
-html { height: 100%; }
+html, body { height: 100%; }
 
 body {
-  min-height: 100vh;
-  margin: 0;
-  background: #EEF3FD;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  color: var(--text);
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  position: relative;
+    background: #EEF3FD;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--text);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative;
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
 }
 
-/* Topo pattern pinned to viewport — content scrolls over it (parallax) */
+/* Topo pattern pinned to viewport */
 body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background-color: #EEF3FD;
-  background-image: url('./assets/topo-blue.png');
-  background-repeat: repeat;
-  background-size: 500px 500px;
-  background-attachment: fixed;
-  background-position: center;
-  pointer-events: none;
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background-image: url('./assets/topo-blue.png');
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: repeat;
+    background-size: 500px 500px;
+    pointer-events: none;
 }
 
 #root {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: 1600px;
-  background: transparent;
+    /* position: relative; */
+    z-index: 1;
+    width: 100%;
+    max-width: 1600px;
 }
 
-/* ── Filter pills ───────────────────────────────────────────────────────── */
+/* ── Base Button Default Style ──────────────────────────────────────────-- */
 
-.filter-pill-row { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
+button {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
 
-.filter-pill {
-  font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px;
-  border: 1.5px solid var(--acc-mid); background: var(--acc-light); color: var(--acc-dark);
-  cursor: pointer; white-space: nowrap; user-select: none; transition: all .15s;
+    border: none;
+    background: none;
+    cursor: pointer;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    transition:
+    transform 0.08s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease,
+    border-color 0.15s ease;
 }
-.filter-pill:hover { border-color: var(--acc); }
-.filter-pill-on { background: var(--acc); border-color: var(--acc); color: #fff; }
-.filter-pill-cp { border-style: dashed; background: #fff; color: var(--muted); }
-.filter-pill-cp.filter-pill-on { border-style: solid; background: var(--acc); color: #fff; }
+
+button:hover {
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+button:focus-visible {
+    outline: 2px solid var(--acc);
+    outline-offset: 2px;
+}

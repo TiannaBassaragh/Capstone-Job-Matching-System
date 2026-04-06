@@ -1,0 +1,65 @@
+/* SortPanel.css */
+
+.sort-panel-options {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.sort-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 10px;
+    border: 1.5px solid var(--acc-light);
+    background: #FAFCFF;
+    cursor: pointer;
+    transition: all .15s;
+    text-align: left;
+    font: inherit;
+}
+
+.sort-option:hover {
+    border-color: var(--acc-mid);
+    background: var(--acc-light);
+}
+
+.sort-option--active {
+    border-color: var(--acc);
+    background: var(--acc-light);
+}
+
+.sort-option-radio {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--acc-mid);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sort-option-radio--active {
+    border-color: var(--acc);
+}
+
+.sort-option-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--acc);
+}
+
+.sort-option-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--subtext);
+    flex: 1;
+}
+
+.sort-option-label--active {
+    color: var(--acc-dark);
+}

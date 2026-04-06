@@ -1,0 +1,21 @@
+/* Dashboard.css */
+
+.stats-row-wrapper {
+    display: grid;
+    /* grid-template-columns: repeat(4, minmax(0, 1fr)); */
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    gap: 11px; 
+    margin-bottom: 14px;
+}
+
+.dash-main {
+    display: grid;
+    gap: 13px; 
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+}
+
+.dash-rcol { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 13px; 
+}

@@ -1,0 +1,36 @@
+/* JobPostsPanel.css */
+
+.job-posts-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+}
+
+.job-posts-badge--active {
+    background: #E1F5EE;
+    color: #0F6E56;
+}
+
+.job-posts-badge--expiring {
+    background: #FFF3E0;
+    color: #854F0B;
+}
+
+.job-posts-matches {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--acc-dark);
+    white-space: nowrap;
+}
+
+.job-posts-new-tag {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+    background: var(--acc);
+    color: #fff;
+    white-space: nowrap;
+}

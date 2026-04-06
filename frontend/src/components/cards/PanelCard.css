@@ -1,0 +1,42 @@
+.panel {
+    padding: 16px 18px 14px; 
+}
+
+.panel-hdr {
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    margin-bottom: 11px;
+    gap: 12px;
+}
+
+.panel-title {
+    font-size: 12px; 
+    font-weight: 700; 
+    color: var(--text);
+    letter-spacing: .04em; 
+    text-transform: uppercase;
+}
+
+.panel-hdr-action {
+    flex-shrink: 0;
+}
+
+.panel-hdr-action button {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--acc);
+    background: var(--acc-light);
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: none;
+    font-family: inherit;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.panel-hdr-action button:hover {
+    color: #fff;
+    background: var(--acc);
+}

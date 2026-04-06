@@ -1,0 +1,105 @@
+/* TopCandidatesPanel.css */
+
+.top-candidates-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.top-candidates-link {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--acc);
+    background: var(--acc-light);
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.top-candidates-link:hover {
+    background: var(--acc-mid);
+}
+
+.top-candidates-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 2px 0;
+}
+
+.top-candidates-row {
+    text-align: left;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    gap: 10px;
+    padding: 9px 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.12s;
+}
+
+.top-candidates-row:hover {
+    background: var(--acc-light);
+}
+
+.top-candidates-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+    border: 1.5px solid rgba(0, 0, 0, 0.06);
+}
+
+.top-candidates-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.top-candidates-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+}
+
+.top-candidates-meta {
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.top-candidates-score-block {
+    text-align: right;
+    flex-shrink: 0;
+    min-width: 54px;
+}
+
+.top-candidates-score {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.top-candidates-bar-track {
+    width: 54px;
+    height: 4px;
+    background: var(--acc-light);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.top-candidates-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+}
