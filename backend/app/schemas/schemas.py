@@ -38,6 +38,21 @@ class UserResponse(BaseModel):
     from_attributes = True
 
 
+class MeResponse(BaseModel):
+  user_id: int
+  f_name: str
+  l_name: str
+  email: str
+  account_type: str
+  created_at: datetime
+  candidate_id: Optional[int] = None
+  employer_id: Optional[int] = None
+  company_name: Optional[str] = None
+
+  class Config:
+    from_attributes = True
+
+
 class UserUpdate(BaseModel):
   f_name: Optional[str] = None
   l_name: Optional[str] = None
