@@ -75,13 +75,29 @@ class Competency(Base):
   __tablename__ = "competencies"
 
   competency_id   = Column(Integer, primary_key=True, autoincrement=True)
-  competency_name = Column(String(200), unique=True, nullable=False)
+  competency_name = Column(String(200), nullable=False)
   category        = Column(String(100))
   onet_element_id = Column(String(20), unique=True)
   description     = Column(Text)
 
   candidate_competencies = relationship("CandidateCompetency", back_populates="competency")
   job_competencies       = relationship("JobCompetency",       back_populates="competency")
+  level_anchors          = relationship("LevelScaleAnchor",    back_populates="competency")
+
+
+class LevelScaleAnchor(Base):
+  __tablename__ = "level_scale_anchors"
+
+  id                 = Column(Integer, primary_key=True, autoincrement=True)
+  onet_element_id    = Column(String(20), ForeignKey("competencies.onet_element_id", ondelete="CASCADE"), nullable=False)
+  anchor_value       = Column(Integer, nullable=False)
+  anchor_description = Column(String(1000), nullable=False)
+
+  competency = relationship("Competency", back_populates="level_anchors")
+
+  __table_args__ = (
+    UniqueConstraint("onet_element_id", "anchor_value", name="uq_anchor"),
+  )
 
 
 class CandidateCompetency(Base):
@@ -89,7 +105,7 @@ class CandidateCompetency(Base):
 
   candidate_id  = Column(Integer, ForeignKey("candidates.candidate_id", ondelete="CASCADE"), primary_key=True)
   competency_id = Column(Integer, ForeignKey("competencies.competency_id"), primary_key=True)
-  level_score   = Column(Float, nullable=False)
+  level_score   = Column(Float, nullable=True)
 
   candidate  = relationship("Candidate",  back_populates="competencies")
   competency = relationship("Competency", back_populates="candidate_competencies")
@@ -100,7 +116,7 @@ class JobCompetency(Base):
 
   job_id           = Column(Integer, ForeignKey("job_post.job_id", ondelete="CASCADE"), primary_key=True)
   competency_id    = Column(Integer, ForeignKey("competencies.competency_id"), primary_key=True)
-  required_level   = Column(Float, nullable=False)
+  required_level   = Column(Float, nullable=True)
   importance       = Column(Float)
   requirement_type = Column(Enum("required", "preferred"))
 

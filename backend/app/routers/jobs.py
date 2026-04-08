@@ -5,6 +5,7 @@ from app.database import get_db
 from app.models.models import JobPost, Employer, User
 from app.schemas.schemas import JobPostCreate, JobPostUpdate, JobPostResponse
 from app.core.dependencies import get_current_user, require_recruiter
+from app.services.scorer import score_job_post
 
 router = APIRouter(prefix="/jobs", tags=["Jobs"])
 
@@ -45,6 +46,7 @@ def create_job(
   db.add(job)
   db.commit()
   db.refresh(job)
+  score_job_post(job, db)
   return job
 
 
@@ -81,11 +83,18 @@ def update_job(
       detail="You can only update your own job posts"
     )
 
-  for field, value in payload.model_dump(exclude_none=True).items():
+  updated_fields = payload.model_dump(exclude_none=True)
+  description_changed = "description" in updated_fields
+
+  for field, value in updated_fields.items():
     setattr(job, field, value)
 
   db.commit()
   db.refresh(job)
+
+  if description_changed:
+    score_job_post(job, db)
+
   return job
 
 
