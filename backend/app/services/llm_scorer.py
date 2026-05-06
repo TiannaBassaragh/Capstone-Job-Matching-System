@@ -1,21 +1,30 @@
 import json
+import os
 import re
+import litellm
 from sqlalchemy.orm import Session
-import anthropic
 from app.models.models import Competency, LevelScaleAnchor
 
-# Swap this constant to change models. Everything else stays the same.
-LLM_MODEL = "claude-haiku-4-5-20251001"
+# ─── provider / model selection ───────────────────────────────────────────────
+# Set LLM_PROVIDER=gemini in .env to use Gemini (free tier).
+# Defaults to Anthropic.
 
-_client: anthropic.Anthropic | None = None
+_PROVIDER = os.getenv("LLM_PROVIDER", "anthropic").lower()
+
+_MODEL_MAP = {
+    "anthropic": os.getenv("LLM_MODEL_ANTHROPIC", "claude-haiku-4-5-20251001"),
+    "gemini":    os.getenv("LLM_MODEL_GEMINI",    "gemini/gemini-2.0-flash"),
+}
+
+if _PROVIDER not in _MODEL_MAP:
+    raise ValueError(f"Unknown LLM_PROVIDER={_PROVIDER!r}. Choose 'anthropic' or 'gemini'.")
+
+LLM_MODEL = _MODEL_MAP[_PROVIDER]
+
+# Silence litellm's verbose logging.
+litellm.suppress_debug_info = True
+
 _system_prompts: dict[str, str] | None = None
-
-
-def _get_client() -> anthropic.Anthropic:
-    global _client
-    if _client is None:
-        _client = anthropic.Anthropic()
-    return _client
 
 
 def _build_level_guide(db: Session) -> str:
@@ -173,8 +182,6 @@ def _build_prompts(db: Session) -> dict[str, str]:
 
 
 def _get_prompts(db: Session) -> dict[str, str]:
-    # Prompts are built once per process. The competency catalog is seeded once
-    # and does not change at runtime, so caching is safe.
     global _system_prompts
     if _system_prompts is None:
         _system_prompts = _build_prompts(db)
@@ -207,14 +214,15 @@ def score_document(text: str, db: Session, mode: str) -> dict:
         raise ValueError(f"mode must be 'resume' or 'job', got {mode!r}")
 
     prompts = _get_prompts(db)
-    client = _get_client()
 
-    response = client.messages.create(
+    response = litellm.completion(
         model=LLM_MODEL,
         max_tokens=4096,
         temperature=0,
-        system=prompts[mode],
-        messages=[{"role": "user", "content": text}],
+        messages=[
+            {"role": "system", "content": prompts[mode]},
+            {"role": "user",   "content": text},
+        ],
     )
 
-    return _parse_response(response.content[0].text)
+    return _parse_response(response.choices[0].message.content)
