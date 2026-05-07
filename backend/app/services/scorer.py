@@ -174,7 +174,10 @@ def compute_fit_score(
 
   above_count    = sum(1 for d in scored.values() if d["gap"] == 0)
   below_count    = sum(1 for d in scored.values() if d["gap"] >  0)
-  data_gap_count = len(undetermined) + len(absent)
+  # Absent required dimensions count as hard deficits — treat like a below-level score
+  absent_required = sum(1 for d in absent.values() if d["knockout_dimension"])
+  below_count    += absent_required
+  data_gap_count  = len(undetermined) + len(absent)
 
   if below_count == 0 and data_gap_count == 0:
     tier = "fully_qualified"
