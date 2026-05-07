@@ -107,6 +107,28 @@ class CompetencyResponse(BaseModel):
     from_attributes = True
 
 
+# ─── CLARIFYING QUESTIONS ─────────────────────────────────────────────────────
+
+class QuestionResponse(BaseModel):
+  question_id:     int
+  match_id:        int
+  element_id:      str
+  competency_name: str
+  directed_at:     str
+  reason:          str
+  question_text:   str
+  answer_text:     Optional[str] = None
+  resolved:        bool
+  created_at:      datetime
+
+  class Config:
+    from_attributes = True
+
+
+class AnswerRequest(BaseModel):
+  answer_text: str
+
+
 # ─── MATCHES ──────────────────────────────────────────────────────────────────
 
 class TriggerRequest(BaseModel):
@@ -118,6 +140,7 @@ class MatchResponse(BaseModel):
   job_id: int
   match_score: Optional[float] = None
   knockout_failed: bool = False
+  qualification_tier: Optional[str] = None
   gap_profile: Optional[dict] = None
   explanation: Optional[str] = None
   created_at: datetime

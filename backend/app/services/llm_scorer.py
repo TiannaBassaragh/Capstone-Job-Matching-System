@@ -13,7 +13,7 @@ _PROVIDER = os.getenv("LLM_PROVIDER", "anthropic").lower()
 
 _MODEL_MAP = {
     "anthropic": os.getenv("LLM_MODEL_ANTHROPIC", "claude-haiku-4-5-20251001"),
-    "gemini":    os.getenv("LLM_MODEL_GEMINI",    "gemini/gemini-2.0-flash"),
+    "gemini":    os.getenv("LLM_MODEL_GEMINI",    "gemini/gemini-2.5-flash"),
 }
 
 if _PROVIDER not in _MODEL_MAP:
@@ -188,12 +188,172 @@ def _get_prompts(db: Session) -> dict[str, str]:
     return _system_prompts
 
 
-def _parse_response(text: str) -> dict:
+def _parse_response(text: str | None) -> dict:
+    if not text or not text.strip():
+        raise ValueError(f"LLM returned empty content (finish_reason may indicate a safety block)")
     text = text.strip()
     match = re.search(r"```(?:json)?\s*([\s\S]*?)```", text)
     if match:
         text = match.group(1).strip()
     return json.loads(text)
+
+
+_QUESTION_SYSTEM = """\
+You are an expert HR analyst trained on the O*NET competency framework.
+For each competency listed, generate one targeted open-ended question.
+Every question must be phrased so the answer can be placed directly on one of the
+two O*NET scales below — do not ask for raw numbers, ask for experiences and context
+that will allow a trained analyst to assign a score.
+
+{level_guide}
+
+Importance scale (0.0–1.0):
+  0.0 — Not important to the role (rarely or never needed)
+  0.3 — Somewhat important (occasionally needed)
+  0.6 — Important (regularly needed, contributes to job success)
+  0.8 — Very important (frequently needed, central to performance)
+  1.0 — Extremely important (a defining requirement of the role)
+
+Output format — valid JSON array only, no markdown, no extra text:
+[
+  {{
+    "element_id": "<element_id>",
+    "directed_at": "candidate" | "recruiter",
+    "question_text": "<one concise open-ended question>"
+  }}
+]
+
+Question guidelines by reason:
+- candidate_level_unknown  → ask the candidate to describe specific tasks, projects, or
+  contexts where they used this competency, including the scope, depth, and frequency
+  of use, so their proficiency can be placed on the 0–100 level scale above.
+- required_level_unknown   → ask the recruiter to describe what level of proficiency a
+  successful candidate must have — e.g., basic familiarity, independent practice, or
+  expert mastery with specific examples of expected tasks — so it can be placed on the
+  0–100 level scale above.
+- importance_unknown       → ask the recruiter how central this competency is to
+  day-to-day performance in the role — e.g., how often it is used, whether the role
+  could succeed without it, and what consequences arise when it is weak — so it can
+  be placed on the 0.0–1.0 importance scale above.
+
+Rules:
+- One question per input entry. Do not ask yes/no questions.
+- Reference concrete actions, frequency, or scope in the question stem.
+- Output an empty JSON array [] if given an empty input list.\
+"""
+
+
+def generate_clarifying_questions(inputs: list[dict], db: Session) -> list[dict]:
+    """
+    Generates one clarifying question per undetermined dimension.
+
+    inputs: list of dicts, each with keys:
+      element_id, competency_name, directed_at, reason
+
+    reason values:
+      "candidate_level_unknown" | "required_level_unknown" | "importance_unknown"
+
+    Returns list of dicts: {element_id, directed_at, question_text}
+    """
+    if not inputs:
+        return []
+
+    level_guide = _build_level_guide(db)
+    system = _QUESTION_SYSTEM.format(level_guide=level_guide)
+
+    items_text = "\n".join(
+        f"  - element_id={d['element_id']}  competency={d['competency_name']}"
+        f"  directed_at={d['directed_at']}  reason={d['reason']}"
+        for d in inputs
+    )
+
+    response = litellm.completion(
+        model=LLM_MODEL,
+        max_tokens=2048,
+        temperature=0,
+        messages=[
+            {"role": "system", "content": system},
+            {"role": "user",   "content": f"Generate questions for:\n{items_text}"},
+        ],
+    )
+
+    choice = response.choices[0]
+    if choice.finish_reason not in ("stop", "end_turn"):
+        raise ValueError(f"LLM did not finish cleanly: finish_reason={choice.finish_reason!r}")
+
+    return _parse_response(choice.message.content)
+
+
+_LEVEL_ESTIMATE_SYSTEM = """\
+You are an expert HR analyst trained on the O*NET competency framework.
+Based on the answer provided, estimate a numeric score for the competency.
+
+{scale_guide}
+
+Output format — valid JSON only, no markdown, no extra text:
+{{"score": <float or null>}}
+
+Use null if the answer is too vague to assign a score.\
+"""
+
+_LEVEL_SCALE_GUIDE = """\
+Proficiency scale (0–100). Use the calibration examples from the level guide:
+{level_guide}\
+"""
+
+_IMPORTANCE_SCALE_GUIDE = """\
+Importance scale (0.0–1.0):
+  0.0 — Not important (rarely or never needed)
+  0.3 — Somewhat important (occasionally needed)
+  0.6 — Important (regularly needed)
+  0.8 — Very important (frequently needed, central to performance)
+  1.0 — Extremely important (a defining requirement of the role)\
+"""
+
+
+def estimate_score_from_answer(
+    competency_name: str,
+    question_text: str,
+    answer_text: str,
+    reason: str,
+    db: Session,
+) -> float | None:
+    """
+    Estimates a numeric score from a free-text answer.
+
+    reason="candidate_level_unknown" | "required_level_unknown" → returns 0–100 (proficiency)
+    reason="importance_unknown"                                  → returns 0.0–1.0 (importance)
+
+    Returns None if the answer is too vague to score.
+    """
+    if reason == "importance_unknown":
+        scale_guide = _IMPORTANCE_SCALE_GUIDE
+    else:
+        scale_guide = _LEVEL_SCALE_GUIDE.format(level_guide=_build_level_guide(db))
+
+    system = _LEVEL_ESTIMATE_SYSTEM.format(scale_guide=scale_guide)
+    user_content = (
+        f"Competency: {competency_name}\n"
+        f"Question: {question_text}\n"
+        f"Answer: {answer_text}"
+    )
+
+    response = litellm.completion(
+        model=LLM_MODEL,
+        max_tokens=256,
+        temperature=0,
+        messages=[
+            {"role": "system", "content": system},
+            {"role": "user",   "content": user_content},
+        ],
+    )
+
+    choice = response.choices[0]
+    if choice.finish_reason not in ("stop", "end_turn"):
+        raise ValueError(f"LLM did not finish cleanly: finish_reason={choice.finish_reason!r}")
+
+    parsed = _parse_response(choice.message.content)
+    return parsed.get("score")
 
 
 def score_document(text: str, db: Session, mode: str) -> dict:
@@ -217,7 +377,7 @@ def score_document(text: str, db: Session, mode: str) -> dict:
 
     response = litellm.completion(
         model=LLM_MODEL,
-        max_tokens=4096,
+        max_tokens=8192,
         temperature=0,
         messages=[
             {"role": "system", "content": prompts[mode]},
@@ -225,4 +385,8 @@ def score_document(text: str, db: Session, mode: str) -> dict:
         ],
     )
 
-    return _parse_response(response.choices[0].message.content)
+    choice = response.choices[0]
+    if choice.finish_reason not in ("stop", "end_turn"):
+        raise ValueError(f"LLM did not finish cleanly: finish_reason={choice.finish_reason!r}")
+
+    return _parse_response(choice.message.content)

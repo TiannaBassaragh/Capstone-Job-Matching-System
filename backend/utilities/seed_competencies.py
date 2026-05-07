@@ -134,10 +134,10 @@ def seed(engine, content_model, leaf_ids):
     conn.execute(text("""
       INSERT INTO competencies (onet_element_id, competency_name, description, category)
       VALUES (:onet_element_id, :competency_name, :description, :category)
-      ON DUPLICATE KEY UPDATE
-        competency_name = VALUES(competency_name),
-        description     = VALUES(description),
-        category        = VALUES(category)
+      ON CONFLICT (onet_element_id) DO UPDATE SET
+        competency_name = EXCLUDED.competency_name,
+        description     = EXCLUDED.description,
+        category        = EXCLUDED.category
     """), rows_to_insert)
 
   print(f"Seeded {len(rows_to_insert)} competencies.")
@@ -161,8 +161,8 @@ def seed_anchors(engine, anchor_rows):
     conn.execute(text("""
       INSERT INTO level_scale_anchors (onet_element_id, anchor_value, anchor_description)
       VALUES (:onet_element_id, :anchor_value, :anchor_description)
-      ON DUPLICATE KEY UPDATE
-        anchor_description = VALUES(anchor_description)
+      ON CONFLICT (onet_element_id, anchor_value) DO UPDATE SET
+        anchor_description = EXCLUDED.anchor_description
     """), rows_to_insert)
 
   print(f"Seeded {len(rows_to_insert)} level scale anchors.")

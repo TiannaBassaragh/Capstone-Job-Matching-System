@@ -172,6 +172,19 @@ def compute_fit_score(
     match_score = round(weighted_sum / total_weight, 3) if total_weight > 0 else None
     coverage    = round(scored_dims / total_dims, 3)    if total_dims  > 0 else 0.0
 
+    above_count    = sum(1 for d in scored.values() if d["gap"] == 0)
+    below_count    = sum(1 for d in scored.values() if d["gap"] >  0)
+    data_gap_count = len(undetermined) + len(absent)
+
+    if below_count == 0 and data_gap_count == 0:
+        tier = "fully_qualified"
+    elif below_count == 0:
+        tier = "data_gap"
+    elif above_count >= below_count:
+        tier = "skill_gap"
+    else:
+        tier = "below_requirements"
+
     gap_profile = {
         "coverage":    coverage,
         "scored":      scored,
@@ -208,9 +221,10 @@ def compute_fit_score(
         )
 
     return {
-        "match_score":     match_score,
-        "coverage":        coverage,
-        "knockout_failed": knockout_failed,
-        "gap_profile":     gap_profile,
-        "explanation":     " ".join(parts),
+        "match_score":          match_score,
+        "coverage":             coverage,
+        "knockout_failed":      knockout_failed,
+        "qualification_tier":   tier,
+        "gap_profile":          gap_profile,
+        "explanation":          " ".join(parts),
     }

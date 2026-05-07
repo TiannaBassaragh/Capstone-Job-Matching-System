@@ -1,8 +1,8 @@
 from sqlalchemy import (
-  Column, Integer, String, Text, Float, Boolean, Enum,
-  TIMESTAMP, LargeBinary, ForeignKey, UniqueConstraint
+  Column, Integer, String, Text, Float, Boolean,
+  TIMESTAMP, LargeBinary, ForeignKey, UniqueConstraint, CheckConstraint
 )
-from sqlalchemy.dialects.mysql import JSON
+from sqlalchemy import JSON
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.database import Base
@@ -16,7 +16,7 @@ class User(Base):
   l_name       = Column(String(100), nullable=False)
   email        = Column(String(150), unique=True, nullable=False)
   password     = Column(String(150), nullable=False)
-  account_type = Column(Enum("applicant", "recruiter"), nullable=False)
+  account_type = Column(String(20), CheckConstraint("account_type IN ('applicant', 'recruiter')"), nullable=False)
   created_at   = Column(TIMESTAMP, server_default=func.now())
 
   candidate = relationship("Candidate", back_populates="user", uselist=False)
@@ -51,7 +51,7 @@ class Resume(Base):
 
   resume_id    = Column(Integer, primary_key=True, autoincrement=True)
   candidate_id = Column(Integer, ForeignKey("candidates.candidate_id", ondelete="CASCADE"), nullable=False)
-  resume_file  = Column(LargeBinary(length=2**32 - 1))  # LONGBLOB
+  resume_file  = Column(LargeBinary)  # BYTEA in PostgreSQL
   upload_date  = Column(TIMESTAMP, server_default=func.now())
 
   candidate = relationship("Candidate", back_populates="resumes")
@@ -118,7 +118,7 @@ class JobCompetency(Base):
   competency_id    = Column(Integer, ForeignKey("competencies.competency_id"), primary_key=True)
   required_level   = Column(Float, nullable=True)
   importance       = Column(Float)
-  requirement_type = Column(Enum("required", "preferred"))
+  requirement_type = Column(String(10), CheckConstraint("requirement_type IN ('required', 'preferred')"))
 
   job        = relationship("JobPost",    back_populates="competencies")
   competency = relationship("Competency", back_populates="job_competencies")
@@ -130,10 +130,11 @@ class Match(Base):
   match_id        = Column(Integer, primary_key=True, autoincrement=True)
   candidate_id    = Column(Integer, ForeignKey("candidates.candidate_id", ondelete="CASCADE"), nullable=False)
   job_id          = Column(Integer, ForeignKey("job_post.job_id",         ondelete="CASCADE"), nullable=False)
-  match_score     = Column(Float)
-  knockout_failed = Column(Boolean, default=False)
-  gap_profile     = Column(JSON)
-  explanation     = Column(Text)
+  match_score          = Column(Float)
+  knockout_failed      = Column(Boolean, default=False)
+  qualification_tier   = Column(String(30))
+  gap_profile          = Column(JSON)
+  explanation          = Column(Text)
   created_at      = Column(TIMESTAMP, server_default=func.now())
 
   __table_args__ = (
@@ -142,3 +143,26 @@ class Match(Base):
 
   candidate = relationship("Candidate", back_populates="matches")
   job       = relationship("JobPost",   back_populates="matches")
+  questions = relationship("ClarifyingQuestion", back_populates="match", cascade="all, delete-orphan")
+
+
+class ClarifyingQuestion(Base):
+  __tablename__ = "clarifying_questions"
+
+  question_id     = Column(Integer, primary_key=True, autoincrement=True)
+  match_id        = Column(Integer, ForeignKey("matches.match_id", ondelete="CASCADE"), nullable=False)
+  element_id      = Column(String(20), nullable=False)
+  competency_name = Column(String(200), nullable=False)
+  directed_at     = Column(String(10), CheckConstraint("directed_at IN ('candidate', 'recruiter')"), nullable=False)
+  # reason: "candidate_level_unknown" | "required_level_unknown" | "importance_unknown"
+  reason          = Column(String(30), nullable=False)
+  question_text   = Column(Text, nullable=False)
+  answer_text     = Column(Text, nullable=True)
+  resolved        = Column(Boolean, default=False, nullable=False)
+  created_at      = Column(TIMESTAMP, server_default=func.now())
+
+  match = relationship("Match", back_populates="questions")
+
+  __table_args__ = (
+    UniqueConstraint("match_id", "element_id", "directed_at", name="uq_question_match_element_direction"),
+  )
