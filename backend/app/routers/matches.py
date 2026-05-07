@@ -72,79 +72,79 @@ def _upsert_match(candidate_id: int, job_id: int, result: dict, db: Session) -> 
 # ─── clarifying question helpers ─────────────────────────────────────────────
 
 def _build_question_inputs(gap_profile: dict) -> list[dict]:
-    """
-    Derives the list of dimensions that need clarification from a gap_profile.
-    Returns dicts with element_id, competency_name, directed_at, reason.
-    """
-    inputs = []
+  """
+  Derives the list of dimensions that need clarification from a gap_profile.
+  Returns dicts with element_id, competency_name, directed_at, reason.
+  """
+  inputs = []
 
-    for eid, info in gap_profile["undetermined"].items():
-        if info["candidate_status"] == "undetermined":
-            inputs.append({
-                "element_id":      eid,
-                "competency_name": info["name"],
-                "directed_at":     "candidate",
-                "reason":          "candidate_level_unknown",
-            })
-        if info["job_level_status"] == "undetermined":
-            inputs.append({
-                "element_id":      eid,
-                "competency_name": info["name"],
-                "directed_at":     "recruiter",
-                "reason":          "required_level_unknown",
-            })
+  for eid, info in gap_profile["undetermined"].items():
+    if info["candidate_status"] == "undetermined":
+      inputs.append({
+        "element_id":      eid,
+        "competency_name": info["name"],
+        "directed_at":     "candidate",
+        "reason":          "candidate_level_unknown",
+      })
+    if info["job_level_status"] == "undetermined":
+      inputs.append({
+        "element_id":      eid,
+        "competency_name": info["name"],
+        "directed_at":     "recruiter",
+        "reason":          "required_level_unknown",
+      })
 
-    for eid, info in gap_profile["scored"].items():
-        if info["importance"] is None:
-            inputs.append({
-                "element_id":      eid,
-                "competency_name": info["name"],
-                "directed_at":     "recruiter",
-                "reason":          "importance_unknown",
-            })
+  for eid, info in gap_profile["scored"].items():
+    if info["importance"] is None:
+      inputs.append({
+        "element_id":      eid,
+        "competency_name": info["name"],
+        "directed_at":     "recruiter",
+        "reason":          "importance_unknown",
+      })
 
-    return inputs
+  return inputs
 
 
 def _save_questions(match_id: int, q_inputs: list[dict], generated: list[dict], db: Session) -> list[ClarifyingQuestion]:
-    """
-    Saves generated questions to the DB, skipping any already present
-    (e.g. from a previous trigger run that may already have an answer).
-    Returns the list of newly saved ClarifyingQuestion objects.
-    """
-    # Index generated questions by element_id for lookup
-    gen_map: dict[tuple, str] = {
-        (q["element_id"], q["directed_at"]): q["question_text"]
-        for q in generated
-    }
+  """
+  Saves generated questions to the DB, skipping any already present
+  (e.g. from a previous trigger run that may already have an answer).
+  Returns the list of newly saved ClarifyingQuestion objects.
+  """
+  # Index generated questions by element_id for lookup
+  gen_map: dict[tuple, str] = {
+    (q["element_id"], q["directed_at"]): q["question_text"]
+    for q in generated
+  }
 
-    saved = []
-    for inp in q_inputs:
-        key = (inp["element_id"], inp["directed_at"])
-        question_text = gen_map.get(key)
-        if not question_text:
-            continue  # LLM didn't produce a question for this entry
+  saved = []
+  for inp in q_inputs:
+    key = (inp["element_id"], inp["directed_at"])
+    question_text = gen_map.get(key)
+    if not question_text:
+      continue  # LLM didn't produce a question for this entry
 
-        existing = (
-            db.query(ClarifyingQuestion)
-            .filter_by(match_id=match_id, element_id=inp["element_id"], directed_at=inp["directed_at"])
-            .first()
-        )
-        if existing:
-            continue  # already asked (may have an answer — don't overwrite)
+    existing = (
+      db.query(ClarifyingQuestion)
+      .filter_by(match_id=match_id, element_id=inp["element_id"], directed_at=inp["directed_at"])
+      .first()
+    )
+    if existing:
+      continue  # already asked (may have an answer — don't overwrite)
 
-        q = ClarifyingQuestion(
-            match_id        = match_id,
-            element_id      = inp["element_id"],
-            competency_name = inp["competency_name"],
-            directed_at     = inp["directed_at"],
-            reason          = inp["reason"],
-            question_text   = question_text,
-        )
-        db.add(q)
-        saved.append(q)
+    q = ClarifyingQuestion(
+      match_id        = match_id,
+      element_id      = inp["element_id"],
+      competency_name = inp["competency_name"],
+      directed_at     = inp["directed_at"],
+      reason          = inp["reason"],
+      question_text   = question_text,
+    )
+    db.add(q)
+    saved.append(q)
 
-    return saved
+  return saved
 
 
 # ─── triggers ────────────────────────────────────────────────────────────────

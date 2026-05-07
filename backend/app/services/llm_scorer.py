@@ -12,12 +12,12 @@ from app.models.models import Competency, LevelScaleAnchor
 _PROVIDER = os.getenv("LLM_PROVIDER", "anthropic").lower()
 
 _MODEL_MAP = {
-    "anthropic": os.getenv("LLM_MODEL_ANTHROPIC", "claude-haiku-4-5-20251001"),
-    "gemini":    os.getenv("LLM_MODEL_GEMINI",    "gemini/gemini-2.5-flash"),
+  "anthropic": os.getenv("LLM_MODEL_ANTHROPIC", "claude-haiku-4-5-20251001"),
+  "gemini":    os.getenv("LLM_MODEL_GEMINI",    "gemini/gemini-2.5-flash"),
 }
 
 if _PROVIDER not in _MODEL_MAP:
-    raise ValueError(f"Unknown LLM_PROVIDER={_PROVIDER!r}. Choose 'anthropic' or 'gemini'.")
+  raise ValueError(f"Unknown LLM_PROVIDER={_PROVIDER!r}. Choose 'anthropic' or 'gemini'.")
 
 LLM_MODEL = _MODEL_MAP[_PROVIDER]
 
@@ -28,56 +28,56 @@ _system_prompts: dict[str, str] | None = None
 
 
 def _build_level_guide(db: Session) -> str:
-    """
-    Derives a level calibration guide from O*NET anchor descriptions.
-    Samples up to 3 examples at each of anchor_values 0, 2, 4, 6 to
-    illustrate what each checkpoint on the 0-100 scale looks like in practice.
-    """
-    checkpoints = {0: [], 2: [], 4: [], 6: []}
-    rows = (
-        db.query(LevelScaleAnchor)
-        .filter(LevelScaleAnchor.anchor_value.in_([0, 2, 4, 6]))
-        .all()
-    )
-    for row in rows:
-        bucket = checkpoints[row.anchor_value]
-        if len(bucket) < 3:
-            bucket.append(f"      - {row.anchor_description}")
+  """
+  Derives a level calibration guide from O*NET anchor descriptions.
+  Samples up to 3 examples at each of anchor_values 0, 2, 4, 6 to
+  illustrate what each checkpoint on the 0-100 scale looks like in practice.
+  """
+  checkpoints = {0: [], 2: [], 4: [], 6: []}
+  rows = (
+    db.query(LevelScaleAnchor)
+    .filter(LevelScaleAnchor.anchor_value.in_([0, 2, 4, 6]))
+    .all()
+  )
+  for row in rows:
+    bucket = checkpoints[row.anchor_value]
+    if len(bucket) < 3:
+      bucket.append(f"      - {row.anchor_description}")
 
-    labels = {
-        0: "0   — negligible / absent",
-        2: "28  — basic",
-        4: "57  — intermediate",
-        6: "86  — advanced",
-    }
-    lines = [
-        "Level scale (0–100). Calibration examples drawn from O*NET anchor descriptions:",
-    ]
-    for av, label in labels.items():
-        examples = "\n".join(checkpoints[av]) if checkpoints[av] else "      (no examples available)"
-        lines.append(f"\n  {label}:\n{examples}")
-    lines.append("\n  100 — maximum / world-class expertise")
-    return "\n".join(lines)
+  labels = {
+    0: "0   — negligible / absent",
+    2: "28  — basic",
+    4: "57  — intermediate",
+    6: "86  — advanced",
+  }
+  lines = [
+    "Level scale (0–100). Calibration examples drawn from O*NET anchor descriptions:",
+  ]
+  for av, label in labels.items():
+    examples = "\n".join(checkpoints[av]) if checkpoints[av] else "      (no examples available)"
+    lines.append(f"\n  {label}:\n{examples}")
+  lines.append("\n  100 — maximum / world-class expertise")
+  return "\n".join(lines)
 
 
 def _build_catalog(db: Session) -> str:
-    """
-    Formats the full competency catalog grouped by category.
-    These are the only element_ids the model is permitted to output.
-    """
-    rows = (
-        db.query(Competency)
-        .order_by(Competency.category, Competency.onet_element_id)
-        .all()
-    )
-    lines = ["Competency catalog — output ONLY element_ids listed here:"]
-    current_cat = None
-    for row in rows:
-        if row.category != current_cat:
-            current_cat = row.category
-            lines.append(f"\n  [{current_cat}]")
-        lines.append(f"    {row.onet_element_id}  {row.competency_name}")
-    return "\n".join(lines)
+  """
+  Formats the full competency catalog grouped by category.
+  These are the only element_ids the model is permitted to output.
+  """
+  rows = (
+    db.query(Competency)
+    .order_by(Competency.category, Competency.onet_element_id)
+    .all()
+  )
+  lines = ["Competency catalog — output ONLY element_ids listed here:"]
+  current_cat = None
+  for row in rows:
+    if row.category != current_cat:
+      current_cat = row.category
+      lines.append(f"\n  [{current_cat}]")
+    lines.append(f"    {row.onet_element_id}  {row.competency_name}")
+  return "\n".join(lines)
 
 
 _RESUME_FORMAT = """\
@@ -155,47 +155,47 @@ Output:
 
 
 def _build_prompts(db: Session) -> dict[str, str]:
-    level_guide = _build_level_guide(db)
-    catalog = _build_catalog(db)
+  level_guide = _build_level_guide(db)
+  catalog = _build_catalog(db)
 
-    resume_prompt = "\n\n".join([
-        "You are an expert HR analyst trained on the O*NET competency framework.\n"
-        "Analyse the resume text and identify which O*NET competencies are demonstrated.\n"
-        "Output ONLY element_ids from the Competency Catalog below.",
-        level_guide,
-        catalog,
-        _RESUME_FORMAT,
-        _RESUME_EXAMPLES,
-    ])
+  resume_prompt = "\n\n".join([
+    "You are an expert HR analyst trained on the O*NET competency framework.\n"
+    "Analyse the resume text and identify which O*NET competencies are demonstrated.\n"
+    "Output ONLY element_ids from the Competency Catalog below.",
+    level_guide,
+    catalog,
+    _RESUME_FORMAT,
+    _RESUME_EXAMPLES,
+  ])
 
-    job_prompt = "\n\n".join([
-        "You are an expert HR analyst trained on the O*NET competency framework.\n"
-        "Analyse the job description and identify which O*NET competencies are required or preferred.\n"
-        "Output ONLY element_ids from the Competency Catalog below.",
-        level_guide,
-        catalog,
-        _JOB_FORMAT,
-        _JOB_EXAMPLES,
-    ])
+  job_prompt = "\n\n".join([
+    "You are an expert HR analyst trained on the O*NET competency framework.\n"
+    "Analyse the job description and identify which O*NET competencies are required or preferred.\n"
+    "Output ONLY element_ids from the Competency Catalog below.",
+    level_guide,
+    catalog,
+    _JOB_FORMAT,
+    _JOB_EXAMPLES,
+  ])
 
-    return {"resume": resume_prompt, "job": job_prompt}
+  return {"resume": resume_prompt, "job": job_prompt}
 
 
 def _get_prompts(db: Session) -> dict[str, str]:
-    global _system_prompts
-    if _system_prompts is None:
-        _system_prompts = _build_prompts(db)
-    return _system_prompts
+  global _system_prompts
+  if _system_prompts is None:
+    _system_prompts = _build_prompts(db)
+  return _system_prompts
 
 
 def _parse_response(text: str | None) -> dict:
-    if not text or not text.strip():
-        raise ValueError(f"LLM returned empty content (finish_reason may indicate a safety block)")
-    text = text.strip()
-    match = re.search(r"```(?:json)?\s*([\s\S]*?)```", text)
-    if match:
-        text = match.group(1).strip()
-    return json.loads(text)
+  if not text or not text.strip():
+    raise ValueError(f"LLM returned empty content (finish_reason may indicate a safety block)")
+  text = text.strip()
+  match = re.search(r"```(?:json)?\s*([\s\S]*?)```", text)
+  if match:
+    text = match.group(1).strip()
+  return json.loads(text)
 
 
 _QUESTION_SYSTEM = """\
@@ -244,44 +244,44 @@ Rules:
 
 
 def generate_clarifying_questions(inputs: list[dict], db: Session) -> list[dict]:
-    """
-    Generates one clarifying question per undetermined dimension.
+  """
+  Generates one clarifying question per undetermined dimension.
 
-    inputs: list of dicts, each with keys:
-      element_id, competency_name, directed_at, reason
+  inputs: list of dicts, each with keys:
+    element_id, competency_name, directed_at, reason
 
-    reason values:
-      "candidate_level_unknown" | "required_level_unknown" | "importance_unknown"
+  reason values:
+    "candidate_level_unknown" | "required_level_unknown" | "importance_unknown"
 
-    Returns list of dicts: {element_id, directed_at, question_text}
-    """
-    if not inputs:
-        return []
+  Returns list of dicts: {element_id, directed_at, question_text}
+  """
+  if not inputs:
+    return []
 
-    level_guide = _build_level_guide(db)
-    system = _QUESTION_SYSTEM.format(level_guide=level_guide)
+  level_guide = _build_level_guide(db)
+  system = _QUESTION_SYSTEM.format(level_guide=level_guide)
 
-    items_text = "\n".join(
-        f"  - element_id={d['element_id']}  competency={d['competency_name']}"
-        f"  directed_at={d['directed_at']}  reason={d['reason']}"
-        for d in inputs
-    )
+  items_text = "\n".join(
+    f"  - element_id={d['element_id']}  competency={d['competency_name']}"
+    f"  directed_at={d['directed_at']}  reason={d['reason']}"
+    for d in inputs
+  )
 
-    response = litellm.completion(
-        model=LLM_MODEL,
-        max_tokens=2048,
-        temperature=0,
-        messages=[
-            {"role": "system", "content": system},
-            {"role": "user",   "content": f"Generate questions for:\n{items_text}"},
-        ],
-    )
+  response = litellm.completion(
+    model=LLM_MODEL,
+    max_tokens=2048,
+    temperature=0,
+    messages=[
+      {"role": "system", "content": system},
+      {"role": "user",   "content": f"Generate questions for:\n{items_text}"},
+    ],
+  )
 
-    choice = response.choices[0]
-    if choice.finish_reason not in ("stop", "end_turn"):
-        raise ValueError(f"LLM did not finish cleanly: finish_reason={choice.finish_reason!r}")
+  choice = response.choices[0]
+  if choice.finish_reason not in ("stop", "end_turn"):
+    raise ValueError(f"LLM did not finish cleanly: finish_reason={choice.finish_reason!r}")
 
-    return _parse_response(choice.message.content)
+  return _parse_response(choice.message.content)
 
 
 _LEVEL_ESTIMATE_SYSTEM = """\
@@ -312,81 +312,81 @@ Importance scale (0.0–1.0):
 
 
 def estimate_score_from_answer(
-    competency_name: str,
-    question_text: str,
-    answer_text: str,
-    reason: str,
-    db: Session,
+  competency_name: str,
+  question_text: str,
+  answer_text: str,
+  reason: str,
+  db: Session,
 ) -> float | None:
-    """
-    Estimates a numeric score from a free-text answer.
+  """
+  Estimates a numeric score from a free-text answer.
 
-    reason="candidate_level_unknown" | "required_level_unknown" → returns 0–100 (proficiency)
-    reason="importance_unknown"                                  → returns 0.0–1.0 (importance)
+  reason="candidate_level_unknown" | "required_level_unknown" → returns 0–100 (proficiency)
+  reason="importance_unknown"                                  → returns 0.0–1.0 (importance)
 
-    Returns None if the answer is too vague to score.
-    """
-    if reason == "importance_unknown":
-        scale_guide = _IMPORTANCE_SCALE_GUIDE
-    else:
-        scale_guide = _LEVEL_SCALE_GUIDE.format(level_guide=_build_level_guide(db))
+  Returns None if the answer is too vague to score.
+  """
+  if reason == "importance_unknown":
+    scale_guide = _IMPORTANCE_SCALE_GUIDE
+  else:
+    scale_guide = _LEVEL_SCALE_GUIDE.format(level_guide=_build_level_guide(db))
 
-    system = _LEVEL_ESTIMATE_SYSTEM.format(scale_guide=scale_guide)
-    user_content = (
-        f"Competency: {competency_name}\n"
-        f"Question: {question_text}\n"
-        f"Answer: {answer_text}"
-    )
+  system = _LEVEL_ESTIMATE_SYSTEM.format(scale_guide=scale_guide)
+  user_content = (
+    f"Competency: {competency_name}\n"
+    f"Question: {question_text}\n"
+    f"Answer: {answer_text}"
+  )
 
-    response = litellm.completion(
-        model=LLM_MODEL,
-        max_tokens=256,
-        temperature=0,
-        messages=[
-            {"role": "system", "content": system},
-            {"role": "user",   "content": user_content},
-        ],
-    )
+  response = litellm.completion(
+    model=LLM_MODEL,
+    max_tokens=256,
+    temperature=0,
+    messages=[
+      {"role": "system", "content": system},
+      {"role": "user",   "content": user_content},
+    ],
+  )
 
-    choice = response.choices[0]
-    if choice.finish_reason not in ("stop", "end_turn"):
-        raise ValueError(f"LLM did not finish cleanly: finish_reason={choice.finish_reason!r}")
+  choice = response.choices[0]
+  if choice.finish_reason not in ("stop", "end_turn"):
+    raise ValueError(f"LLM did not finish cleanly: finish_reason={choice.finish_reason!r}")
 
-    parsed = _parse_response(choice.message.content)
-    return parsed.get("score")
+  parsed = _parse_response(choice.message.content)
+  return parsed.get("score")
 
 
 def score_document(text: str, db: Session, mode: str) -> dict:
-    """
-    Scores a document against the O*NET competency catalog using an LLM.
+  """
+  Scores a document against the O*NET competency catalog using an LLM.
 
-    mode: "resume" | "job"
+  mode: "resume" | "job"
 
-    Returns:
-      mode="resume": {element_id: {"level": float | None}}
-      mode="job":    {element_id: {"required_level": float | None, "importance": float | None}}
+  Returns:
+    mode="resume": {element_id: {"level": float | None}}
+    mode="job":    {element_id: {"required_level": float | None, "importance": float | None}}
 
-    A key present with null value means: detected, but level/importance could not be inferred.
-    A missing key means: not detected.
-    Raises ValueError on bad mode, json.JSONDecodeError on unparseable response.
-    """
-    if mode not in ("resume", "job"):
-        raise ValueError(f"mode must be 'resume' or 'job', got {mode!r}")
+  A key present with null value means: detected, but level/importance could not be inferred.
+  A missing key means: not detected.
+  Raises ValueError on bad mode, json.JSONDecodeError on unparseable response.
+  """
+  if mode not in ("resume", "job"):
+    raise ValueError(f"mode must be 'resume' or 'job', got {mode!r}")
 
-    prompts = _get_prompts(db)
+  prompts = _get_prompts(db)
 
-    response = litellm.completion(
-        model=LLM_MODEL,
-        max_tokens=8192,
-        temperature=0,
-        messages=[
-            {"role": "system", "content": prompts[mode]},
-            {"role": "user",   "content": text},
-        ],
-    )
+  response = litellm.completion(
+    model=LLM_MODEL,
+    max_tokens=8192,
+    temperature=0,
+    messages=[
+      {"role": "system", "content": prompts[mode]},
+      {"role": "user",   "content": text},
+    ],
+  )
 
-    choice = response.choices[0]
-    if choice.finish_reason not in ("stop", "end_turn"):
-        raise ValueError(f"LLM did not finish cleanly: finish_reason={choice.finish_reason!r}")
+  choice = response.choices[0]
+  if choice.finish_reason not in ("stop", "end_turn"):
+    raise ValueError(f"LLM did not finish cleanly: finish_reason={choice.finish_reason!r}")
 
-    return _parse_response(choice.message.content)
+  return _parse_response(choice.message.content)
