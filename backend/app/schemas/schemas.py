@@ -111,7 +111,8 @@ class CompetencyResponse(BaseModel):
 
 class QuestionResponse(BaseModel):
   question_id:     int
-  match_id:        int
+  candidate_id:    Optional[int] = None
+  job_id:          Optional[int] = None
   element_id:      str
   competency_name: str
   directed_at:     str

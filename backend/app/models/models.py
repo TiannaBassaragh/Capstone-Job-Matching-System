@@ -33,6 +33,7 @@ class Candidate(Base):
   resumes      = relationship("Resume", back_populates="candidate")
   competencies = relationship("CandidateCompetency", back_populates="candidate")
   matches      = relationship("Match", back_populates="candidate")
+  questions    = relationship("ClarifyingQuestion", back_populates="candidate", cascade="all, delete-orphan")
 
 
 class Employer(Base):
@@ -69,6 +70,7 @@ class JobPost(Base):
   employer     = relationship("Employer", back_populates="job_posts")
   competencies = relationship("JobCompetency", back_populates="job")
   matches      = relationship("Match", back_populates="job")
+  questions    = relationship("ClarifyingQuestion", back_populates="job", cascade="all, delete-orphan")
 
 
 class Competency(Base):
@@ -143,14 +145,15 @@ class Match(Base):
 
   candidate = relationship("Candidate", back_populates="matches")
   job       = relationship("JobPost",   back_populates="matches")
-  questions = relationship("ClarifyingQuestion", back_populates="match", cascade="all, delete-orphan")
 
 
 class ClarifyingQuestion(Base):
   __tablename__ = "clarifying_questions"
 
   question_id     = Column(Integer, primary_key=True, autoincrement=True)
-  match_id        = Column(Integer, ForeignKey("matches.match_id", ondelete="CASCADE"), nullable=False)
+  # Exactly one of candidate_id or job_id is set.
+  candidate_id    = Column(Integer, ForeignKey("candidates.candidate_id", ondelete="CASCADE"), nullable=True)
+  job_id          = Column(Integer, ForeignKey("job_post.job_id",         ondelete="CASCADE"), nullable=True)
   element_id      = Column(String(20), nullable=False)
   competency_name = Column(String(200), nullable=False)
   directed_at     = Column(String(10), CheckConstraint("directed_at IN ('candidate', 'recruiter')"), nullable=False)
@@ -161,8 +164,5 @@ class ClarifyingQuestion(Base):
   resolved        = Column(Boolean, default=False, nullable=False)
   created_at      = Column(TIMESTAMP, server_default=func.now())
 
-  match = relationship("Match", back_populates="questions")
-
-  __table_args__ = (
-    UniqueConstraint("match_id", "element_id", "directed_at", name="uq_question_match_element_direction"),
-  )
+  candidate = relationship("Candidate", back_populates="questions")
+  job       = relationship("JobPost",   back_populates="questions")

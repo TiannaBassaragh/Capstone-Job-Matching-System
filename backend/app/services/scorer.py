@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-from app.models.models import JobCompetency, JobPost, Competency, Candidate, CandidateCompetency, Resume
+from app.models.models import JobCompetency, JobPost, Competency, Candidate, CandidateCompetency, Resume, ClarifyingQuestion
 from app.services.resume_parser import parse_resume_bytes
-from app.services.llm_scorer import score_document
+from app.services.llm_scorer import score_document, generate_clarifying_questions
 
 
 def score_resume(candidate: Candidate, resume: Resume, db: Session) -> None:
@@ -13,12 +13,13 @@ def score_resume(candidate: Candidate, resume: Resume, db: Session) -> None:
   text = parse_resume_bytes(resume.resume_file)
   scores = score_document(text, db, mode="resume")
 
-  comp_map = {
-    c.onet_element_id: c.competency_id
-    for c in db.query(Competency)
+  comp_rows = (
+    db.query(Competency)
     .filter(Competency.onet_element_id.in_(list(scores.keys())))
     .all()
-  }
+  )
+  comp_map       = {c.onet_element_id: c.competency_id   for c in comp_rows}
+  comp_map_names = {c.onet_element_id: c.competency_name for c in comp_rows}
 
   db.query(CandidateCompetency).filter(
     CandidateCompetency.candidate_id == candidate.candidate_id
@@ -34,6 +35,38 @@ def score_resume(candidate: Candidate, resume: Resume, db: Session) -> None:
       level_score=data.get("level"),
     ))
 
+  # Generate clarifying questions for competencies detected but with unknown level.
+  null_inputs = [
+    {
+      "element_id":      eid,
+      "competency_name": comp_map_names.get(eid, eid),
+      "directed_at":     "candidate",
+      "reason":          "candidate_level_unknown",
+    }
+    for eid, data in scores.items()
+    if data.get("level") is None and eid in comp_map
+  ]
+  if null_inputs:
+    generated = generate_clarifying_questions(null_inputs, db)
+    gen_map = {q["element_id"]: q["question_text"] for q in generated}
+    for inp in null_inputs:
+      if not gen_map.get(inp["element_id"]):
+        continue
+      exists = db.query(ClarifyingQuestion).filter_by(
+        candidate_id=candidate.candidate_id,
+        element_id=inp["element_id"],
+        reason="candidate_level_unknown",
+      ).first()
+      if not exists:
+        db.add(ClarifyingQuestion(
+          candidate_id    = candidate.candidate_id,
+          element_id      = inp["element_id"],
+          competency_name = inp["competency_name"],
+          directed_at     = "candidate",
+          reason          = "candidate_level_unknown",
+          question_text   = gen_map[inp["element_id"]],
+        ))
+
   db.commit()
 
 
@@ -45,12 +78,13 @@ def score_job_post(job: JobPost, db: Session) -> None:
   """
   scores = score_document(job.description, db, mode="job")
 
-  comp_map = {
-    c.onet_element_id: c.competency_id
-    for c in db.query(Competency)
+  comp_rows = (
+    db.query(Competency)
     .filter(Competency.onet_element_id.in_(list(scores.keys())))
     .all()
-  }
+  )
+  comp_map       = {c.onet_element_id: c.competency_id   for c in comp_rows}
+  comp_map_names = {c.onet_element_id: c.competency_name for c in comp_rows}
 
   db.query(JobCompetency).filter(JobCompetency.job_id == job.job_id).delete()
 
@@ -65,6 +99,47 @@ def score_job_post(job: JobPost, db: Session) -> None:
       importance       = data.get("importance"),
       requirement_type = data.get("requirement_type", "preferred"),
     ))
+
+  # Generate clarifying questions for undetermined required_level or importance.
+  null_inputs = []
+  for eid, data in scores.items():
+    if eid not in comp_map:
+      continue
+    name = comp_map_names.get(eid, eid)
+    if data.get("required_level") is None:
+      null_inputs.append({
+        "element_id": eid, "competency_name": name,
+        "directed_at": "recruiter", "reason": "required_level_unknown",
+      })
+    if data.get("importance") is None:
+      null_inputs.append({
+        "element_id": eid, "competency_name": name,
+        "directed_at": "recruiter", "reason": "importance_unknown",
+      })
+
+  if null_inputs:
+    generated = generate_clarifying_questions(null_inputs, db)
+    gen_map = {(q["element_id"], q.get("reason", q["directed_at"])): q["question_text"] for q in generated}
+    # generated list uses element_id+directed_at as key; map by (element_id, reason) via null_inputs
+    gen_by_eid_directed = {(q["element_id"], q["directed_at"]): q["question_text"] for q in generated}
+    for inp in null_inputs:
+      qt = gen_by_eid_directed.get((inp["element_id"], inp["directed_at"]))
+      if not qt:
+        continue
+      exists = db.query(ClarifyingQuestion).filter_by(
+        job_id=job.job_id,
+        element_id=inp["element_id"],
+        reason=inp["reason"],
+      ).first()
+      if not exists:
+        db.add(ClarifyingQuestion(
+          job_id          = job.job_id,
+          element_id      = inp["element_id"],
+          competency_name = inp["competency_name"],
+          directed_at     = "recruiter",
+          reason          = inp["reason"],
+          question_text   = qt,
+        ))
 
   db.commit()
 
