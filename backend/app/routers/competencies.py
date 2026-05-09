@@ -1,6 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 from app.database import get_db
 from app.models.models import Competency
 from app.schemas.schemas import CompetencyResponse
@@ -11,10 +11,16 @@ router = APIRouter(prefix="/competencies", tags=["Competencies"])
 
 @router.get("/", response_model=List[CompetencyResponse])
 def list_competencies(
+  skip: int = Query(0, ge=0),
+  limit: int = Query(50, ge=1, le=200),
+  category: Optional[str] = Query(None, description="Filter by category"),
   db: Session = Depends(get_db),
   current_user=Depends(get_current_user)
 ):
-  return db.query(Competency).all()
+  q = db.query(Competency)
+  if category:
+    q = q.filter(Competency.category == category)
+  return q.offset(skip).limit(limit).all()
 
 
 @router.get("/{competency_id}", response_model=CompetencyResponse)

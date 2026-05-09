@@ -329,31 +329,29 @@ class TestQualificationTier:
 # ---------------------------------------------------------------------------
 
 class TestExplanation:
-    """Verify human-readable explanation content."""
+    """Explanation is generated on-demand via GET /matches/{id}/explain.
+    compute_fit_score returns None — the LLM explanation is not pre-built."""
 
-    def test_match_score_present_contains_fit_score(self):
+    def test_explanation_is_none_by_default(self):
         result = compute_fit_score({1: 70.0}, [req(1, 60.0, 1.0)])
-        assert "Fit score" in result["explanation"]
+        assert result["explanation"] is None
 
-    def test_match_score_none_says_could_not_be_computed(self):
-        # All absent → match_score=None
+    def test_explanation_none_when_no_score(self):
         result = compute_fit_score({}, [req(1, 60.0, 1.0)])
-        assert "could not be computed" in result["explanation"]
+        assert result["explanation"] is None
 
-    def test_unknown_importance_dims_mentioned_in_explanation(self):
-        # importance=None → equal_weight_count incremented
+    def test_explanation_none_with_unknown_importance(self):
         result = compute_fit_score({1: 70.0}, [req(1, 60.0, None)])
-        assert "unknown importance" in result["explanation"]
+        assert result["explanation"] is None
 
-    def test_undetermined_dims_mentioned_in_explanation(self):
+    def test_explanation_none_when_undetermined(self):
         result = compute_fit_score({1: None}, [req(1, 60.0, 1.0)])
-        assert "not fully assessable" in result["explanation"]
+        assert result["explanation"] is None
 
-    def test_absent_dims_mentioned_in_explanation(self):
+    def test_explanation_none_when_absent(self):
         result = compute_fit_score({}, [req(1, 60.0, 1.0)])
-        assert "absent from candidate profile" in result["explanation"]
+        assert result["explanation"] is None
 
-    def test_knockout_mentioned_when_knockout_failed(self):
-        # required dim absent → knockout_failed=True
+    def test_explanation_none_when_knockout(self):
         result = compute_fit_score({}, [req(1, 60.0, 1.0, req_type="required")])
-        assert "Knockout" in result["explanation"]
+        assert result["explanation"] is None

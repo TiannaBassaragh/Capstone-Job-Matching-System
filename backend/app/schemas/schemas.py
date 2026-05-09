@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr
-from typing import Optional, Literal
+from typing import Optional, Literal, List
 from datetime import datetime
 
 
@@ -107,6 +107,45 @@ class CompetencyResponse(BaseModel):
     from_attributes = True
 
 
+# ─── COMPETENCY PROFILES ──────────────────────────────────────────────────────
+
+class CandidateCompetencyEntry(BaseModel):
+  competency_id:   int
+  competency_name: str
+  onet_element_id: Optional[str] = None
+  category:        Optional[str] = None
+  level_score:     Optional[float] = None
+
+  class Config:
+    from_attributes = True
+
+
+class CandidateProfileResponse(BaseModel):
+  candidate_id:  int
+  tech_keywords: Optional[List[str]] = []
+  competencies:  List[CandidateCompetencyEntry]
+
+
+class JobCompetencyEntry(BaseModel):
+  competency_id:    int
+  competency_name:  str
+  onet_element_id:  Optional[str] = None
+  category:         Optional[str] = None
+  required_level:   Optional[float] = None
+  importance:       Optional[float] = None
+  requirement_type: Optional[str] = None
+
+  class Config:
+    from_attributes = True
+
+
+class JobProfileResponse(BaseModel):
+  job_id:        int
+  title:         str
+  tech_keywords: Optional[List[str]] = []
+  competencies:  List[JobCompetencyEntry]
+
+
 # ─── CLARIFYING QUESTIONS ─────────────────────────────────────────────────────
 
 class QuestionResponse(BaseModel):
@@ -157,6 +196,8 @@ class JobRecommendation(BaseModel):
   recommendation_score: float
   qualification_tier: str
   knockout_failed: bool
+  explanation: Optional[str] = None
+  gap_profile: Optional[dict] = None
 
   class Config:
     from_attributes = True

@@ -4,11 +4,13 @@ from typing import List, Optional
 from app.database import get_db, SessionLocal
 from app.models.models import (
   Match, Candidate, CandidateCompetency, JobCompetency,
-  Competency, Employer, JobPost, User
+  Competency, Employer, JobPost, User, Resume
 )
 from app.schemas.schemas import MatchResponse, JobRecommendation
 from app.core.dependencies import get_current_user, require_applicant, require_recruiter
 from app.services.scorer import compute_fit_score
+from app.services.llm_scorer import generate_match_explanation
+from app.services.resume_parser import parse_resume_bytes
 
 router = APIRouter(prefix="/matches", tags=["Matches"])
 
@@ -223,6 +225,8 @@ def get_recommendations(
       recommendation_score = m.recommendation_score or 0.0,
       qualification_tier   = m.qualification_tier or "unknown",
       knockout_failed      = m.knockout_failed,
+      explanation          = m.explanation,
+      gap_profile          = m.gap_profile,
     ))
   return result
 
@@ -230,18 +234,22 @@ def get_recommendations(
 @router.get("/candidate/{candidate_id}", response_model=List[MatchResponse])
 def get_matches_for_candidate(
   candidate_id: int,
+  skip: int = Query(0, ge=0),
+  limit: int = Query(50, ge=1, le=200),
   db: Session = Depends(get_db),
   current_user: User = Depends(require_applicant)
 ):
   candidate = get_candidate_or_404(current_user, db)
   if candidate.candidate_id != candidate_id:
     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only view your own matches")
-  return db.query(Match).filter(Match.candidate_id == candidate_id).all()
+  return db.query(Match).filter(Match.candidate_id == candidate_id).offset(skip).limit(limit).all()
 
 
 @router.get("/job/{job_id}", response_model=List[MatchResponse])
 def get_matches_for_job(
   job_id: int,
+  skip: int = Query(0, ge=0),
+  limit: int = Query(50, ge=1, le=200),
   db: Session = Depends(get_db),
   current_user: User = Depends(require_recruiter)
 ):
@@ -251,7 +259,7 @@ def get_matches_for_job(
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job post not found")
   if job.employer_id != employer.employer_id:
     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only view matches for your own job posts")
-  return db.query(Match).filter(Match.job_id == job_id).all()
+  return db.query(Match).filter(Match.job_id == job_id).offset(skip).limit(limit).all()
 
 
 @router.get("/{match_id}", response_model=MatchResponse)
@@ -275,3 +283,78 @@ def get_match(
       raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only view matches for your own job posts")
 
   return match
+
+
+@router.get("/{match_id}/explain")
+def explain_match(
+  match_id: int,
+  db: Session = Depends(get_db),
+  current_user: User = Depends(get_current_user),
+):
+  """
+  Generate (or return cached) a human-readable explanation of this match.
+  Written from the candidate's perspective for applicants, or the hiring
+  manager's perspective for recruiters. Result is cached on the match record.
+  """
+  match = db.query(Match).filter(Match.match_id == match_id).first()
+  if not match:
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Match not found")
+
+  # Authorisation — same rules as get_match
+  if current_user.account_type == "applicant":
+    candidate = get_candidate_or_404(current_user, db)
+    if match.candidate_id != candidate.candidate_id:
+      raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only view your own matches")
+    viewer = "candidate"
+  else:
+    employer = get_employer_or_404(current_user, db)
+    job = db.query(JobPost).filter(JobPost.job_id == match.job_id).first()
+    if not job or job.employer_id != employer.employer_id:
+      raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only view matches for your own job posts")
+    viewer = "recruiter"
+
+  # Return cached explanation if available
+  if match.explanation:
+    return {"match_id": match_id, "explanation": match.explanation}
+
+  if not match.gap_profile:
+    raise HTTPException(
+      status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+      detail="Match has not been scored yet — no gap profile available.",
+    )
+
+  # Fetch the candidate's most recent resume text
+  resume = (
+    db.query(Resume)
+    .filter(Resume.candidate_id == match.candidate_id)
+    .order_by(Resume.upload_date.desc())
+    .first()
+  )
+  if not resume:
+    raise HTTPException(
+      status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+      detail="No resume on file for this candidate.",
+    )
+  try:
+    resume_text = parse_resume_bytes(resume.resume_file)
+  except ValueError as e:
+    raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e))
+
+  # Fetch job details
+  job = db.query(JobPost).filter(JobPost.job_id == match.job_id).first()
+  if not job:
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job post not found")
+
+  explanation = generate_match_explanation(
+    gap_profile     = match.gap_profile,
+    job_title       = job.title,
+    job_description = job.description,
+    resume_text     = resume_text,
+    viewer          = viewer,
+  )
+
+  # Cache on the match record
+  match.explanation = explanation
+  db.commit()
+
+  return {"match_id": match_id, "explanation": explanation}

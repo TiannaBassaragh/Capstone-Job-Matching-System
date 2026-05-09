@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+from typing import List
 from app.database import get_db
-from app.models.models import User
-from app.schemas.schemas import UserResponse, UserUpdate, MeResponse
-from app.models.models import Candidate, Employer
-from app.core.dependencies import get_current_user
+from app.models.models import User, Candidate, Employer, CandidateCompetency, Competency
+from app.schemas.schemas import UserResponse, UserUpdate, MeResponse, CandidateProfileResponse, CandidateCompetencyEntry
+from app.core.dependencies import get_current_user, require_applicant
 from app.core.security import hash_password
 
 router = APIRouter(prefix="/users", tags=["Users"])
@@ -36,6 +36,41 @@ def get_me(
       data["company_name"] = employer.company_name
 
   return data
+
+
+@router.get("/me/competencies", response_model=CandidateProfileResponse)
+def get_my_competencies(
+  db: Session = Depends(get_db),
+  current_user: User = Depends(require_applicant)
+):
+  """Return the competency profile extracted from the candidate's resume."""
+  candidate = db.query(Candidate).filter(Candidate.user_id == current_user.user_id).first()
+  if not candidate:
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Candidate profile not found")
+
+  rows = (
+    db.query(CandidateCompetency, Competency)
+    .join(Competency, CandidateCompetency.competency_id == Competency.competency_id)
+    .filter(CandidateCompetency.candidate_id == candidate.candidate_id)
+    .all()
+  )
+
+  competencies = [
+    CandidateCompetencyEntry(
+      competency_id   = comp.competency_id,
+      competency_name = comp.competency_name,
+      onet_element_id = comp.onet_element_id,
+      category        = comp.category,
+      level_score     = cc.level_score,
+    )
+    for cc, comp in rows
+  ]
+
+  return CandidateProfileResponse(
+    candidate_id  = candidate.candidate_id,
+    tech_keywords = candidate.tech_keywords or [],
+    competencies  = competencies,
+  )
 
 
 @router.get("/{user_id}", response_model=UserResponse)

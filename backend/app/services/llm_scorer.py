@@ -661,3 +661,108 @@ def extract_tech_keywords(text: str, db: Session) -> list[str]:
   # Validate: discard anything the LLM hallucinated outside the canonical list
   valid = set(canonical)
   return sorted(s for s in result if isinstance(s, str) and s in valid)
+
+
+# ─── MATCH EXPLANATION ────────────────────────────────────────────────────────
+
+def generate_match_explanation(
+  gap_profile: dict,
+  job_title: str,
+  job_description: str,
+  resume_text: str,
+  viewer: str,  # "candidate" or "recruiter"
+) -> str:
+  """
+  Generate a human-readable explanation of a job-candidate match.
+  Uses the actual resume and job description for context, not just scores.
+  viewer="candidate" writes from the applicant's POV;
+  viewer="recruiter" writes from the hiring manager's POV.
+  """
+  # Summarise the gap_profile into readable text for the prompt
+  scored      = gap_profile.get("scored", {})
+  absent      = gap_profile.get("absent", {})
+  undetermined = gap_profile.get("undetermined", {})
+
+  strengths = [
+    info["name"] for info in scored.values()
+    if info.get("fit_value", 0) >= 0.75
+  ]
+  gaps = [
+    info["name"] for info in scored.values()
+    if info.get("fit_value", 0) < 0.75
+  ]
+  required_missing = [
+    info["name"] for info in absent.values()
+    if info.get("knockout_dimension")
+  ]
+  preferred_missing = [
+    info["name"] for info in absent.values()
+    if not info.get("knockout_dimension")
+  ]
+
+  profile_summary = []
+  if strengths:
+    profile_summary.append(f"Strong areas: {', '.join(strengths)}.")
+  if gaps:
+    profile_summary.append(f"Areas with a gap: {', '.join(gaps)}.")
+  if required_missing:
+    profile_summary.append(f"Required skills with no evidence: {', '.join(required_missing)}.")
+  if preferred_missing:
+    profile_summary.append(f"Preferred skills with no evidence: {', '.join(preferred_missing)}.")
+  if undetermined:
+    unames = [v.get("name", k) for k, v in undetermined.items()]
+    profile_summary.append(f"Skills where more information is needed: {', '.join(unames)}.")
+
+  if viewer == "candidate":
+    perspective = (
+      "You are a career advisor writing directly to a job applicant. "
+      "Explain how well their background matches this role in a warm, honest, and encouraging tone. "
+      "Reference specific things from their resume and the job description. "
+      "Do not use numbers, scores, or technical jargon — write as if speaking to a person."
+    )
+    structure = (
+      "Write 2–3 short paragraphs covering: (1) overall fit and first impression, "
+      "(2) their strongest relevant experience for this role, "
+      "(3) the key gaps or areas they would need to develop, and any missing requirements. "
+      "End on a constructive note."
+    )
+  else:
+    perspective = (
+      "You are a recruitment analyst writing a candidate assessment for a hiring manager. "
+      "Summarise how well this candidate fits the role based on their resume and the job requirements. "
+      "Be direct and professional. Do not use numbers or scores — describe fit in plain language."
+    )
+    structure = (
+      "Write 2–3 short paragraphs covering: (1) overall impression of the candidate's fit, "
+      "(2) the strongest relevant experience and skills they bring, "
+      "(3) notable gaps or missing requirements the hiring team should be aware of."
+    )
+
+  # Truncate resume and job description to stay within token budget
+  resume_snippet = resume_text[:3500] if len(resume_text) > 3500 else resume_text
+  job_snippet    = job_description[:1500] if len(job_description) > 1500 else job_description
+
+  user_content = f"""Job title: {job_title}
+
+Job description:
+{job_snippet}
+
+Candidate resume:
+{resume_snippet}
+
+Match analysis summary:
+{" ".join(profile_summary) if profile_summary else "No detailed competency data available."}
+
+{structure}"""
+
+  response = litellm.completion(
+    model=LLM_MODEL,
+    max_tokens=600,
+    temperature=0.3,
+    messages=[
+      {"role": "system", "content": perspective},
+      {"role": "user",   "content": user_content},
+    ],
+  )
+
+  return response.choices[0].message.content.strip()

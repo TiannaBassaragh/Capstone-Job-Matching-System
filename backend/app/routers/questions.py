@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
 from app.database import get_db
@@ -9,6 +9,7 @@ from app.models.models import (
 from app.schemas.schemas import QuestionResponse, AnswerRequest
 from app.core.dependencies import get_current_user
 from app.services.llm_scorer import estimate_score_from_answer
+from app.routers.matches import _run_candidate_matching, _run_job_matching
 
 router = APIRouter(prefix="/questions", tags=["Questions"])
 
@@ -64,6 +65,7 @@ def get_my_questions(
 def answer_question(
   question_id: int,
   body: AnswerRequest,
+  background_tasks: BackgroundTasks,
   db: Session = Depends(get_db),
   current_user: User = Depends(get_current_user),
 ):
@@ -128,4 +130,12 @@ def answer_question(
 
   db.commit()
   db.refresh(question)
+
+  # Re-run matching with the updated competency data
+  if score is not None:
+    if question.candidate_id:
+      background_tasks.add_task(_run_candidate_matching, question.candidate_id)
+    elif question.job_id:
+      background_tasks.add_task(_run_job_matching, question.job_id)
+
   return question

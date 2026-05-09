@@ -276,34 +276,6 @@ def compute_fit_score(
     "absent":      absent,
   }
 
-  # Build a plain-language explanation.
-  parts = []
-  if match_score is not None:
-    parts.append(
-      f"Fit score: {match_score:.2f} "
-      f"({scored_dims}/{total_dims} dimensions fully assessed)."
-    )
-    if equal_weight_count:
-      parts.append(
-        f"{equal_weight_count} scored dimension(s) had unknown importance "
-        f"and were weighted equally."
-      )
-  else:
-    parts.append("Fit score could not be computed — no dimensions were fully assessable.")
-
-  if undetermined:
-    parts.append(
-      f"{len(undetermined)} dimension(s) detected but not fully assessable."
-    )
-  if absent:
-    parts.append(
-      f"{len(absent)} job dimension(s) absent from candidate profile."
-    )
-  if knockout_failed:
-    parts.append(
-      "Knockout: candidate has no evidence of one or more required dimensions."
-    )
-
   # ── recommendation_score (candidate-facing) ───────────────────────────────
   # Penalises jobs that use only a small fraction of the candidate's skill set
   # (recall), blended with tech keyword overlap (Jaccard).
@@ -343,5 +315,5 @@ def compute_fit_score(
     "knockout_failed":      knockout_failed,
     "qualification_tier":   tier,
     "gap_profile":          gap_profile,
-    "explanation":          " ".join(parts),
+    "explanation":          None,
   }

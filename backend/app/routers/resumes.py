@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, UploadFile, File, status
 from fastapi.responses import Response
 from sqlalchemy.orm import Session
 from app.database import get_db
@@ -7,6 +7,7 @@ from app.schemas.schemas import ResumeResponse
 from app.core.dependencies import get_current_user, require_applicant
 from app.services.resume_parser import parse_resume_bytes
 from app.services.scorer import score_resume
+from app.routers.matches import _run_candidate_matching
 
 router = APIRouter(prefix="/resumes", tags=["Resumes"])
 
@@ -36,6 +37,7 @@ def get_resume_or_404(resume_id: int, db: Session) -> Resume:
 
 @router.post("/", response_model=ResumeResponse, status_code=status.HTTP_201_CREATED)
 async def upload_resume(
+  background_tasks: BackgroundTasks,
   file: UploadFile = File(...),
   db: Session = Depends(get_db),
   current_user: User = Depends(require_applicant)
@@ -54,6 +56,7 @@ async def upload_resume(
   db.commit()
   db.refresh(resume)
   score_resume(candidate, resume, db)
+  background_tasks.add_task(_run_candidate_matching, candidate.candidate_id)
   return resume
 
 
@@ -123,6 +126,7 @@ def parse_resume(
 @router.put("/{resume_id}", response_model=ResumeResponse)
 async def update_resume(
   resume_id: int,
+  background_tasks: BackgroundTasks,
   file: UploadFile = File(...),
   db: Session = Depends(get_db),
   current_user: User = Depends(require_applicant)
@@ -146,6 +150,7 @@ async def update_resume(
   db.commit()
   db.refresh(resume)
   score_resume(candidate, resume, db)
+  background_tasks.add_task(_run_candidate_matching, candidate.candidate_id)
   return resume
 
 

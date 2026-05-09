@@ -1,11 +1,12 @@
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from app.database import get_db
-from app.models.models import JobPost, Employer, User, Match, Candidate
-from app.schemas.schemas import JobPostCreate, JobPostUpdate, JobPostResponse, CandidateRankingEntry
+from app.models.models import JobPost, Employer, User, Match, Candidate, JobCompetency, Competency
+from app.schemas.schemas import JobPostCreate, JobPostUpdate, JobPostResponse, CandidateRankingEntry, JobProfileResponse, JobCompetencyEntry
 from app.core.dependencies import get_current_user, require_recruiter
 from app.services.scorer import score_job_post
+from app.routers.matches import _run_job_matching
 
 router = APIRouter(prefix="/jobs", tags=["Jobs"])
 
@@ -33,6 +34,7 @@ def get_job_or_404(job_id: int, db: Session) -> JobPost:
 @router.post("/", response_model=JobPostResponse, status_code=status.HTTP_201_CREATED)
 def create_job(
   payload: JobPostCreate,
+  background_tasks: BackgroundTasks,
   db: Session = Depends(get_db),
   current_user: User = Depends(require_recruiter)
 ):
@@ -47,15 +49,18 @@ def create_job(
   db.commit()
   db.refresh(job)
   score_job_post(job, db)
+  background_tasks.add_task(_run_job_matching, job.job_id)
   return job
 
 
 @router.get("/", response_model=List[JobPostResponse])
 def list_jobs(
+  skip: int = Query(0, ge=0),
+  limit: int = Query(50, ge=1, le=200),
   db: Session = Depends(get_db),
   current_user: User = Depends(get_current_user)
 ):
-  return db.query(JobPost).all()
+  return db.query(JobPost).offset(skip).limit(limit).all()
 
 
 @router.get("/{job_id}", response_model=JobPostResponse)
@@ -67,10 +72,48 @@ def get_job(
   return get_job_or_404(job_id, db)
 
 
+@router.get("/{job_id}/competencies", response_model=JobProfileResponse)
+def get_job_competencies(
+  job_id: int,
+  db: Session = Depends(get_db),
+  current_user: User = Depends(get_current_user)
+):
+  """Return the competency requirements extracted from a job posting."""
+  job = get_job_or_404(job_id, db)
+
+  rows = (
+    db.query(JobCompetency, Competency)
+    .join(Competency, JobCompetency.competency_id == Competency.competency_id)
+    .filter(JobCompetency.job_id == job_id)
+    .all()
+  )
+
+  competencies = [
+    JobCompetencyEntry(
+      competency_id    = comp.competency_id,
+      competency_name  = comp.competency_name,
+      onet_element_id  = comp.onet_element_id,
+      category         = comp.category,
+      required_level   = jc.required_level,
+      importance       = jc.importance,
+      requirement_type = jc.requirement_type,
+    )
+    for jc, comp in rows
+  ]
+
+  return JobProfileResponse(
+    job_id        = job.job_id,
+    title         = job.title,
+    tech_keywords = job.tech_keywords or [],
+    competencies  = competencies,
+  )
+
+
 @router.put("/{job_id}", response_model=JobPostResponse)
 def update_job(
   job_id: int,
   payload: JobPostUpdate,
+  background_tasks: BackgroundTasks,
   db: Session = Depends(get_db),
   current_user: User = Depends(require_recruiter)
 ):
@@ -94,6 +137,7 @@ def update_job(
 
   if description_changed:
     score_job_post(job, db)
+    background_tasks.add_task(_run_job_matching, job.job_id)
 
   return job
 
