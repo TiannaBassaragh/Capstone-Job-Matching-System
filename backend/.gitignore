@@ -41,3 +41,5 @@ coverage.xml
 # Misc
 Tables.sql
 CLAUDE.md
+smoke_test.sh
+vacancy-resume-matching-dataset-main/

@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from app.models.models import JobCompetency, JobPost, Competency, Candidate, CandidateCompetency, Resume, ClarifyingQuestion
 from app.services.resume_parser import parse_resume_bytes
-from app.services.llm_scorer import score_document, generate_clarifying_questions
+from app.services.llm_scorer import score_and_extract, generate_clarifying_questions
 
 
 def score_resume(candidate: Candidate, resume: Resume, db: Session) -> None:
@@ -11,7 +11,7 @@ def score_resume(candidate: Candidate, resume: Resume, db: Session) -> None:
   Called on resume upload and on resume replacement.
   """
   text = parse_resume_bytes(resume.resume_file)
-  scores = score_document(text, db, mode="resume")
+  scores, tech_keywords = score_and_extract(text, db, mode="resume")
 
   comp_rows = (
     db.query(Competency)
@@ -34,6 +34,8 @@ def score_resume(candidate: Candidate, resume: Resume, db: Session) -> None:
       competency_id=cid,
       level_score=data.get("level"),
     ))
+
+  candidate.tech_keywords = tech_keywords
 
   # Generate clarifying questions for competencies detected but with unknown level.
   null_inputs = [
@@ -76,7 +78,7 @@ def score_job_post(job: JobPost, db: Session) -> None:
   Replaces any existing competencies for this job.
   Called on job create and on description update.
   """
-  scores = score_document(job.description, db, mode="job")
+  scores, tech_keywords = score_and_extract(job.description, db, mode="job")
 
   comp_rows = (
     db.query(Competency)
@@ -99,6 +101,8 @@ def score_job_post(job: JobPost, db: Session) -> None:
       importance       = data.get("importance"),
       requirement_type = data.get("requirement_type", "preferred"),
     ))
+
+  job.tech_keywords = tech_keywords
 
   # Generate clarifying questions for undetermined required_level or importance.
   null_inputs = []
@@ -147,6 +151,8 @@ def score_job_post(job: JobPost, db: Session) -> None:
 def compute_fit_score(
   candidate_levels: dict[int, float | None],
   job_requirements: list[JobCompetency],
+  candidate_tech: list[str] | None = None,
+  job_tech: list[str] | None = None,
 ) -> dict:
   """
   Computes the fit score for a candidate-job pair.
@@ -298,8 +304,41 @@ def compute_fit_score(
       "Knockout: candidate has no evidence of one or more required dimensions."
     )
 
+  # ── recommendation_score (candidate-facing) ───────────────────────────────
+  # Penalises jobs that use only a small fraction of the candidate's skill set
+  # (recall), blended with tech keyword overlap (Jaccard).
+  # Note: match_score already penalises candidates for absent dimensions,
+  # making it suitable for job-facing candidate ranking.
+  job_req_cids   = {req.competency_id for req in job_requirements}
+  candidate_cids = {cid for cid, lvl in candidate_levels.items() if lvl is not None}
+  recall = (
+    len(job_req_cids & candidate_cids) / len(candidate_cids)
+    if candidate_cids else 0.0
+  )
+
+  # Tech overlap: Jaccard similarity of O*NET tech skill sets.
+  tech_overlap: float | None = None
+  if candidate_tech and job_tech:
+    ca, jt = set(candidate_tech), set(job_tech)
+    union = ca | jt
+    tech_overlap = len(ca & jt) / len(union) if union else 0.0
+
+  # Harmonic mean of match_score and recall (F1-like), then blend with tech.
+  _ONET_W = 0.7
+  _TECH_W = 0.3
+  if match_score is not None and (match_score + recall) > 0:
+    onet_hybrid = 2 * match_score * recall / (match_score + recall)
+  else:
+    onet_hybrid = 0.0
+
+  if tech_overlap is not None:
+    recommendation_score = round(_ONET_W * onet_hybrid + _TECH_W * tech_overlap, 3)
+  else:
+    recommendation_score = round(onet_hybrid, 3)
+
   return {
     "match_score":          match_score,
+    "recommendation_score": recommendation_score,
     "coverage":             coverage,
     "knockout_failed":      knockout_failed,
     "qualification_tier":   tier,

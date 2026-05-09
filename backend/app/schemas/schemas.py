@@ -130,6 +130,38 @@ class AnswerRequest(BaseModel):
   answer_text: str
 
 
+# ─── RANKINGS / RECOMMENDATIONS ───────────────────────────────────────────────
+
+class CandidateRankingEntry(BaseModel):
+  rank: int
+  match_id: int
+  candidate_id: int
+  candidate_name: str
+  match_score: float
+  coverage: float
+  job_score: float
+  qualification_tier: str
+  knockout_failed: bool
+
+  class Config:
+    from_attributes = True
+
+
+class JobRecommendation(BaseModel):
+  rank: int
+  match_id: int
+  job_id: int
+  title: str
+  company_name: str
+  match_score: float
+  recommendation_score: float
+  qualification_tier: str
+  knockout_failed: bool
+
+  class Config:
+    from_attributes = True
+
+
 # ─── MATCHES ──────────────────────────────────────────────────────────────────
 
 class TriggerRequest(BaseModel):
@@ -140,6 +172,7 @@ class MatchResponse(BaseModel):
   candidate_id: int
   job_id: int
   match_score: Optional[float] = None
+  recommendation_score: Optional[float] = None
   knockout_failed: bool = False
   qualification_tier: Optional[str] = None
   gap_profile: Optional[dict] = None

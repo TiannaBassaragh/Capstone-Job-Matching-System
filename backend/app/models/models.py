@@ -23,11 +23,19 @@ class User(Base):
   employer  = relationship("Employer",  back_populates="user", uselist=False)
 
 
+class TechSkill(Base):
+  __tablename__ = "tech_skills"
+
+  tech_id = Column(Integer, primary_key=True, autoincrement=True)
+  name    = Column(String(200), unique=True, nullable=False)
+
+
 class Candidate(Base):
   __tablename__ = "candidates"
 
-  candidate_id = Column(Integer, primary_key=True, autoincrement=True)
-  user_id      = Column(Integer, ForeignKey("users.user_id", ondelete="CASCADE"), unique=True, nullable=False)
+  candidate_id  = Column(Integer, primary_key=True, autoincrement=True)
+  user_id       = Column(Integer, ForeignKey("users.user_id", ondelete="CASCADE"), unique=True, nullable=False)
+  tech_keywords = Column(JSON, nullable=True)   # extracted from most-recent resume
 
   user         = relationship("User", back_populates="candidate")
   resumes      = relationship("Resume", back_populates="candidate")
@@ -61,11 +69,12 @@ class Resume(Base):
 class JobPost(Base):
   __tablename__ = "job_post"
 
-  job_id      = Column(Integer, primary_key=True, autoincrement=True)
-  employer_id = Column(Integer, ForeignKey("employers.employer_id", ondelete="CASCADE"), nullable=False)
-  title       = Column(String(200))
-  description = Column(Text)
-  created_at  = Column(TIMESTAMP, server_default=func.now())
+  job_id        = Column(Integer, primary_key=True, autoincrement=True)
+  employer_id   = Column(Integer, ForeignKey("employers.employer_id", ondelete="CASCADE"), nullable=False)
+  title         = Column(String(200))
+  description   = Column(Text)
+  tech_keywords = Column(JSON, nullable=True)   # extracted from job description
+  created_at    = Column(TIMESTAMP, server_default=func.now())
 
   employer     = relationship("Employer", back_populates="job_posts")
   competencies = relationship("JobCompetency", back_populates="job")
@@ -133,6 +142,8 @@ class Match(Base):
   candidate_id    = Column(Integer, ForeignKey("candidates.candidate_id", ondelete="CASCADE"), nullable=False)
   job_id          = Column(Integer, ForeignKey("job_post.job_id",         ondelete="CASCADE"), nullable=False)
   match_score          = Column(Float)
+  coverage             = Column(Float)           # scored_dims / total_dims
+  recommendation_score = Column(Float)           # candidate-side: blends fit, recall, tech overlap
   knockout_failed      = Column(Boolean, default=False)
   qualification_tier   = Column(String(30))
   gap_profile          = Column(JSON)

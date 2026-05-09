@@ -1,12 +1,12 @@
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session, joinedload
-from typing import List
+from typing import List, Optional
 from app.database import get_db, SessionLocal
 from app.models.models import (
   Match, Candidate, CandidateCompetency, JobCompetency,
   Competency, Employer, JobPost, User
 )
-from app.schemas.schemas import MatchResponse
+from app.schemas.schemas import MatchResponse, JobRecommendation
 from app.core.dependencies import get_current_user, require_applicant, require_recruiter
 from app.services.scorer import compute_fit_score
 
@@ -51,20 +51,24 @@ def _score_resume(candidate: Candidate, db: Session) -> dict[int, float | None]:
 def _upsert_match(candidate_id: int, job_id: int, result: dict, db: Session) -> None:
   existing = db.query(Match).filter_by(candidate_id=candidate_id, job_id=job_id).first()
   if existing:
-    existing.match_score        = result["match_score"]
-    existing.knockout_failed    = result["knockout_failed"]
-    existing.qualification_tier = result["qualification_tier"]
-    existing.gap_profile        = result["gap_profile"]
-    existing.explanation        = result["explanation"]
+    existing.match_score          = result["match_score"]
+    existing.coverage             = result["coverage"]
+    existing.recommendation_score = result["recommendation_score"]
+    existing.knockout_failed      = result["knockout_failed"]
+    existing.qualification_tier   = result["qualification_tier"]
+    existing.gap_profile          = result["gap_profile"]
+    existing.explanation          = result["explanation"]
   else:
     db.add(Match(
-      candidate_id        = candidate_id,
-      job_id              = job_id,
-      match_score         = result["match_score"],
-      knockout_failed     = result["knockout_failed"],
-      qualification_tier  = result["qualification_tier"],
-      gap_profile         = result["gap_profile"],
-      explanation         = result["explanation"],
+      candidate_id          = candidate_id,
+      job_id                = job_id,
+      match_score           = result["match_score"],
+      coverage              = result["coverage"],
+      recommendation_score  = result["recommendation_score"],
+      knockout_failed       = result["knockout_failed"],
+      qualification_tier    = result["qualification_tier"],
+      gap_profile           = result["gap_profile"],
+      explanation           = result["explanation"],
     ))
 
 
@@ -73,6 +77,8 @@ def _upsert_match(candidate_id: int, job_id: int, result: dict, db: Session) -> 
 def _run_candidate_matching(candidate_id: int) -> None:
   db = SessionLocal()
   try:
+    candidate = db.query(Candidate).filter_by(candidate_id=candidate_id).first()
+    candidate_tech = candidate.tech_keywords if candidate else None
     candidate_levels = {
       row.competency_id: row.level_score
       for row in db.query(CandidateCompetency)
@@ -88,7 +94,9 @@ def _run_candidate_matching(candidate_id: int) -> None:
       )
       if not job_reqs:
         continue
-      result = compute_fit_score(candidate_levels, job_reqs)
+      result = compute_fit_score(candidate_levels, job_reqs,
+                                  candidate_tech=candidate_tech,
+                                  job_tech=job.tech_keywords)
       _upsert_match(candidate_id, job.job_id, result, db)
     db.commit()
   finally:
@@ -98,6 +106,8 @@ def _run_candidate_matching(candidate_id: int) -> None:
 def _run_job_matching(job_id: int) -> None:
   db = SessionLocal()
   try:
+    job = db.query(JobPost).filter_by(job_id=job_id).first()
+    job_tech = job.tech_keywords if job else None
     job_reqs = (
       db.query(JobCompetency)
       .filter(JobCompetency.job_id == job_id)
@@ -109,13 +119,17 @@ def _run_job_matching(job_id: int) -> None:
       for row in db.query(CandidateCompetency.candidate_id).distinct().all()
     ]
     for candidate_id in scored_candidate_ids:
+      candidate = db.query(Candidate).filter_by(candidate_id=candidate_id).first()
+      candidate_tech = candidate.tech_keywords if candidate else None
       candidate_levels = {
         row.competency_id: row.level_score
         for row in db.query(CandidateCompetency)
         .filter(CandidateCompetency.candidate_id == candidate_id)
         .all()
       }
-      result = compute_fit_score(candidate_levels, job_reqs)
+      result = compute_fit_score(candidate_levels, job_reqs,
+                                  candidate_tech=candidate_tech,
+                                  job_tech=job_tech)
       _upsert_match(candidate_id, job_id, result, db)
     db.commit()
   finally:
@@ -166,6 +180,52 @@ def trigger_job(
 
 
 # ─── read endpoints ───────────────────────────────────────────────────────────
+
+@router.get("/recommendations", response_model=List[JobRecommendation])
+def get_recommendations(
+  limit: int = Query(10, ge=1, le=50),
+  tier: Optional[str] = Query(None, description="Filter by qualification_tier"),
+  db: Session = Depends(get_db),
+  current_user: User = Depends(require_applicant),
+):
+  """Top job matches for the logged-in candidate, sorted by match score descending."""
+  candidate = get_candidate_or_404(current_user, db)
+
+  q = (
+    db.query(Match)
+    .filter(Match.candidate_id == candidate.candidate_id)
+    .filter(Match.knockout_failed == False)
+  )
+  if tier:
+    q = q.filter(Match.qualification_tier == tier)
+  matches = q.order_by(Match.recommendation_score.desc()).limit(limit).all()
+
+  # batch-load jobs and employers
+  job_ids = [m.job_id for m in matches]
+  jobs = {j.job_id: j for j in db.query(JobPost).filter(JobPost.job_id.in_(job_ids)).all()}
+  employer_ids = [j.employer_id for j in jobs.values()]
+  employers = {
+    e.employer_id: e
+    for e in db.query(Employer).filter(Employer.employer_id.in_(employer_ids)).all()
+  }
+
+  result = []
+  for rank, m in enumerate(matches, start=1):
+    job = jobs.get(m.job_id)
+    employer = employers.get(job.employer_id) if job else None
+    result.append(JobRecommendation(
+      rank                 = rank,
+      match_id             = m.match_id,
+      job_id               = m.job_id,
+      title                = job.title if job else "Unknown",
+      company_name         = employer.company_name if employer else "Unknown",
+      match_score          = m.match_score or 0.0,
+      recommendation_score = m.recommendation_score or 0.0,
+      qualification_tier   = m.qualification_tier or "unknown",
+      knockout_failed      = m.knockout_failed,
+    ))
+  return result
+
 
 @router.get("/candidate/{candidate_id}", response_model=List[MatchResponse])
 def get_matches_for_candidate(

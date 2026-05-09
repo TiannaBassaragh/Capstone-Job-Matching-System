@@ -3,7 +3,7 @@ import os
 import re
 import litellm
 from sqlalchemy.orm import Session
-from app.models.models import Competency, LevelScaleAnchor
+from app.models.models import Competency, LevelScaleAnchor, TechSkill
 
 # ─── provider / model selection ───────────────────────────────────────────────
 # Set LLM_PROVIDER=gemini in .env to use Gemini (free tier).
@@ -152,6 +152,157 @@ Output:
   "4.A.1.b.1": {"required_level": null, "importance": null, "requirement_type": "preferred"},
   "2.C.3.a": {"required_level": null, "importance": null, "requirement_type": "preferred"}
 }"""
+
+
+_RESUME_FORMAT_COMBINED = """\
+Output format — valid JSON only, no markdown, no extra text:
+{
+  "competencies": {
+    "<element_id>": {"level": <float 0–100 or null>}
+  },
+  "tech_keywords": ["<canonical_name_1>", ...]
+}
+
+Competency rules:
+- Include ONLY competencies with clear evidence in the text.
+- Use a float for level when you can reliably estimate it from the text.
+- Use null for level when the competency is clearly present but depth cannot be inferred.
+- Omit competencies entirely when there is no evidence.
+
+Tech keyword rules:
+- Use ONLY names that appear exactly in the Canonical tech skills list below.
+- Handle aliases (e.g. "Postgres" → "postgresql", "JS" → "javascript").
+- Return [] if no matching skills are found.
+- Do not invent, paraphrase, or truncate skill names."""
+
+
+_JOB_FORMAT_COMBINED = """\
+Output format — valid JSON only, no markdown, no extra text:
+{
+  "competencies": {
+    "<element_id>": {
+      "required_level": <float 0–100 or null>,
+      "importance": <float 0.0–1.0 or null>,
+      "requirement_type": "required" | "preferred"
+    }
+  },
+  "tech_keywords": ["<canonical_name_1>", ...]
+}
+
+Competency rules:
+- Include ONLY competencies with clear evidence in the job description.
+- required_level: minimum proficiency the candidate must have. null when mentioned but level is unclear.
+- importance: how central this competency is to the role (0.0 = peripheral, 1.0 = essential). null when not inferrable.
+- requirement_type: "required" if the posting uses language like "must have", "required", "essential", \
+"mandatory", or strong equivalents; otherwise "preferred".
+- Omit competencies entirely when there is no evidence.
+
+Tech keyword rules:
+- Use ONLY names that appear exactly in the Canonical tech skills list below.
+- Handle aliases (e.g. "Postgres" → "postgresql", "JS" → "javascript").
+- Return [] if no matching skills are found.
+- Do not invent, paraphrase, or truncate skill names."""
+
+
+_RESUME_EXAMPLES_COMBINED = """\
+Examples:
+
+Text: "Designed and led implementation of a distributed event-streaming platform (50M events/day). \
+Managed a team of 7 engineers. Deep expertise in Python, SQL, and PostgreSQL query optimisation. \
+Presented architecture decisions to executive stakeholders quarterly."
+Output:
+{
+  "competencies": {
+    "2.C.3.a": {"level": 88},
+    "2.A.2.b": {"level": 70},
+    "2.A.1.a": {"level": null}
+  },
+  "tech_keywords": ["python", "postgresql"]
+}
+
+Text: "Assisted senior developers with code reviews. Familiar with Python. \
+Attended sprint planning meetings."
+Output:
+{
+  "competencies": {
+    "2.C.3.a": {"level": 28},
+    "2.A.1.b": {"level": null}
+  },
+  "tech_keywords": ["python"]
+}"""
+
+
+_JOB_EXAMPLES_COMBINED = """\
+Examples:
+
+Text: "Must have 5+ years of Python development. Strong written communication required. \
+Cloud deployment experience is a plus."
+Output:
+{
+  "competencies": {
+    "2.C.3.a": {"required_level": 80, "importance": 0.95, "requirement_type": "required"},
+    "2.A.2.a": {"required_level": 65, "importance": 0.80, "requirement_type": "required"},
+    "2.C.7.a": {"required_level": null, "importance": 0.45, "requirement_type": "preferred"}
+  },
+  "tech_keywords": ["python"]
+}
+
+Text: "Looking for a motivated team player with some technical background."
+Output:
+{
+  "competencies": {
+    "4.A.1.b.1": {"required_level": null, "importance": null, "requirement_type": "preferred"},
+    "2.C.3.a": {"required_level": null, "importance": null, "requirement_type": "preferred"}
+  },
+  "tech_keywords": []
+}"""
+
+
+_combined_prompts: dict[str, str] | None = None
+
+
+def _build_combined_prompts(db: Session) -> dict[str, str]:
+  level_guide = _build_level_guide(db)
+  catalog     = _build_catalog(db)
+  canonical   = _get_tech_skills(db)
+  skill_list  = "\n".join(f"  - {s}" for s in canonical)
+  tech_section = (
+    "Canonical tech skills (O*NET hot/in-demand) — use ONLY these exact names:\n"
+    + skill_list
+  )
+
+  resume_prompt = "\n\n".join([
+    "You are an expert HR analyst trained on the O*NET competency framework.\n"
+    "Analyse the resume text and identify:\n"
+    "  1. Which O*NET competencies are demonstrated (use ONLY element_ids from the Competency Catalog).\n"
+    "  2. Which canonical technology skills are mentioned or implied.",
+    level_guide,
+    catalog,
+    tech_section,
+    _RESUME_FORMAT_COMBINED,
+    _RESUME_EXAMPLES_COMBINED,
+  ])
+
+  job_prompt = "\n\n".join([
+    "You are an expert HR analyst trained on the O*NET competency framework.\n"
+    "Analyse the job description and identify:\n"
+    "  1. Which O*NET competencies are required or preferred (use ONLY element_ids from the Competency Catalog).\n"
+    "  2. Which canonical technology skills are mentioned or implied.",
+    level_guide,
+    catalog,
+    tech_section,
+    _JOB_FORMAT_COMBINED,
+    _JOB_EXAMPLES_COMBINED,
+  ])
+
+  return {"resume": resume_prompt, "job": job_prompt}
+
+
+def _get_combined_prompts(db: Session) -> dict[str, str]:
+  global _combined_prompts
+  if _combined_prompts is None:
+    _combined_prompts = _build_combined_prompts(db)
+  return _combined_prompts
 
 
 def _build_prompts(db: Session) -> dict[str, str]:
@@ -390,3 +541,123 @@ def score_document(text: str, db: Session, mode: str) -> dict:
     raise ValueError(f"LLM did not finish cleanly: finish_reason={choice.finish_reason!r}")
 
   return _parse_response(choice.message.content)
+
+
+def _parse_combined_response(text: str) -> tuple[dict, list]:
+  parsed = _parse_response(text)
+  competencies = parsed.get("competencies", {})
+  tech_keywords = parsed.get("tech_keywords", [])
+  if not isinstance(competencies, dict):
+    competencies = {}
+  if not isinstance(tech_keywords, list):
+    tech_keywords = []
+  return competencies, tech_keywords
+
+
+def score_and_extract(text: str, db: Session, mode: str) -> tuple[dict, list[str]]:
+  """
+  Scores a document and extracts tech keywords in a single LLM call.
+
+  mode: "resume" | "job"
+
+  Returns:
+    (competency_scores, tech_keywords)
+    competency_scores — same format as score_document()
+    tech_keywords     — sorted list of canonical O*NET tech skill names
+  """
+  if mode not in ("resume", "job"):
+    raise ValueError(f"mode must be 'resume' or 'job', got {mode!r}")
+
+  prompts = _get_combined_prompts(db)
+
+  response = litellm.completion(
+    model=LLM_MODEL,
+    max_tokens=8192,
+    temperature=0,
+    messages=[
+      {"role": "system", "content": prompts[mode]},
+      {"role": "user",   "content": text},
+    ],
+  )
+
+  choice = response.choices[0]
+  if choice.finish_reason not in ("stop", "end_turn"):
+    raise ValueError(f"LLM did not finish cleanly: finish_reason={choice.finish_reason!r}")
+
+  competencies, raw_tech = _parse_combined_response(choice.message.content)
+
+  # Validate tech keywords against canonical list
+  canonical = set(_get_tech_skills(db))
+  tech_keywords = sorted(s for s in raw_tech if isinstance(s, str) and s in canonical)
+
+  return competencies, tech_keywords
+
+
+# ─── tech keyword extraction ───────────────────────────────────────────────────
+
+_tech_skills_cache: list[str] | None = None
+
+
+def _get_tech_skills(db: Session) -> list[str]:
+  global _tech_skills_cache
+  if _tech_skills_cache is None:
+    rows = db.query(TechSkill.name).order_by(TechSkill.name).all()
+    _tech_skills_cache = [r.name for r in rows]
+  return _tech_skills_cache
+
+
+def extract_tech_keywords(text: str, db: Session) -> list[str]:
+  """
+  Uses the LLM to identify O*NET tech skill names present or implied in text.
+  The LLM resolves aliases (e.g. "Postgres" → "postgresql", "AWS" → canonical).
+  Returns a sorted list of canonical names that exist in the tech_skills table.
+  Returns [] if the tech_skills table is empty (not yet seeded).
+  """
+  canonical = _get_tech_skills(db)
+  if not canonical:
+    return []
+
+  skill_list = "\n".join(f"  - {s}" for s in canonical)
+
+  system = (
+    "You are a technology skill extractor trained on the O*NET technology skills database.\n"
+    "Given a document and a canonical list of technology skill names, identify which skills "
+    "are mentioned or clearly implied in the document.\n"
+    "Handle common abbreviations and aliases — for example:\n"
+    "  \"Postgres\" or \"psql\" → \"postgresql\"\n"
+    "  \"JS\" → \"javascript\"\n"
+    "  \"AWS\" → the matching AWS entry in the canonical list\n\n"
+    f"Canonical technology skills (O*NET hot/in-demand):\n{skill_list}\n\n"
+    "Output format — valid JSON array only, no markdown, no extra text:\n"
+    "[\"<canonical_name_1>\", \"<canonical_name_2>\", ...]\n\n"
+    "Rules:\n"
+    "- Use ONLY names that appear exactly in the canonical list above.\n"
+    "- Return [] if no matching skills are found.\n"
+    "- Do not invent, paraphrase, or truncate skill names."
+  )
+
+  response = litellm.completion(
+    model=LLM_MODEL,
+    max_tokens=1024,
+    temperature=0,
+    messages=[
+      {"role": "system", "content": system},
+      {"role": "user",   "content": text},
+    ],
+  )
+
+  choice = response.choices[0]
+  if choice.finish_reason not in ("stop", "end_turn"):
+    return []
+
+  try:
+    result = _parse_response(choice.message.content)
+  except Exception:
+    return []
+
+  if not isinstance(result, list):
+    return []
+
+  # Validate: discard anything the LLM hallucinated outside the canonical list
+  valid = set(canonical)
+  return sorted(s for s in result if isinstance(s, str) and s in valid)
