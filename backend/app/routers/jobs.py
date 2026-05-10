@@ -157,7 +157,6 @@ def get_job_rankings(
   job_id: int,
   limit: int = Query(50, ge=1, le=200),
   tier: Optional[str] = Query(None, description="Filter by qualification_tier"),
-  exclude_knockouts: bool = Query(True, description="Hide knockout-failed candidates"),
   db: Session = Depends(get_db),
   current_user: User = Depends(require_recruiter),
 ):
@@ -168,8 +167,6 @@ def get_job_rankings(
     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only view rankings for your own jobs")
 
   q = db.query(Match).filter(Match.job_id == job_id)
-  if exclude_knockouts:
-    q = q.filter(Match.knockout_failed == False)
   if tier:
     q = q.filter(Match.qualification_tier == tier)
   # Over-fetch then sort in Python by coverage-scaled fit score.

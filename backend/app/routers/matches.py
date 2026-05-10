@@ -193,11 +193,7 @@ def get_recommendations(
   """Top job matches for the logged-in candidate, sorted by match score descending."""
   candidate = get_candidate_or_404(current_user, db)
 
-  q = (
-    db.query(Match)
-    .filter(Match.candidate_id == candidate.candidate_id)
-    .filter(Match.knockout_failed == False)
-  )
+  q = db.query(Match).filter(Match.candidate_id == candidate.candidate_id)
   if tier:
     q = q.filter(Match.qualification_tier == tier)
   matches = q.order_by(Match.recommendation_score.desc()).limit(limit).all()
