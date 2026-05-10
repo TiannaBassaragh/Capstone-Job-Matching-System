@@ -244,19 +244,19 @@ class TestGapProfileStructure:
 # ---------------------------------------------------------------------------
 
 class TestQualificationTier:
-    """Verify the four qualification tiers are assigned correctly."""
+    """Verify the three qualification tiers are assigned correctly."""
 
-    def test_all_above_no_gaps_fully_qualified(self):
-        # Two dims both above job level → above=2, below=0, data_gap=0 → fully_qualified
+    def test_all_above_no_gaps_strong_fit(self):
+        # Two dims both above job level → above=2, below=0, data_gap=0 → strong_fit
         candidate_levels = {1: 80.0, 2: 90.0}
         reqs = [req(1, 70.0, 1.0), req(2, 80.0, 1.0)]
         result = compute_fit_score(candidate_levels, reqs)
-        assert result["qualification_tier"] == "fully_qualified"
+        assert result["qualification_tier"] == "strong_fit"
 
-    def test_exact_level_match_fully_qualified(self):
-        # Exact match → gap=0 → above_count counts it, below=0, data_gap=0 → fully_qualified
+    def test_exact_level_match_strong_fit(self):
+        # Exact match → gap=0 → above_count counts it, below=0, data_gap=0 → strong_fit
         result = compute_fit_score({1: 75.0}, [req(1, 75.0, 1.0)])
-        assert result["qualification_tier"] == "fully_qualified"
+        assert result["qualification_tier"] == "strong_fit"
 
     def test_all_above_one_undetermined_is_data_gap(self):
         # dim1 scored above, dim2 candidate_level=None → undetermined
@@ -274,23 +274,22 @@ class TestQualificationTier:
         result = compute_fit_score(candidate_levels, reqs)
         assert result["qualification_tier"] == "data_gap"
 
-    def test_one_above_one_below_equal_counts_is_skill_gap(self):
-        # above=1, below=1 → above_count(1) >= below_count(1) → skill_gap
+    def test_one_above_one_below_is_partial_fit(self):
+        # above=1, below=1 → any below_count > 0 → partial_fit
         candidate_levels = {1: 80.0, 2: 50.0}
         reqs = [req(1, 70.0, 1.0), req(2, 80.0, 1.0)]
         result = compute_fit_score(candidate_levels, reqs)
-        assert result["qualification_tier"] == "skill_gap"
+        assert result["qualification_tier"] == "partial_fit"
 
-    def test_two_above_one_below_is_skill_gap(self):
-        # above=2, below=1 → above_count(2) >= below_count(1) → skill_gap
+    def test_two_above_one_below_is_partial_fit(self):
+        # above=2, below=1 → below_count > 0 → partial_fit
         candidate_levels = {1: 80.0, 2: 90.0, 3: 40.0}
         reqs = [req(1, 70.0, 1.0), req(2, 80.0, 1.0), req(3, 80.0, 1.0)]
         result = compute_fit_score(candidate_levels, reqs)
-        assert result["qualification_tier"] == "skill_gap"
+        assert result["qualification_tier"] == "partial_fit"
 
-    def test_two_above_one_below_one_undetermined_is_skill_gap(self):
-        # above=2, below=1, undetermined=1
-        # below_count=1 > 0, above_count=2 >= below_count=1 → skill_gap
+    def test_two_above_one_below_one_undetermined_is_partial_fit(self):
+        # above=2, below=1, undetermined=1 → below_count > 0 → partial_fit
         candidate_levels = {1: 80.0, 2: 90.0, 3: 40.0, 4: None}
         reqs = [
             req(1, 70.0, 1.0),
@@ -299,29 +298,28 @@ class TestQualificationTier:
             req(4, 60.0, 1.0),
         ]
         result = compute_fit_score(candidate_levels, reqs)
-        assert result["qualification_tier"] == "skill_gap"
+        assert result["qualification_tier"] == "partial_fit"
 
-    def test_one_above_two_below_is_below_requirements(self):
-        # above=1, below=2 → above_count(1) < below_count(2) → below_requirements
+    def test_one_above_two_below_is_partial_fit(self):
+        # above=1, below=2 → below_count > 0 → partial_fit
         candidate_levels = {1: 80.0, 2: 40.0, 3: 30.0}
         reqs = [req(1, 70.0, 1.0), req(2, 80.0, 1.0), req(3, 80.0, 1.0)]
         result = compute_fit_score(candidate_levels, reqs)
-        assert result["qualification_tier"] == "below_requirements"
+        assert result["qualification_tier"] == "partial_fit"
 
-    def test_all_below_is_below_requirements(self):
-        # above=0, below=3 → below_requirements
+    def test_all_below_is_partial_fit(self):
+        # above=0, below=3 → below_count > 0 → partial_fit
         candidate_levels = {1: 20.0, 2: 30.0, 3: 10.0}
         reqs = [req(1, 80.0, 1.0), req(2, 80.0, 1.0), req(3, 80.0, 1.0)]
         result = compute_fit_score(candidate_levels, reqs)
-        assert result["qualification_tier"] == "below_requirements"
+        assert result["qualification_tier"] == "partial_fit"
 
-    def test_zero_above_one_below_one_undetermined_is_below_requirements(self):
-        # above=0, below=1, undetermined=1
-        # below_count=1 > 0, above_count=0 < below_count=1 → below_requirements
+    def test_zero_above_one_below_one_undetermined_is_partial_fit(self):
+        # above=0, below=1, undetermined=1 → below_count > 0 → partial_fit
         candidate_levels = {1: 20.0, 2: None}
         reqs = [req(1, 80.0, 1.0), req(2, 60.0, 1.0)]
         result = compute_fit_score(candidate_levels, reqs)
-        assert result["qualification_tier"] == "below_requirements"
+        assert result["qualification_tier"] == "partial_fit"
 
 
 # ---------------------------------------------------------------------------

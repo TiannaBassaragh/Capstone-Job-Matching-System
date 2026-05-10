@@ -47,41 +47,40 @@ def req(cid, job_level, importance, req_type="preferred", name=None, eid=None):
 #   below_count    = scored dims where gap >  0
 #   data_gap_count = len(undetermined) + len(absent)
 #
-#   below==0 and data_gap==0  → fully_qualified
+#   below==0 and data_gap==0  → strong_fit
 #   below==0                  → data_gap
-#   above >= below            → skill_gap
-#   else                      → below_requirements
+#   any below > 0             → partial_fit
 # ---------------------------------------------------------------------------
 
 SCENARIOS = [
     # -----------------------------------------------------------------------
-    # fully_qualified (4 scenarios)
+    # strong_fit (4 scenarios)
     # -----------------------------------------------------------------------
     {
         "name": "fq_two_dims_both_above",
         # dim1: cand=80, job=70 → gap=0 (above); dim2: cand=90, job=80 → gap=0 (above)
-        # above=2, below=0, data_gap=0 → fully_qualified
+        # above=2, below=0, data_gap=0 → strong_fit
         "candidate_levels": {1: 80.0, 2: 90.0},
         "job_requirements": [
             req(1, 70.0, 1.0),
             req(2, 80.0, 1.0),
         ],
-        "expected_tier": "fully_qualified",
+        "expected_tier": "strong_fit",
     },
     {
         "name": "fq_three_dims_exact_matches",
-        # All exact matches → gap=0 for all, above=3, below=0, data_gap=0 → fully_qualified
+        # All exact matches → gap=0 for all, above=3, below=0, data_gap=0 → strong_fit
         "candidate_levels": {1: 70.0, 2: 80.0, 3: 90.0},
         "job_requirements": [
             req(1, 70.0, 1.0),
             req(2, 80.0, 0.5),
             req(3, 90.0, 2.0),
         ],
-        "expected_tier": "fully_qualified",
+        "expected_tier": "strong_fit",
     },
     {
         "name": "fq_five_dims_candidate_well_above",
-        # All candidates significantly above job levels → all gap=0 → fully_qualified
+        # All candidates significantly above job levels → all gap=0 → strong_fit
         "candidate_levels": {1: 95.0, 2: 88.0, 3: 92.0, 4: 85.0, 5: 100.0},
         "job_requirements": [
             req(1, 60.0, 1.0),
@@ -90,16 +89,16 @@ SCENARIOS = [
             req(4, 40.0, 0.6),
             req(5, 75.0, 1.5),
         ],
-        "expected_tier": "fully_qualified",
+        "expected_tier": "strong_fit",
     },
     {
         "name": "fq_one_dim_importance_unknown_candidate_above",
-        # importance=None → treated as weight 1.0; cand=85, job=70 → gap=0 → fully_qualified
+        # importance=None → treated as weight 1.0; cand=85, job=70 → gap=0 → strong_fit
         "candidate_levels": {1: 85.0},
         "job_requirements": [
             req(1, 70.0, None),
         ],
-        "expected_tier": "fully_qualified",
+        "expected_tier": "strong_fit",
     },
 
     # -----------------------------------------------------------------------
@@ -142,35 +141,35 @@ SCENARIOS = [
     },
 
     # -----------------------------------------------------------------------
-    # skill_gap (4 scenarios)
+    # partial_fit (8 scenarios — covers old skill_gap and below_requirements)
     # -----------------------------------------------------------------------
     {
         "name": "sg_one_above_one_below_equal_counts",
         # dim1: cand=80, job=70 → gap=0 (above); dim2: cand=50, job=80 → gap>0 (below)
-        # above=1, below=1 → above >= below → skill_gap
+        # below=1 > 0 → partial_fit
         "candidate_levels": {1: 80.0, 2: 50.0},
         "job_requirements": [
             req(1, 70.0, 1.0),
             req(2, 80.0, 1.0),
         ],
-        "expected_tier": "skill_gap",
+        "expected_tier": "partial_fit",
     },
     {
         "name": "sg_two_above_one_below",
         # dim1,dim2: above; dim3: below
-        # above=2, below=1 → above >= below → skill_gap
+        # below=1 > 0 → partial_fit
         "candidate_levels": {1: 85.0, 2: 90.0, 3: 40.0},
         "job_requirements": [
             req(1, 70.0, 1.0),
             req(2, 80.0, 0.8),
             req(3, 80.0, 1.2),
         ],
-        "expected_tier": "skill_gap",
+        "expected_tier": "partial_fit",
     },
     {
         "name": "sg_three_above_two_below",
         # dim1,2,3: above; dim4,5: below
-        # above=3, below=2 → above > below → skill_gap
+        # below=2 > 0 → partial_fit
         "candidate_levels": {1: 80.0, 2: 85.0, 3: 90.0, 4: 30.0, 5: 20.0},
         "job_requirements": [
             req(1, 70.0, 1.0),
@@ -179,12 +178,12 @@ SCENARIOS = [
             req(4, 80.0, 0.8),
             req(5, 90.0, 0.7),
         ],
-        "expected_tier": "skill_gap",
+        "expected_tier": "partial_fit",
     },
     {
         "name": "sg_two_above_one_below_one_undetermined",
         # dim1,2: above; dim3: below; dim4: undetermined (cand=None)
-        # above=2, below=1, data_gap_count=1 → below>0, above>=below → skill_gap
+        # below=1 > 0 → partial_fit
         "candidate_levels": {1: 80.0, 2: 90.0, 3: 40.0, 4: None},
         "job_requirements": [
             req(1, 70.0, 1.0),
@@ -192,57 +191,53 @@ SCENARIOS = [
             req(3, 80.0, 1.0),
             req(4, 60.0, 0.6),
         ],
-        "expected_tier": "skill_gap",
+        "expected_tier": "partial_fit",
     },
-
-    # -----------------------------------------------------------------------
-    # below_requirements (4 scenarios)
-    # -----------------------------------------------------------------------
     {
         "name": "br_one_above_two_below",
         # dim1: above; dim2,3: below
-        # above=1, below=2 → above < below → below_requirements
+        # below=2 > 0 → partial_fit
         "candidate_levels": {1: 80.0, 2: 40.0, 3: 30.0},
         "job_requirements": [
             req(1, 70.0, 1.0),
             req(2, 80.0, 1.0),
             req(3, 80.0, 0.9),
         ],
-        "expected_tier": "below_requirements",
+        "expected_tier": "partial_fit",
     },
     {
         "name": "br_all_three_below",
         # dim1,2,3: all below job level
-        # above=0, below=3 → above < below → below_requirements
+        # below=3 > 0 → partial_fit
         "candidate_levels": {1: 20.0, 2: 30.0, 3: 10.0},
         "job_requirements": [
             req(1, 80.0, 1.0),
             req(2, 80.0, 1.0),
             req(3, 80.0, 1.0),
         ],
-        "expected_tier": "below_requirements",
+        "expected_tier": "partial_fit",
     },
     {
         "name": "br_zero_above_one_below",
         # dim1: below; no dims above
-        # above=0, below=1 → above < below → below_requirements
+        # below=1 > 0 → partial_fit
         "candidate_levels": {1: 20.0},
         "job_requirements": [
             req(1, 80.0, 1.0),
         ],
-        "expected_tier": "below_requirements",
+        "expected_tier": "partial_fit",
     },
     {
         "name": "br_zero_above_two_below_one_undetermined",
         # dim1,2: below; dim3: undetermined (cand=None)
-        # above=0, below=2, data_gap_count=1 → below>0, above<below → below_requirements
+        # below=2 > 0 → partial_fit
         "candidate_levels": {1: 20.0, 2: 30.0, 3: None},
         "job_requirements": [
             req(1, 80.0, 1.0),
             req(2, 80.0, 0.8),
             req(3, 60.0, 0.6),
         ],
-        "expected_tier": "below_requirements",
+        "expected_tier": "partial_fit",
     },
 ]
 

@@ -261,13 +261,11 @@ def compute_fit_score(
   data_gap_count  = len(undetermined) + len(absent)
 
   if below_count == 0 and data_gap_count == 0:
-    tier = "fully_qualified"
+    tier = "strong_fit"
   elif below_count == 0:
     tier = "data_gap"
-  elif above_count >= below_count:
-    tier = "skill_gap"
   else:
-    tier = "below_requirements"
+    tier = "partial_fit"
 
   gap_profile = {
     "coverage":    coverage,

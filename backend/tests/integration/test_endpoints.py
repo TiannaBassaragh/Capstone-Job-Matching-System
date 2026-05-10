@@ -515,7 +515,7 @@ def test_get_recommendations(client):
 
 
 def test_get_recommendations_with_tier_filter(client):
-    r = client.get("/matches/recommendations?tier=skill_gap",
+    r = client.get("/matches/recommendations?tier=partial_fit",
                    headers={"Authorization": f"Bearer {S.app_token}"})
     assert r.status_code == 200
 
