@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 from app.database import get_db
 from app.models.models import JobPost, Employer, User, Match, Candidate, JobCompetency, Competency
-from app.schemas.schemas import JobPostCreate, JobPostUpdate, JobPostResponse, CandidateRankingEntry, JobProfileResponse, JobCompetencyEntry
+from app.schemas.schemas import JobPostCreate, JobPostUpdate, JobPostResponse, JobStatusUpdate, CandidateRankingEntry, JobProfileResponse, JobCompetencyEntry
 from app.core.dependencies import get_current_user, require_recruiter
 from app.services.scorer import score_job_post
 from app.routers.matches import _run_job_matching
@@ -149,6 +149,23 @@ def update_job(
     score_job_post(job, db)
     background_tasks.add_task(_run_job_matching, job.job_id)
 
+  return job
+
+
+@router.patch("/{job_id}/status", response_model=JobPostResponse)
+def set_job_status(
+  job_id: int,
+  payload: JobStatusUpdate,
+  db: Session = Depends(get_db),
+  current_user: User = Depends(require_recruiter)
+):
+  employer = get_employer_or_404(current_user, db)
+  job = get_job_or_404(job_id, db)
+  if job.employer_id != employer.employer_id:
+    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only update your own job posts")
+  job.is_active = payload.is_active
+  db.commit()
+  db.refresh(job)
   return job
 
 

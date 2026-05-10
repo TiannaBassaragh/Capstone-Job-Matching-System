@@ -87,7 +87,7 @@ def _run_candidate_matching(candidate_id: int) -> None:
       .filter(CandidateCompetency.candidate_id == candidate_id)
       .all()
     }
-    for job in db.query(JobPost).all():
+    for job in db.query(JobPost).filter(JobPost.is_active == True).all():
       job_reqs = (
         db.query(JobCompetency)
         .filter(JobCompetency.job_id == job.job_id)
@@ -215,6 +215,7 @@ def get_recommendations(
       rank                 = rank,
       match_id             = m.match_id,
       job_id               = m.job_id,
+      employer_id          = job.employer_id if job else 0,
       title                = job.title if job else "Unknown",
       company_name         = employer.company_name if employer else "Unknown",
       match_score          = m.match_score or 0.0,

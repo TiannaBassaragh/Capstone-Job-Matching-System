@@ -88,10 +88,15 @@ class JobPostResponse(BaseModel):
   employer_id: int
   title: str
   description: str
+  is_active: bool = True
   created_at: datetime
 
   class Config:
     from_attributes = True
+
+
+class JobStatusUpdate(BaseModel):
+  is_active: bool
 
 
 # ─── COMPETENCIES ─────────────────────────────────────────────────────────────
@@ -190,6 +195,7 @@ class JobRecommendation(BaseModel):
   rank: int
   match_id: int
   job_id: int
+  employer_id: int
   title: str
   company_name: str
   match_score: float
@@ -222,3 +228,52 @@ class MatchResponse(BaseModel):
 
   class Config:
     from_attributes = True
+
+
+# ─── PUBLIC PROFILES ──────────────────────────────────────────────────────────
+
+class PublicCandidateCompetencyEntry(BaseModel):
+  competency_name: str
+  category: Optional[str] = None
+  level_score: Optional[float] = None
+
+
+class MatchForCandidateProfile(BaseModel):
+  match_id: int
+  job_id: int
+  job_title: str
+  match_score: float
+  coverage: float
+  job_score: float
+  qualification_tier: str
+  knockout_failed: bool
+
+
+class PublicCandidateProfile(BaseModel):
+  candidate_id: int
+  name: str
+  tech_keywords: Optional[List[str]] = []
+  competencies: List[PublicCandidateCompetencyEntry]
+  matches: List[MatchForCandidateProfile]
+
+
+class MatchForEmployerProfile(BaseModel):
+  match_id: int
+  match_score: float
+  recommendation_score: float
+  qualification_tier: str
+  knockout_failed: bool
+
+
+class PublicJobSummary(BaseModel):
+  job_id: int
+  title: str
+  is_active: bool
+  created_at: datetime
+  match: Optional[MatchForEmployerProfile] = None
+
+
+class PublicEmployerProfile(BaseModel):
+  employer_id: int
+  company_name: Optional[str] = None
+  jobs: List[PublicJobSummary]

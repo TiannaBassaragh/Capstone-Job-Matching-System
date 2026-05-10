@@ -74,6 +74,7 @@ class JobPost(Base):
   title         = Column(String(200))
   description   = Column(Text)
   tech_keywords = Column(JSON, nullable=True)   # extracted from job description
+  is_active     = Column(Boolean, default=True, nullable=False)
   created_at    = Column(TIMESTAMP, server_default=func.now())
 
   employer     = relationship("Employer", back_populates="job_posts")

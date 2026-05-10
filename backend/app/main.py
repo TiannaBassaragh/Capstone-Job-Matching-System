@@ -1,7 +1,7 @@
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import auth, users, resumes, jobs, matches, competencies, questions
+from app.routers import auth, users, resumes, jobs, matches, competencies, questions, profiles
 from app.database import engine, Base
 
 Base.metadata.create_all(bind=engine)
@@ -33,6 +33,7 @@ app.include_router(jobs.router)
 app.include_router(matches.router)
 app.include_router(competencies.router)
 app.include_router(questions.router)
+app.include_router(profiles.router)
 
 
 @app.get("/", tags=["Health"])
