@@ -715,28 +715,34 @@ def generate_match_explanation(
 
   if viewer == "candidate":
     perspective = (
-      "You are a career advisor writing directly to a job applicant. "
-      "Explain how well their background matches this role in a warm, honest, and encouraging tone. "
-      "Reference specific things from their resume and the job description. "
-      "Do not use numbers, scores, or technical jargon — write as if speaking to a person."
+      "You write concise, honest match assessments for job applicants. "
+      "No filler, no AI-speak, no flattery. Plain language only. "
+      "Output exactly the structure shown — nothing else."
     )
-    structure = (
-      "Write 2–3 short paragraphs covering: (1) overall fit and first impression, "
-      "(2) their strongest relevant experience for this role, "
-      "(3) the key gaps or areas they would need to develop, and any missing requirements. "
-      "End on a constructive note."
-    )
+    score_label = "Why this recommendation score"
+    score_hint  = "what drove the score up or down from the applicant's perspective"
   else:
     perspective = (
-      "You are a recruitment analyst writing a candidate assessment for a hiring manager. "
-      "Summarise how well this candidate fits the role based on their resume and the job requirements. "
-      "Be direct and professional. Do not use numbers or scores — describe fit in plain language."
+      "You write concise, direct candidate assessments for hiring managers. "
+      "No filler, no hedging. Plain language only. "
+      "Output exactly the structure shown — nothing else."
     )
-    structure = (
-      "Write 2–3 short paragraphs covering: (1) overall impression of the candidate's fit, "
-      "(2) the strongest relevant experience and skills they bring, "
-      "(3) notable gaps or missing requirements the hiring team should be aware of."
-    )
+    score_label = "Why this fit score"
+    score_hint  = "what drove the fit score up or down from the recruiter's perspective"
+
+  structure = f"""\
+Output exactly this structure. Use plain English. 2–3 bullets per section max. No prose.
+
+Strengths
+• [specific strength from their background that matches this role]
+• [another if applicable]
+
+Gaps
+• [specific gap or missing requirement]
+• [another if applicable]
+
+{score_label}
+[One sentence: {score_hint}. No numbers or scores.]"""
 
   # Truncate resume and job description to stay within token budget
   resume_snippet = resume_text[:3500] if len(resume_text) > 3500 else resume_text
@@ -750,15 +756,15 @@ Job description:
 Candidate resume:
 {resume_snippet}
 
-Match analysis summary:
+Match data:
 {" ".join(profile_summary) if profile_summary else "No detailed competency data available."}
 
 {structure}"""
 
   response = litellm.completion(
     model=LLM_MODEL,
-    max_tokens=600,
-    temperature=0.3,
+    max_tokens=300,
+    temperature=0.2,
     messages=[
       {"role": "system", "content": perspective},
       {"role": "user",   "content": user_content},
