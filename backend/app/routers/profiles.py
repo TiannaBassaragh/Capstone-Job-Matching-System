@@ -2,8 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.models import (
-  Candidate, Employer, User, JobPost, Match, CandidateCompetency, Competency
+  Candidate, Employer, User, JobPost, Match, CandidateCompetency, Competency, Resume
 )
+from app.services.resume_parser import parse_resume_bytes
 from app.schemas.schemas import (
   PublicCandidateProfile, PublicCandidateCompetencyEntry, MatchForCandidateProfile,
   PublicEmployerProfile, PublicJobSummary, MatchForEmployerProfile,
@@ -80,6 +81,44 @@ def get_candidate_profile(
     competencies  = competencies,
     matches       = matches,
   )
+
+
+@router.get("/candidate/{candidate_id}/resume")
+def get_candidate_resume_text(
+  candidate_id: int,
+  db: Session = Depends(get_db),
+  current_user: User = Depends(require_recruiter),
+):
+  """Return the parsed resume text of a candidate, provided they have matched with one of this recruiter's jobs."""
+  employer = db.query(Employer).filter(Employer.user_id == current_user.user_id).first()
+  if not employer:
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Employer profile not found")
+
+  employer_job_ids = [
+    row.job_id
+    for row in db.query(JobPost.job_id).filter(JobPost.employer_id == employer.employer_id).all()
+  ]
+  if not db.query(Match).filter(
+    Match.candidate_id == candidate_id,
+    Match.job_id.in_(employer_job_ids),
+  ).first():
+    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="No match between this candidate and your jobs")
+
+  resume = (
+    db.query(Resume)
+    .filter(Resume.candidate_id == candidate_id)
+    .order_by(Resume.upload_date.desc())
+    .first()
+  )
+  if not resume:
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No resume on file for this candidate")
+
+  try:
+    text = parse_resume_bytes(resume.resume_file)
+  except ValueError as e:
+    raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e))
+
+  return {"candidate_id": candidate_id, "resume_text": text}
 
 
 @router.get("/employer/{employer_id}", response_model=PublicEmployerProfile)

@@ -57,7 +57,12 @@ class UserUpdate(BaseModel):
   f_name: Optional[str] = None
   l_name: Optional[str] = None
   email: Optional[EmailStr] = None
-  password: Optional[str] = None
+  company_name: Optional[str] = None
+
+
+class PasswordChangeRequest(BaseModel):
+  old_password: str
+  new_password: str
 
 
 # ─── RESUMES ──────────────────────────────────────────────────────────────────

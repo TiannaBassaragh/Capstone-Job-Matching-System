@@ -3,9 +3,9 @@ from sqlalchemy.orm import Session
 from typing import List
 from app.database import get_db
 from app.models.models import User, Candidate, Employer, CandidateCompetency, Competency
-from app.schemas.schemas import UserResponse, UserUpdate, MeResponse, CandidateProfileResponse, CandidateCompetencyEntry
+from app.schemas.schemas import UserResponse, UserUpdate, MeResponse, CandidateProfileResponse, CandidateCompetencyEntry, PasswordChangeRequest
 from app.core.dependencies import get_current_user, require_applicant
-from app.core.security import hash_password
+from app.core.security import hash_password, verify_password
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -73,6 +73,19 @@ def get_my_competencies(
   )
 
 
+@router.post("/me/change-password", status_code=status.HTTP_200_OK)
+def change_password(
+  payload: PasswordChangeRequest,
+  db: Session = Depends(get_db),
+  current_user: User = Depends(get_current_user),
+):
+  if not verify_password(payload.old_password, current_user.password):
+    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Old password is incorrect")
+  current_user.password = hash_password(payload.new_password)
+  db.commit()
+  return {"message": "Password changed successfully"}
+
+
 @router.get("/{user_id}", response_model=UserResponse)
 def get_user(
   user_id: int,
@@ -119,8 +132,14 @@ def update_user(
   if "password" in updates:
     updates["password"] = hash_password(updates["password"])
 
+  company_name = updates.pop("company_name", None)
   for field, value in updates.items():
     setattr(user, field, value)
+
+  if company_name is not None and user.account_type == "recruiter":
+    employer = db.query(Employer).filter(Employer.user_id == user.user_id).first()
+    if employer:
+      employer.company_name = company_name
 
   db.commit()
   db.refresh(user)
