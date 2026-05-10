@@ -58,9 +58,10 @@ def list_jobs(
   skip: int = Query(0, ge=0),
   limit: int = Query(50, ge=1, le=200),
   db: Session = Depends(get_db),
-  current_user: User = Depends(get_current_user)
+  current_user: User = Depends(require_recruiter)
 ):
-  return db.query(JobPost).offset(skip).limit(limit).all()
+  employer = get_employer_or_404(current_user, db)
+  return db.query(JobPost).filter(JobPost.employer_id == employer.employer_id).offset(skip).limit(limit).all()
 
 
 @router.get("/{job_id}", response_model=JobPostResponse)
@@ -69,7 +70,12 @@ def get_job(
   db: Session = Depends(get_db),
   current_user: User = Depends(get_current_user)
 ):
-  return get_job_or_404(job_id, db)
+  job = get_job_or_404(job_id, db)
+  if current_user.account_type == "recruiter":
+    employer = get_employer_or_404(current_user, db)
+    if job.employer_id != employer.employer_id:
+      raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only view your own job posts")
+  return job
 
 
 @router.get("/{job_id}/competencies", response_model=JobProfileResponse)
@@ -80,6 +86,10 @@ def get_job_competencies(
 ):
   """Return the competency requirements extracted from a job posting."""
   job = get_job_or_404(job_id, db)
+  if current_user.account_type == "recruiter":
+    employer = get_employer_or_404(current_user, db)
+    if job.employer_id != employer.employer_id:
+      raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only view competencies for your own job posts")
 
   rows = (
     db.query(JobCompetency, Competency)
