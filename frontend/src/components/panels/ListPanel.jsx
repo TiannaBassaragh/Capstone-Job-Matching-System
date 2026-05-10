@@ -1,6 +1,6 @@
-import { getInitials } from "../../../utils";
-import { PanelCard } from "../../cards";
-import FilterBar from "./FilterBar";
+import { getInitials } from "../../utils";
+import { PanelCard } from "../cards";
+import { FilterBar } from "../bars";
 import "./ListPanel.css";
 
 // rows: array of { id, userName, bg, color, title, meta, ...any extra fields }
@@ -18,7 +18,7 @@ export default function ListPanel({
     filterConfig,
     onFilterChange,
     filterOptions,
-    customConditions,
+    customConditions = [],
 }) {
 
     const showFilter = filterConfig !== undefined && onFilterChange !== undefined;

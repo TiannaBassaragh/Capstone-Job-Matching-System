@@ -5,10 +5,11 @@ import './index.css';
 import { Sidebar } from './components';
 import { 
     Landing,
-    // AboutPage, ContactPage, ProfileCreation, 
     Dashboard, 
     Matches, MatchDetails, 
-    Notifications, Settings, Profile, 
+    JobListings, JobDetails, NewJobPage, CandidateDetail,
+    Notifications, Settings,
+    GeneralSection, ProfileSection, ResumeSection,
     Template, ErrorPage
 } from './pages';
 
@@ -57,25 +58,28 @@ export default function App() {
 
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/notifications" element={<Notifications />} />
-                        <Route path="/settings">
-                            <Route index element={<Settings />} />
-                            <Route path="profile" element={<Profile />} />
+                        <Route path="/settings" element={<Settings />}>
+                            <Route index element={<GeneralSection />} />
+                            <Route path="profile" element={<ProfileSection />} />
+                            <Route element={<RequireRole user={user} role="candidate" />}>
+                                <Route path="resume" element={<ResumeSection />} />
+                            </Route>
                         </Route>
 
                         <Route element={<RequireRole user={user} role="candidate" />}>
                             <Route path="/matches">
                                 <Route index element={<Matches />} />
-                                <Route path="match-details" element={<MatchDetails />} />
+                                <Route path=":matchId" element={<MatchDetails />} />
                             </Route>
-                            <Route path="/upload-resume" element={<Template />} />
                         </Route>
 
                         <Route element={<RequireRole user={user} role="employer" />}>
                             <Route path="/jobs">
-                                <Route index element={<Template />} />
-                                <Route path="job-details" element={<Template />} />
+                                <Route index element={<JobListings />} />
+                                <Route path=":jobId" element={<JobDetails />} />
+                                <Route path=":jobId/candidate/:candidateId" element={<CandidateDetail />} />
                             </Route>
-                            <Route path="/new-job" element={<Template />} />
+                            <Route path="/new-job" element={<NewJobPage />} />
                         </Route>
                     
                     </Route>

@@ -1,0 +1,68 @@
+/* NewJobPage.css */
+
+.new-job-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: 13px;
+    align-items: start;
+}
+
+.new-job-left,
+.new-job-right {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.section-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted);
+    margin-bottom: 14px;
+}
+
+.upload-hint,
+.submit-hint {
+    font-size: 12px;
+    color: var(--subtext);
+    line-height: 1.6;
+    margin-bottom: 14px;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 10px;
+    background: var(--acc);
+    border: none;
+    border-radius: var(--border-radius-md);
+    color: #fff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s;
+    margin-bottom: 8px;
+    transform: none;
+}
+
+.submit-btn:hover:not(:disabled) { background: var(--acc-dark); transform: none; }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.cancel-btn {
+    width: 100%;
+    padding: 9px;
+    background: transparent;
+    border: 1.5px solid var(--border);
+    border-radius: var(--border-radius-md);
+    color: var(--subtext);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color .15s;
+    transform: none;
+}
+
+.cancel-btn:hover { border-color: var(--acc-mid); transform: none; }

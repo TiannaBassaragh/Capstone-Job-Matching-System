@@ -1,0 +1,221 @@
+/* CandidateDetailPage.css */
+
+.layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+    gap: 13px;
+    align-items: start;
+}
+
+.left,
+.right {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+/* ── Profile card ─────────────────────────────────────────────────────────── */
+
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.profile-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    border: 1.5px solid rgba(0,0,0,.06);
+}
+
+.profile-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 3px;
+}
+
+.profile-headline {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 14px;
+}
+
+.profile-score {
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 16px;
+    border-radius: var(--border-radius-md);
+    width: 100%;
+    margin-bottom: 4px;
+}
+
+.profile-divider {
+    height: 1px;
+    background: var(--border);
+    width: 100%;
+    margin: 12px 0;
+}
+
+.profile-stats {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.profile-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile-stat-key { font-size: 12px; color: var(--muted); }
+
+.profile-stat-val { font-size: 12px; font-weight: 600; color: var(--text); }
+
+.profile-skills-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted);
+    width: 100%;
+    text-align: left;
+    margin-bottom: 6px;
+}
+
+.profile-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.profile-skill {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 5px;
+    background: var(--acc-light);
+    color: var(--acc-dark);
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────────── */
+
+.contact-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    width: 100%;
+    padding: 9px 12px;
+    background: var(--acc-light);
+    border: 1.5px solid var(--acc-mid);
+    border-radius: 9px;
+    color: var(--acc-dark);
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background .15s, border-color .15s;
+    margin-bottom: 8px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.contact-btn:hover { background: var(--acc-mid); border-color: var(--acc); }
+
+.back-btn {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--subtext);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 0;
+    transform: none;
+}
+
+.back-btn:hover { color: var(--text); transform: none; }
+
+/* ── Resume section ───────────────────────────────────────────────────────── */
+
+.resume-section { width: 100%; text-align: left; }
+
+.section-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted);
+    margin-bottom: 8px;
+}
+
+.resume-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    background: var(--acc-light);
+    border-radius: var(--border-radius-md);
+    margin-bottom: 8px;
+}
+
+.resume-icon {
+    width: 28px;
+    height: 28px;
+    background: #EDF2FD;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #1D3E9E;
+}
+
+.resume-body { flex: 1; min-width: 0; }
+
+.resume-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 1px;
+}
+
+.resume-meta { font-size: 11px; color: var(--muted); }
+
+.view-resume-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 7px 12px;
+    background: var(--acc-light);
+    border: 1.5px solid var(--acc-mid);
+    border-radius: 8px;
+    color: var(--acc-dark);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: background .15s, border-color .15s;
+    transform: none;
+}
+
+.view-resume-btn:hover { background: var(--acc-mid); border-color: var(--acc); transform: none; }
+
+/* ── Modal ────────────────────────────────────────────────────────────────── */
+

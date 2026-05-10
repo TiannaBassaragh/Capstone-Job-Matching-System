@@ -6,7 +6,7 @@
 // filterConfig shape:
 // {
 //     type: "preset" | "custom",
-//     key:  "all" | "80+" | "60+" | "top20" | "new" | "custom",
+//     key:  "all" | "80+" | "60+" | "top10" | "new" | "custom",
 //     label: string,
 //     rules?: {
 //         percent: { active: boolean, value: number },  // above X% score
@@ -41,8 +41,8 @@ export function filterMatches(
             case "60+":
                 return matches.filter((match) => match.score >= 60);
 
-            case "top20":
-                return matches.filter((_, index) => index < 20);
+            case "top10":
+                return matches.filter((_, index) => index < 10);
 
             case "new":
                 return matches.filter((_, index) => index < 5);

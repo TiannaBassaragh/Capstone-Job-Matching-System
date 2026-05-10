@@ -2,7 +2,7 @@ import { PageCard } from "../../components";
 import { useAuth } from "../../context/AuthContext";
 // import "./Notifications.css";
 
-export default function MatchesPage() {
+export default function Notifications() {
     return (
         <PageCard breadcrumb="Notifications" title="Notifications">
 

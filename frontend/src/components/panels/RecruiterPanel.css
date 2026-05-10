@@ -1,0 +1,58 @@
+/* RecruiterPanel.css */
+
+.section-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted);
+    margin-bottom: 10px;
+}
+
+.recruiter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--acc-hero);
+    color: var(--acc-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+    border: 1.5px solid var(--acc-mid);
+}
+
+.recruiter-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 1px; }
+
+.recruiter-title { font-size: 11px; color: var(--muted); }
+
+.email-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    width: 100%;
+    padding: 9px 12px;
+    background: var(--acc-light);
+    border: 1.5px solid var(--acc-mid);
+    border-radius: 9px;
+    color: var(--acc-dark);
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background .15s, border-color .15s;
+    margin-bottom: 8px;
+    word-break: break-all;
+}
+
+.email-btn:hover { background: var(--acc-mid); border-color: var(--acc); }
+
+.email-note { font-size: 10px; color: var(--muted); line-height: 1.5; }

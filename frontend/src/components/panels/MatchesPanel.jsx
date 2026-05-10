@@ -1,38 +1,56 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getScoreStyle, filterMatches } from "../../utils";
-import { ListPanel } from "./listpanel";
+import { ListPanel } from "./";
 import "./MatchesPanel.css";
 
 
 const filterOptions = [
-    { key: "all",   label: "All" },
+    { key: "top10", label: "Top 10" },
     { key: "80+",   label: "80%+ match" },
     { key: "60+",   label: "60%+ match" },
-    { key: "top20", label: "Top 20" },
     { key: "new",   label: "New this week" },
 ];
 
+const DASHBOARD_LIMIT = 10;
 
-const customConditions = [
-    { key: "percent", label: "At least", unit: "% match", min: 0,  max: 100, step: 5, initVal: 70 },
-    { key: "top",     label: "Top",   unit: "results", min: 1,  max: 50,  step: 1, initVal: 10 },
-];
+// const customConditions = [
+//     { key: "percent", label: "At least", unit: "% match", min: 0,  max: 100, step: 5, initVal: 70 },
+//     { key: "top",     label: "Top",   unit: "results", min: 1,  max: 50,  step: 1, initVal: 10 },
+// ];
  
 export default function MatchesPanel({ matches=[] }) {
+    const navigate = useNavigate();
+
     const [filterConfig, setFilterConfig] = useState({
         type: "preset",
-        key: "all",
-        label: "All",
+        key: "top10",
+        label: "Top 10",
     });
 
-    const filteredMatches = filterMatches(matches, filterConfig);
-    
+    const filteredMatches = filterMatches(matches, filterConfig)
+        .slice(0, DASHBOARD_LIMIT)
+        .map(m => ({
+            ...m,
+            meta: `${m.userName} · ${m.location} · $${m.payLow}k – $${m.payHigh}k`,
+        }));
+
+    const handleFilterSelect = (key, label) => {
+        setFilterConfig(prev =>
+            prev.key === key
+                ? { type: "preset", key: "top10", label: "Top 10" }
+                : { type: "preset", key, label }
+        );
+    };
+
     const handleViewAllMatches = () => {
         console.log("Clicked: view all matches");
+        navigate("/matches");
     }
 
-    const handleMatchClick = (job) => {
-        console.log("Clicked:", job.title);
+    const handleMatchClick = (match) => {
+        console.log("Clicked match:", match.title);
+        navigate(`/matches/${match.id}`);
     }
 
     return (
@@ -43,7 +61,7 @@ export default function MatchesPanel({ matches=[] }) {
                     type="button"
                     onClick={handleViewAllMatches}
                 >
-                    View all {matches.length} ↗
+                    View all {matches.length} matches ↗
                 </button>
             }
             rows={filteredMatches}
@@ -51,24 +69,15 @@ export default function MatchesPanel({ matches=[] }) {
             filterConfig={filterConfig}
             onFilterChange={setFilterConfig}
             filterOptions={filterOptions}
-            customConditions={customConditions}
             renderRight={(match) => {
                 const { color, barColor } = getScoreStyle(match.score);
                 return (
-                    <div className="matches-score-block">
-                        <div 
-                            className="matches-score" 
-                            style={{ color }}
-                        >
-                            {match.score}%
-                        </div>
-                        <div className="matches-score-bar">
+                    <div className="score-block">
+                        <div className="score" style={{ color }}>{match.score}%</div>
+                        <div className="score-bar">
                             <div 
-                                className="matches-score-fill" 
-                                style={{ 
-                                    width: `${match.score}%`, 
-                                    background: barColor 
-                                }} 
+                                className="score-fill" 
+                                style={{ width: `${match.score}%`, background: barColor }} 
                             />
                         </div>
                     </div>

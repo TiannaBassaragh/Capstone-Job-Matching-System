@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { 
     WelcomeCard, 
@@ -6,7 +6,6 @@ import {
     PageCard,
     JobPostsPanel, 
     MatchesPanel, 
-    SortPanel, 
     TopCandidatesPanel,
     UploadPanel  
 } from "../../components";
@@ -17,7 +16,6 @@ import {
     panelContent, 
     employerJobs, 
     candidateMatches, 
-    sortOptions, 
     employerTopCandidates,
 } from "../../fake-data/DashboardData";
 
@@ -26,6 +24,7 @@ import './Dashboard.css'
 
 export default function Dashboard() {
     const { auth } = useAuth();
+    const navigate = useNavigate();
 
     if (!auth?.userType) {
         return <Navigate to="/" replace />;
@@ -40,7 +39,7 @@ export default function Dashboard() {
 
     return (
         <PageCard 
-            breadcrumb="Pages / Dashboard" 
+            breadcrumb="Dashboard" 
             title="Dashboard"
         >
 
@@ -65,12 +64,9 @@ export default function Dashboard() {
                 }
                 
                 <div className="dash-rcol">
-                    {auth.userType === "candidate" 
-                    ? ( <SortPanel options={sortOptions} /> ) 
-                    : auth.userType === "employer" 
-                        ? ( <TopCandidatesPanel topCandidates={employerTopCandidates}/> ) 
-                        : ( <Navigate to="/" replace /> )
-                    }
+                    {auth.userType === "employer" && ( 
+                        <TopCandidatesPanel topCandidates={employerTopCandidates}/> 
+                    )}
                     
                     <UploadPanel 
                         userType={auth.userType} 

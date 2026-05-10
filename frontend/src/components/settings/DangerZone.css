@@ -1,0 +1,54 @@
+/* DangerZone.css */
+
+.danger-zone {
+    border: 1.5px solid #E24B4A;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+}
+
+.danger-header {
+    padding: 12px 18px;
+    background: #E24B4A;
+    border-bottom: 1.5px solid #E24B4A;
+}
+
+.danger-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: #fff;
+}
+
+.danger-body {
+    padding: 16px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    background: #FCEBEB;
+}
+
+.danger-desc {
+    font-size: 13px;
+    color: #501313;
+    line-height: 1.6;
+}
+
+.danger-btn {
+    height: 34px;
+    padding: 0 18px;
+    background: #E24B4A;
+    border: none;
+    border-radius: var(--border-radius-md);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    flex-shrink: 0;
+    transition: background .15s;
+    transform: none;
+}
+
+.danger-btn:hover { background: #A32D2D; transform: none; }

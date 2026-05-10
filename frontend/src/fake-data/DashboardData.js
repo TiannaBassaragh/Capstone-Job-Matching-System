@@ -74,12 +74,12 @@ export const dashboardContent = {
         ],
 
         matches: [
-            { id: 1, userName: "G G", bg: "#E8F2FF", color: "#1a55a8", title: "Senior Frontend Engineer", meta: "Google · Remote · $140k – $180k", score: 87 },
-            { id: 2, userName: "S P", bg: "#E8FFF4", color: "#1a7a4a", title: "Full Stack Developer", meta: "Spotify · Hybrid · $120k – $155k", score: 81 },
-            { id: 3, userName: "S F", bg: "#FFF6E8", color: "#a06010", title: "React Developer", meta: "Salesforce · On-site · $110k – $140k", score: 74 },
-            { id: 4, userName: "S L", bg: "#F3F0FF", color: "#5a40c0", title: "UI Engineer", meta: "Slack · Remote · $105k – $130k", score: 68 },
-            { id: 5, userName: "S Q", bg: "#FFF0F5", color: "#a0305a", title: "Software Engineer II", meta: "Square · Hybrid · $100k – $125k", score: 55 },
-            { id: 6, userName: "N T", bg: "#FFF0F0", color: "#903030", title: "Frontend Engineer", meta: "Netflix · Remote · $130k – $160k", score: 48 },
+            { id: 1, userName: "Google",     bg: "#E8F2FF", color: "#1a55a8", title: "Senior Frontend Engineer",  location: "Remote",  workType: "Full-time", payLow: 140, payHigh: 180, score: 87 },
+            { id: 2, userName: "Spotify",    bg: "#E8FFF4", color: "#1a7a4a", title: "Full Stack Developer",      location: "Hybrid",  workType: "Full-time", payLow: 120, payHigh: 155, score: 81 },
+            { id: 3, userName: "Salesforce", bg: "#FFF6E8", color: "#a06010", title: "React Developer",           location: "On-site", workType: "Full-time", payLow: 110, payHigh: 140, score: 74 },
+            { id: 4, userName: "Slack",      bg: "#F3F0FF", color: "#5a40c0", title: "UI Engineer",               location: "Remote",  workType: "Full-time", payLow: 105, payHigh: 130, score: 68 },
+            { id: 5, userName: "Square",     bg: "#FFF0F5", color: "#a0305a", title: "Software Engineer II",      location: "Hybrid",  workType: "Full-time", payLow: 100, payHigh: 125, score: 55 },
+            { id: 6, userName: "Netflix",    bg: "#FFF0F0", color: "#903030", title: "Frontend Engineer",         location: "Remote",  workType: "Full-time", payLow: 130, payHigh: 160, score: 48 },
         ],
     },
 
@@ -150,17 +150,17 @@ export const dashboardContent = {
         },
 
         jobs: [
-            { id: 1, userName: "B E", bg: "#EDF2FD", color: "#1D3E9E", title: "Backend Engineer", meta: "Remote · posted Jan 28, 2026", status: "active", matches: 61, newCount: 7 },
-            { id: 2, userName: "F E", bg: "#EDF2FD", color: "#1D3E9E", title: "Senior Frontend Engineer", meta: "Remote · posted Mar 1, 2026", status: "active", matches: 42, newCount: 5 },
-            { id: 3, userName: "D S", bg: "#E1F5EE", color: "#0F6E56", title: "Data Scientist", meta: "Hybrid · posted Feb 20, 2026", status: "active", matches: 28, newCount: 4 },
-            { id: 4, userName: "P M", bg: "#FFF3E0", color: "#854F0B", title: "Product Manager", meta: "On-site · posted Feb 10, 2026", status: "expiring", matches: 15, newCount: 0 },
-            { id: 5, userName: "U X", bg: "#FBEAF0", color: "#72243E", title: "UX Designer", meta: "Hybrid · posted Jan 15, 2026", status: "expiring", matches: 9, newCount: 0 },
+            { id: 1, userName: "Backend Engineer",  bg: "#EDF2FD", color: "#1D3E9E", title: "Backend Engineer",         location: "Remote",  workType: "Full-time", postedDate: "Jan 28, 2026", status: "active",   matches: 61, newCount: 7 },
+            { id: 2, userName: "Frontend Engineer", bg: "#EDF2FD", color: "#1D3E9E", title: "Senior Frontend Engineer", location: "Remote",  workType: "Full-time", postedDate: "Mar 1, 2026",  status: "active",   matches: 42, newCount: 5 },
+            { id: 3, userName: "Data Science",      bg: "#E1F5EE", color: "#0F6E56", title: "Data Scientist",           location: "Hybrid",  workType: "Full-time", postedDate: "Feb 20, 2026", status: "active",   matches: 28, newCount: 4 },
+            { id: 4, userName: "Product",           bg: "#FFF3E0", color: "#854F0B", title: "Product Manager",          location: "On-site", workType: "Full-time", postedDate: "Feb 10, 2026", status: "expiring", matches: 15, newCount: 0 },
+            { id: 5, userName: "UX Design",         bg: "#FBEAF0", color: "#72243E", title: "UX Designer",              location: "Hybrid",  workType: "Full-time", postedDate: "Jan 15, 2026", status: "expiring", matches: 9,  newCount: 0 },
         ],
 
         topCandidates: [
-            { userName: "A J", bg: "#EDF2FD", color: "#1D3E9E", name: "Alex Johnson", job: "Senior Frontend Eng.", score: 87 },
-            { userName: "M R", bg: "#FBEAF0", color: "#72243E", name: "Maya Roberts", job: "Data Scientist", score: 81 },
-            { userName: "J K", bg: "#FFF3E0", color: "#854F0B", name: "James Kim", job: "Senior Frontend Eng.", score: 74 },
+            { userName: "Alex Johnson", bg: "#EDF2FD", color: "#1D3E9E", job: "Senior Frontend Eng.", score: 87 },
+            { userName: "Maya Roberts", bg: "#FBEAF0", color: "#72243E", job: "Data Scientist",       score: 81 },
+            { userName: "James Kim",    bg: "#FFF3E0", color: "#854F0B", job: "Senior Frontend Eng.", score: 74 },
         ],
 
         activity: [
@@ -190,10 +190,48 @@ export const highlights = {
 
 export const sortOptions = dashboardContent.candidate.sortOptions;
 
-export const candidateMatches = dashboardContent.candidate.matches;
-
 export const employerJobs = dashboardContent.employer.jobs;
 
 export const employerTopCandidates = dashboardContent.employer.topCandidates;
 
 export const employerActivity = dashboardContent.employer.activity;
+
+// ── Matches page data ────────────────────────────────────────────────────────
+
+export const candidateMatches = [
+    { id: 1,  userName: "Google",     bg: "#E8F2FF", color: "#1a55a8", title: "Senior Frontend Engineer",    location: "Remote",  workType: "Full-time", payLow: 140, payHigh: 180, score: 87 },
+    { id: 2,  userName: "Spotify",    bg: "#E8FFF4", color: "#1a7a4a", title: "Full Stack Developer",         location: "Hybrid",  workType: "Full-time", payLow: 120, payHigh: 155, score: 81 },
+    { id: 3,  userName: "Salesforce", bg: "#FFF6E8", color: "#a06010", title: "React Developer",              location: "On-site", workType: "Full-time", payLow: 110, payHigh: 140, score: 74 },
+    { id: 4,  userName: "Slack",      bg: "#F3F0FF", color: "#5a40c0", title: "UI Engineer",                  location: "Remote",  workType: "Full-time", payLow: 105, payHigh: 130, score: 68 },
+    { id: 5,  userName: "Square",     bg: "#FFF0F5", color: "#a0305a", title: "Software Engineer II",         location: "Hybrid",  workType: "Full-time", payLow: 100, payHigh: 125, score: 55 },
+    { id: 6,  userName: "Netflix",    bg: "#FFF0F0", color: "#903030", title: "Frontend Engineer",            location: "Remote",  workType: "Full-time", payLow: 130, payHigh: 160, score: 48 },
+    { id: 7,  userName: "Airbnb",     bg: "#E8F2FF", color: "#1a55a8", title: "Software Engineer",            location: "Remote",  workType: "Full-time", payLow: 115, payHigh: 145, score: 83 },
+    { id: 8,  userName: "Twitter",    bg: "#E8FFF4", color: "#1a7a4a", title: "Frontend Developer",           location: "Remote",  workType: "Full-time", payLow: 100, payHigh: 130, score: 77 },
+    { id: 9,  userName: "Microsoft",  bg: "#FFF6E8", color: "#a06010", title: "JavaScript Engineer",          location: "Hybrid",  workType: "Full-time", payLow: 120, payHigh: 150, score: 71 },
+    { id: 10, userName: "Uber",       bg: "#F3F0FF", color: "#5a40c0", title: "Web Developer",                location: "On-site", workType: "Full-time", payLow: 95,  payHigh: 120, score: 63 },
+    { id: 11, userName: "LinkedIn",   bg: "#FFF0F5", color: "#a0305a", title: "React Native Developer",       location: "Remote",  workType: "Full-time", payLow: 110, payHigh: 135, score: 59 },
+    { id: 12, userName: "Apple",      bg: "#FFF0F0", color: "#903030", title: "Frontend Platform Engineer",   location: "On-site", workType: "Full-time", payLow: 135, payHigh: 165, score: 44 },
+    { id: 13, userName: "Dropbox",    bg: "#E8F2FF", color: "#1a55a8", title: "Staff Engineer",               location: "Remote",  workType: "Full-time", payLow: 150, payHigh: 190, score: 91 },
+    { id: 14, userName: "Facebook",   bg: "#E8FFF4", color: "#1a7a4a", title: "Product Engineer",             location: "Hybrid",  workType: "Full-time", payLow: 130, payHigh: 165, score: 85 },
+    { id: 15, userName: "Shopify",    bg: "#FFF6E8", color: "#a06010", title: "Senior React Developer",       location: "Remote",  workType: "Full-time", payLow: 115, payHigh: 145, score: 79 },
+    { id: 16, userName: "HubSpot",    bg: "#F3F0FF", color: "#5a40c0", title: "Engineering Lead",             location: "Hybrid",  workType: "Full-time", payLow: 130, payHigh: 160, score: 52 },
+    { id: 17, userName: "Zoom",       bg: "#FFF0F5", color: "#a0305a", title: "Frontend Architect",           location: "Remote",  workType: "Full-time", payLow: 140, payHigh: 175, score: 38 },
+    { id: 18, userName: "Pinterest",  bg: "#FFF0F0", color: "#903030", title: "UI/UX Engineer",               location: "Hybrid",  workType: "Full-time", payLow: 105, payHigh: 135, score: 66 },
+];
+
+// ── Job listings page data ───────────────────────────────────────────────────
+
+export const allEmployerJobs = [
+    { id: 1,  userName: "Backend Engineer",      bg: "#EDF2FD", color: "#1D3E9E", title: "Backend Engineer",             location: "Remote",  workType: "Full-time", postedDate: "Jan 28, 2026", status: "active",   matches: 61,  newCount: 7 },
+    { id: 2,  userName: "Frontend Engineer",     bg: "#EDF2FD", color: "#1D3E9E", title: "Senior Frontend Engineer",     location: "Remote",  workType: "Full-time", postedDate: "Mar 1, 2026",  status: "active",   matches: 42,  newCount: 5 },
+    { id: 3,  userName: "Data Science",          bg: "#E1F5EE", color: "#0F6E56", title: "Data Scientist",               location: "Hybrid",  workType: "Full-time", postedDate: "Feb 20, 2026", status: "active",   matches: 28,  newCount: 4 },
+    { id: 4,  userName: "Product",               bg: "#FFF3E0", color: "#854F0B", title: "Product Manager",              location: "On-site", workType: "Full-time", postedDate: "Feb 10, 2026", status: "expiring", matches: 15,  newCount: 0 },
+    { id: 5,  userName: "UX Design",             bg: "#FBEAF0", color: "#72243E", title: "UX Designer",                  location: "Hybrid",  workType: "Full-time", postedDate: "Jan 15, 2026", status: "expiring", matches: 9,   newCount: 0 },
+    { id: 6,  userName: "ML Engineering",        bg: "#E1F5EE", color: "#0F6E56", title: "Machine Learning Engineer",    location: "Remote",  workType: "Full-time", postedDate: "Apr 3, 2026",  status: "active",   matches: 33,  newCount: 8 },
+    { id: 7,  userName: "DevOps",                bg: "#EDF2FD", color: "#1D3E9E", title: "DevOps Engineer",              location: "Remote",  workType: "Full-time", postedDate: "Mar 20, 2026", status: "active",   matches: 19,  newCount: 2 },
+    { id: 8,  userName: "Security",              bg: "#F3EFFE", color: "#534AB7", title: "Security Analyst",             location: "On-site", workType: "Full-time", postedDate: "Mar 5, 2026",  status: "active",   matches: 11,  newCount: 1 },
+    { id: 9,  userName: "Tech Lead",             bg: "#FFF3E0", color: "#854F0B", title: "Tech Lead",                    location: "Hybrid",  workType: "Full-time", postedDate: "Jan 5, 2026",  status: "expiring", matches: 22,  newCount: 0 },
+    { id: 10, userName: "Marketing Ops",         bg: "#FBEAF0", color: "#72243E", title: "Marketing Operations Lead",    location: "Remote",  workType: "Full-time", postedDate: "Dec 10, 2025", status: "inactive", matches: 6,   newCount: 0 },
+    { id: 11, userName: "QA",                    bg: "#E1F5EE", color: "#0F6E56", title: "QA Engineer",                  location: "Hybrid",  workType: "Full-time", postedDate: "Feb 1, 2026",  status: "inactive", matches: 4,   newCount: 0 },
+    { id: 12, userName: "Site Reliability",      bg: "#EDF2FD", color: "#1D3E9E", title: "Site Reliability Engineer",    location: "Remote",  workType: "Full-time", postedDate: "Apr 10, 2026", status: "active",   matches: 38,  newCount: 6 },
+];

@@ -5,7 +5,7 @@ const defaultFilterOptions = [
     { key: "all",   label: "All" },
     { key: "80+",   label: "80%+ match" },
     { key: "60+",   label: "60%+ match" },
-    { key: "top20", label: "Top 20" },
+    { key: "top10", label: "Top 10" },
     { key: "new",   label: "New this week" },
 ];
 
@@ -71,7 +71,7 @@ export default function FilterBar({
     value,
     onChange,
     filterOptions    = defaultFilterOptions,
-    customConditions = defaultCustomConditions,
+    customConditions = [],
 }) {
     const [customOpen, setCustomOpen] = useState(false);
     const [values, setValues] = useState(() =>
@@ -89,7 +89,7 @@ export default function FilterBar({
     const handlePresetClick = (option) => {
         setCustomOpen(false);
         const isAlreadyActive = value?.key === option.key;
-        emitPreset(isAlreadyActive ? "all" : option.key, isAlreadyActive ? "All" : option.label);
+        if (!isAlreadyActive) emitPreset(option.key, option.label);
     };
 
     const handleCustomToggle = () => {
@@ -137,20 +137,22 @@ export default function FilterBar({
                     </button>
                 ))}
 
-                <button
-                    type="button"
-                    className={`
-                        filter-pill 
-                        filter-pill-cp
-                        ${customOpen || isCustomActive 
-                            ? " filter-pill-on" 
-                            : ""
-                        }
-                    `}
-                    onClick={handleCustomToggle}
-                >
-                    + Custom filter
-                </button>
+                {customConditions.length > 0 && (
+                    <button
+                        type="button"
+                        className={`
+                            filter-pill 
+                            filter-pill-cp
+                            ${customOpen || isCustomActive 
+                                ? " filter-pill-on" 
+                                : ""
+                            }
+                        `}
+                        onClick={handleCustomToggle}
+                    >
+                        + Custom filter
+                    </button>
+                )}
 
                 {isCustomActive && !customOpen && (
                     <span className="filter-active-tag">{value.label}</span>

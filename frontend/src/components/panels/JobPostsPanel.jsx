@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { filterJobs } from "../../utils/filter";
-import { ListPanel } from "./listpanel";
+import { ListPanel } from "./";
 import "./JobPostsPanel.css";
 
 
@@ -24,7 +24,11 @@ export default function JobPostsPanel({ jobs = [] }) {
         label: "All",
     });
 
-    const filteredJobs = filterJobs(jobs, filterConfig); 
+    const filteredJobs = filterJobs(jobs, filterConfig)
+        .map(j => ({
+            ...j,
+            meta: `${j.location} · ${j.workType} · posted ${j.postedDate}`,
+        }));
 
     const handleNewJobPost = () => {
         console.log("Clicked: Post new job button");
@@ -32,6 +36,7 @@ export default function JobPostsPanel({ jobs = [] }) {
 
     const handleJobPostClick = (job) => {
         console.log("Clicked:", job.title);
+        (job) => navigate(`/jobs/${job.id}`);
     }
 
     return (

@@ -59,8 +59,7 @@
     flex-wrap: wrap;
     gap: 7px;
     background: var(--acc-bar);
-    border-top: 1.5px solid var(--acc-mid);
-    border-bottom: 1.5px solid var(--acc-mid);
+    border: 1.5px solid var(--acc-mid);
     padding: 9px 18px;
 }
  

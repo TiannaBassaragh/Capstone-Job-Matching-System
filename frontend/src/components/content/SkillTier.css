@@ -1,0 +1,14 @@
+/* SkillTier.css */
+
+.tier {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.tier--strong  { background: #E1F5EE; color: #0F6E56; }
+.tier--partial { background: #FFF3E0; color: #854F0B; }
+.tier--missing { background: #FCEBEB; color: #791F1F; }

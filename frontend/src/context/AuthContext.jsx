@@ -10,7 +10,6 @@ export function AuthProvider({ children }) {
         setAuth(saved ? JSON.parse(saved) : {
             loggedIn: false,
             userId: null,
-            userType: null,
             userType: null,       // "candidate" | "employer"
             userName: null
         });

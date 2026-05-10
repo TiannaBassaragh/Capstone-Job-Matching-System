@@ -31,7 +31,7 @@ export default function TopCandidatesPanel({ topCandidates=[] }) {
                                 </div>
 
                                 <div className="top-candidates-body">
-                                    <div className="top-candidates-name">{getInitials(candidate.userName)}</div>
+                                    <div className="top-candidates-name">{candidate.userName}</div>
                                     <div className="top-candidates-meta">{candidate.job}</div>
                                 </div>
 

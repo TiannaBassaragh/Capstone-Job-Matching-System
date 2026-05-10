@@ -24,6 +24,15 @@ export function FileIcon() {
     );
 }
 
+export function EmailIcon() {
+    return (
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+            <rect x="1" y="2.5" width="11" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.3"/>
+            <path d="M1 4l5.5 3.5L12 4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
+        </svg>
+    );
+}
+
 export function UploadArrowIcon() {
     return (
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
