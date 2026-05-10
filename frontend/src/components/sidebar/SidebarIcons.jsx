@@ -46,6 +46,13 @@ export const icons = {
             <path d="M8 1.5v1.3M8 13.2v1.3M1.5 8h1.3M13.2 8h1.3M3.4 3.4l.9.9M11.7 11.7l.9.9M3.4 12.6l.9-.9M11.7 4.3l.9-.9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
         </svg>
     ),
+    questions: (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.4"/>
+            <path d="M6 6.5c0-1.1.9-2 2-2s2 .9 2 2c0 .8-.5 1.4-1.2 1.7C8.3 8.5 8 9 8 9.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+            <circle cx="8" cy="11.5" r=".7" fill="currentColor"/>
+        </svg>
+    ),
     close: (
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>

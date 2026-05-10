@@ -1,11 +1,19 @@
+import { useNavigate } from "react-router-dom";
 import { PanelCard } from "../cards";
 import { getScoreStyle, getInitials } from '../../utils';
 import "./TopCandidatesPanel.css";
 
 export default function TopCandidatesPanel({ topCandidates=[] }) {
+    const navigate = useNavigate();
+
     return (
         <PanelCard title="Top candidates">
             <div className="top-candidates-list">
+                {topCandidates.length === 0 && (
+                    <div style={{ fontSize: 12, color: "var(--muted)", padding: "8px 0" }}>
+                        No candidates matched yet.
+                    </div>
+                )}
                 {topCandidates.map((candidate, i) => {
                     const { color, barColor } = getScoreStyle(candidate.score);
 
@@ -17,15 +25,15 @@ export default function TopCandidatesPanel({ topCandidates=[] }) {
                                 type="button"
                                 className="top-candidates-row"
                                 onClick={() => {
-                                    console.log("Clicked:", candidate);
+                                    console.log("Clicked:", candidate.userName);
+                                    if (candidate.jobId) {
+                                        navigate(`/jobs/${candidate.jobId}/candidate/${candidate.id}`);
+                                    }
                                 }}
                             >
                                 <div
                                     className="top-candidates-avatar"
-                                    style={{
-                                        background: candidate.bg,
-                                        color: candidate.color,
-                                    }}
+                                    style={{ background: candidate.bg, color: candidate.color }}
                                 >
                                     {getInitials(candidate.userName)}
                                 </div>
@@ -36,20 +44,13 @@ export default function TopCandidatesPanel({ topCandidates=[] }) {
                                 </div>
 
                                 <div className="top-candidates-score-block">
-                                    <div
-                                        className="top-candidates-score"
-                                        style={{ color }}
-                                    >
-                                        {candidate.score}%
+                                    <div className="top-candidates-score" style={{ color }}>
+                                        {candidate.score > 0 ? `${candidate.score}%` : "—"}
                                     </div>
-
                                     <div className="top-candidates-bar-track">
                                         <div
                                             className="top-candidates-bar-fill"
-                                            style={{
-                                                width: `${candidate.score}%`,
-                                                background: barColor,
-                                            }}
+                                            style={{ width: `${candidate.score ?? 0}%`, background: barColor }}
                                         />
                                     </div>
                                 </div>

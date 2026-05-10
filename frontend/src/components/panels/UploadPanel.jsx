@@ -3,7 +3,7 @@ import { PanelCard } from "../cards";
 import "./UploadPanel.css";
 
 export default function UploadPanel({ 
-    userType = "candidate",
+    userType = "applicant",
     currentFileName = "",
     currentFileDate = "",
     onUploadClick,
@@ -11,13 +11,13 @@ export default function UploadPanel({
     const hasCurrentFile = Boolean(currentFileName && currentFileDate);
 
     const panelTitle = {
-        candidate: "My resume",
-        employer: "Job description",
+        applicant: "My resume",
+        recruiter: "Job description",
     };
     
     const uploadTitle = {
-        candidate: "Upload new resume",
-        employer: "Post a new job description",
+        applicant: "Upload new resume",
+        recruiter: "Post a new job description",
     };
 
     return (

@@ -8,8 +8,8 @@ function Header({ breadcrumb, title }) {
     const navigate = useNavigate();
 
     const userTypeLabel = {
-        candidate: "Candidate",
-        employer: "Employer",
+        applicant: "Applicant",
+        recruiter: "Recruiter",
     };
 
     return (

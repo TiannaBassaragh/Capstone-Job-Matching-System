@@ -1,6 +1,23 @@
 import { FileIcon } from "../icons";
 import "./ResumeModal.css";
 
+function CloseIcon() {
+    return (
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
+        </svg>
+    );
+}
+
+function DownloadIcon() {
+    return (
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+            <path d="M6.5 1v8M6.5 9l-3-3M6.5 9l3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M1 11h11" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+        </svg>
+    );
+}
+
 export default function ResumeModal({ resume, candidateName, onClose }) {
     return (
         <div className="modal-overlay" onClick={onClose}>
@@ -14,12 +31,12 @@ export default function ResumeModal({ resume, candidateName, onClose }) {
                         <button
                             type="button"
                             className="modal-download"
-                            onClick={() => console.log("Clicked: download resume", resume.fileName)}
+                            onClick={() => console.log("Download:", resume.fileName)}
                         >
-                            <i className="ti ti-download" aria-hidden="true" /> Download
+                            <DownloadIcon /> Download
                         </button>
-                        <button type="button" className="modal-close" onClick={onClose}>
-                            <i className="ti ti-x" aria-hidden="true" />
+                        <button type="button" className="modal-close" onClick={onClose} aria-label="Close">
+                            <CloseIcon />
                         </button>
                     </div>
                 </div>

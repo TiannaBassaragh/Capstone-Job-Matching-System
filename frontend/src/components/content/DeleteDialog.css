@@ -1,0 +1,71 @@
+/* DeleteDialog.css */
+
+.delete-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.delete-dialog {
+    background: #fff;
+    border-radius: 14px;
+    padding: 24px;
+    width: 420px;
+    max-width: 90vw;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+}
+
+.delete-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 10px;
+}
+
+.delete-body {
+    font-size: 13px;
+    color: var(--subtext);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.delete-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.delete-cancel {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    color: var(--subtext);
+    cursor: pointer;
+    transform: none;
+}
+
+.delete-cancel:hover { border-color: var(--acc-mid); transform: none; }
+
+.delete-confirm {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    background: #E24B4A;
+    color: #fff;
+    cursor: pointer;
+    transform: none;
+}
+
+.delete-confirm:hover { background: #A32D2D; transform: none; }
+.delete-confirm:disabled { opacity: 0.6; cursor: not-allowed; }

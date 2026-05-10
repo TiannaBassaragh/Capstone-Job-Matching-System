@@ -14,13 +14,20 @@ export default function RecruiterPanel({ recruiter, jobTitle }) {
                     <div className="recruiter-title">{recruiter.title}</div>
                 </div>
             </div>
-            <a
-                href={`mailto:${recruiter.email}?subject=Interest in ${encodeURIComponent(jobTitle)} role`}
-                className="email-btn"
-            >
-                <EmailIcon />
-                {recruiter.email}
-            </a>
+            {recruiter.email ? (
+                <a
+                    href={`mailto:${recruiter.email}?subject=Interest in ${encodeURIComponent(jobTitle)} role`}
+                    className="email-btn"
+                >
+                    <EmailIcon />
+                    {recruiter.email}
+                </a>
+            ) : (
+                <div className="email-btn email-btn--disabled">
+                    <EmailIcon />
+                    N/A
+                </div>
+            )}
             <p className="email-note">Opens your email client with a pre-filled subject line.</p>
         </PanelCard>
     );

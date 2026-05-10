@@ -1,30 +1,16 @@
-import { useState } from "react";
 import { PageCard } from "../../components/cards";
 import { NotificationGroup } from "../../components/notifications";
-import { notifications as initialNotifications, groupLabels } from "../../fake-data/NotificationData";
+import { useNotifications } from "../../context/NotificationContext";
+import { groupLabels } from "../../fake-data/NotificationData";
 import "./NotificationsPage.css";
 
 export default function NotificationsPage() {
-    const [notifications, setNotifications] = useState(initialNotifications);
-
-    const unreadCount = notifications.filter(n => !n.read).length;
-
-    const handleRead = (id) => {
-        console.log("Marked as read:", id);
-        setNotifications(prev =>
-            prev.map(n => n.id === id ? { ...n, read: true } : n)
-        );
-    };
-
-    const handleMarkAllRead = () => {
-        console.log("Clicked: mark all as read");
-        setNotifications(prev => prev.map(n => ({ ...n, read: true })));
-    };
+    const { items, unreadCount, markRead, markAllRead, refresh } = useNotifications();
 
     const groups = Object.keys(groupLabels).map(key => ({
         key,
         label: groupLabels[key],
-        notifications: notifications.filter(n => n.group === key),
+        notifications: items.filter(n => n.group === key),
     }));
 
     return (
@@ -33,19 +19,28 @@ export default function NotificationsPage() {
             <div className="notifications-topbar">
                 <span className="notifications-count">
                     {unreadCount > 0
-                        ? <><strong>{unreadCount} unread</strong> · {notifications.length} total</>
-                        : `${notifications.length} notifications · all read`
+                        ? <><strong>{unreadCount} unread</strong> &middot; {items.length} total</>
+                        : `${items.length} notifications, all read`
                     }
                 </span>
-                {unreadCount > 0 && (
+                <div className="notifications-actions">
+                    {unreadCount > 0 && (
+                        <button
+                            type="button"
+                            className="notifications-mark-all"
+                            onClick={markAllRead}
+                        >
+                            Mark all as read
+                        </button>
+                    )}
                     <button
                         type="button"
-                        className="notifications-mark-all"
-                        onClick={handleMarkAllRead}
+                        className="notifications-refresh"
+                        onClick={refresh}
                     >
-                        Mark all as read
+                        Refresh
                     </button>
-                )}
+                </div>
             </div>
 
             <div className="notifications-list">
@@ -54,7 +49,7 @@ export default function NotificationsPage() {
                         key={group.key}
                         label={group.label}
                         notifications={group.notifications}
-                        onRead={handleRead}
+                        onRead={markRead}
                     />
                 ))}
             </div>

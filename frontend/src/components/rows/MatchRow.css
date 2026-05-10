@@ -161,3 +161,9 @@
 }
 
 .details-btn:hover { background: var(--acc-dark); transform: none; }
+
+.skill-empty {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+}

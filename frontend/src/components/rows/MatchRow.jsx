@@ -1,13 +1,32 @@
 import { getInitials, getScoreStyle } from "../../utils";
 import "./MatchRow.css";
 
+const NA = "N/A";
+
+function buildMeta(match) {
+    const parts = [match.userName];
+    if (match.location) parts.push(match.location);
+    const pay = match.payLow != null && match.payHigh != null
+        ? `$${match.payLow}k – $${match.payHigh}k`
+        : null;
+    if (pay) parts.push(pay);
+    return parts.join(" · ");
+}
+
 function ExpandedContent({ match, skills, onViewDetails }) {
+    const hasSkills = skills.strong.length > 0 || skills.partial.length > 0;
     return (
         <div className="expanded">
             <div className="expanded-label">Skills from your resume</div>
             <div className="expanded-skills">
-                {skills.strong.map(s  => <span key={s} className="skill skill--strong">{s} ✓</span>)}
-                {skills.partial.map(s => <span key={s} className="skill skill--partial">{s} ~</span>)}
+                {hasSkills ? (
+                    <>
+                        {skills.strong.map(s  => <span key={s} className="skill skill--strong">{s} ✓</span>)}
+                        {skills.partial.map(s => <span key={s} className="skill skill--partial">{s} ~</span>)}
+                    </>
+                ) : (
+                    <span className="skill-empty">No skills data available for this match.</span>
+                )}
             </div>
             <div className="expanded-footer">
                 <button
@@ -40,9 +59,7 @@ export default function MatchRow({ match, skills, isExpanded, onToggle, onViewDe
                         {match.title}
                         {match.isNew && <span className="new-badge">New</span>}
                     </div>
-                    <div className="meta">
-                        {match.userName} · {match.location} · ${match.payLow}k – ${match.payHigh}k
-                    </div>
+                    <div className="meta">{buildMeta(match)}</div>
                 </div>
                 <div className="score">
                     <div className="score-pct" style={{ color }}>{match.score}%</div>

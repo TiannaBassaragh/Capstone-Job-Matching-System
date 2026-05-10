@@ -52,3 +52,34 @@
 }
 
 .danger-btn:hover { background: #A32D2D; transform: none; }
+
+.danger-btn:disabled { opacity: .6; cursor: not-allowed; }
+
+.danger-confirm {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.danger-confirm-text {
+    font-size: 12px;
+    font-weight: 700;
+    color: #A32D2D;
+}
+
+.danger-cancel {
+    height: 34px;
+    padding: 0 14px;
+    background: transparent;
+    border: 1.5px solid #E24B4A;
+    border-radius: var(--border-radius-md);
+    color: #A32D2D;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: background .15s;
+}
+
+.danger-cancel:hover { background: #F9DDDD; }

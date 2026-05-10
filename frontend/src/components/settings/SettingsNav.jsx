@@ -4,7 +4,7 @@ import "./SettingsNav.css";
 
 export default function SettingsNav() {
     const { auth } = useAuth();
-    const isCandidate = auth.userType === "candidate";
+    const isCandidate = auth.userType === "applicant";
 
     const navItems = [
         { to: "/settings",         label: "General", icon: "ti-settings", end: true },

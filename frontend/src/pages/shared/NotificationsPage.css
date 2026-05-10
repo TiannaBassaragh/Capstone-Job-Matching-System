@@ -37,3 +37,23 @@
     flex-direction: column;
     gap: 4px;
 }
+
+.notifications-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.notifications-refresh {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: color .15s;
+}
+
+.notifications-refresh:hover { color: var(--subtext); }

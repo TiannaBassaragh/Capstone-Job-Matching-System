@@ -34,3 +34,7 @@
     color: #fff;
     white-space: nowrap;
 }
+.job-posts-badge--inactive {
+    background: #F1EFE8;
+    color: #5F5E5A;
+}

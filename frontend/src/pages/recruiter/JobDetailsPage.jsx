@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { PageCard, PanelCard } from "../../components";
+import { DeleteDialog } from "../../components/content";
 import { getInitials } from "../../utils";
-import { allEmployerJobs } from "../../fake-data/DashboardData";
-import { jobDescriptions, jobCandidates, jobActivity } from "../../fake-data/MatchData";
+import { jobsService } from "../../lib/jobsService";
 import OverviewSection from "./OverviewSection";
 import CandidatesSection from "./CandidatesSection";
 import "./JobDetailsPage.css";
@@ -14,16 +14,61 @@ const statusConfig = {
     inactive: { label: "Inactive",      bg: "#F1EFE8", color: "#5F5E5A" },
 };
 
+// ── Page ──────────────────────────────────────────────────────────────────────
+
 export default function JobDetailsPage() {
     const { jobId }  = useParams();
     const navigate   = useNavigate();
     const location   = useLocation();
-    const [activeTab, setActiveTab] = useState(location.state?.tab || "overview");
+    const [activeTab,    setActiveTab]    = useState(location.state?.tab || "overview");
+    const [job,          setJob]          = useState(null);
+    const [candidates,   setCandidates]   = useState([]);
+    const [loading,      setLoading]      = useState(true);
+    const [showDelete,   setShowDelete]   = useState(false);
+    const [deleting,     setDeleting]     = useState(false);
 
-    const job         = allEmployerJobs.find(j => j.id === Number(jobId));
-    const description = jobDescriptions[jobId] || jobDescriptions.default;
-    const candidates  = jobCandidates[jobId]   || jobCandidates.default;
-    const activity    = jobActivity[jobId]      || jobActivity.default;
+    useEffect(() => {
+        async function load() {
+            setLoading(true);
+            try {
+                const [jobData, rankings] = await Promise.all([
+                    jobsService.getJob(jobId),
+                    jobsService.getJobRankings(jobId, 50),
+                ]);
+                setJob(jobData);
+                // 7. Use match_score directly (already 0–1) × 100 for display
+                setCandidates(rankings.map(c => ({
+                    ...c,
+                    score: c.score, // already mapped correctly in mapCandidateRanking
+                })));
+            } catch (err) {
+                console.error("Job details load error:", err);
+            } finally {
+                setLoading(false);
+            }
+        }
+        load();
+    }, [jobId]);
+
+    const handleDelete = async () => {
+        setDeleting(true);
+        try {
+            await jobsService.deleteJob(jobId);
+            navigate("/jobs");
+        } catch (err) {
+            console.error("Delete error:", err);
+            setDeleting(false);
+            setShowDelete(false);
+        }
+    };
+
+    if (loading) {
+        return (
+            <PageCard breadcrumb="Jobs / Details" title="Job Details">
+                <PanelCard><p style={{ color: "var(--muted)", fontSize: 13 }}>Loading…</p></PanelCard>
+            </PageCard>
+        );
+    }
 
     if (!job) {
         return (
@@ -43,8 +88,13 @@ export default function JobDetailsPage() {
     const status = statusConfig[job.status] || statusConfig.active;
 
     const handleCandidateClick = (candidate) => {
-        navigate(`/jobs/${jobId}/candidate/${candidate.id}`, { state: { candidate, jobId: job.id } });
+        navigate(`/jobs/${jobId}/candidate/${candidate.id}`, { state: { candidate, jobId } });
     };
+
+    const activity = [
+        { type: "posted",  text: "Job posting went live", time: job.postedDate },
+        { type: "created", text: "Job posting created",   time: job.postedDate },
+    ];
 
     return (
         <PageCard breadcrumb={`Jobs / ${job.title}`} title="Job Details">
@@ -52,7 +102,7 @@ export default function JobDetailsPage() {
             <PanelCard>
                 <div className="job-header">
                     <div className="job-header-icon" style={{ background: job.bg, color: job.color }}>
-                        {getInitials(job.userName)}
+                        {getInitials(job.title)}
                     </div>
                     <div className="job-header-body">
                         <div className="job-header-title">
@@ -61,19 +111,19 @@ export default function JobDetailsPage() {
                                 {status.label}
                             </span>
                         </div>
-                        <div className="job-header-meta">
-                            {job.location} · {job.workType} · posted {job.postedDate}
-                        </div>
+                        <div className="job-header-meta">posted {job.postedDate}</div>
                     </div>
                     <div className="job-header-actions">
                         <button type="button" className="header-btn" onClick={() => navigate("/jobs")}>
                             ← All jobs
                         </button>
-                        <button type="button" className="header-btn" onClick={() => console.log("Clicked: edit job")}>
-                            <i className="ti ti-edit" aria-hidden="true" /> Edit
+                        <button type="button" className="header-btn"
+                            onClick={() => navigate(`/new-job?edit=${jobId}`, { state: { job } })}>
+                            Edit
                         </button>
-                        <button type="button" className="header-btn header-btn--danger" onClick={() => console.log("Clicked: close posting")}>
-                            <i className="ti ti-x" aria-hidden="true" /> Close posting
+                        <button type="button" className="header-btn header-btn--danger"
+                            onClick={() => setShowDelete(true)}>
+                            Delete posting
                         </button>
                     </div>
                 </div>
@@ -92,7 +142,7 @@ export default function JobDetailsPage() {
                         onClick={() => setActiveTab("candidates")}
                     >
                         Candidates
-                        <span className="job-tab-badge">{job.matches}</span>
+                        <span className="job-tab-badge">{candidates.length}</span>
                     </button>
                 </div>
             </PanelCard>
@@ -100,7 +150,7 @@ export default function JobDetailsPage() {
             {activeTab === "overview" && (
                 <OverviewSection
                     job={job}
-                    description={description}
+                    description={job.description}
                     candidates={candidates}
                     activity={activity}
                     onCandidateClick={handleCandidateClick}
@@ -109,6 +159,17 @@ export default function JobDetailsPage() {
 
             {activeTab === "candidates" && (
                 <CandidatesSection candidates={candidates} jobId={jobId} />
+            )}
+
+            {showDelete && (
+                <DeleteDialog
+                    title="Delete job posting?"
+                    body={`You're about to permanently delete "${job.title}". This cannot be undone and all associated matches will be removed.`}
+                    confirmLabel="Yes, delete it"
+                    onConfirm={handleDelete}
+                    onCancel={() => setShowDelete(false)}
+                    confirming={deleting}
+                />
             )}
 
         </PageCard>

@@ -1,54 +1,82 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { authAPI, usersAPI } from "../lib/api";
 
 const AuthContext = createContext(null);
 
+const emptyAuth = {
+    loggedIn: false,
+    token: null,
+    userId: null,
+    userName: null,
+    userType: null, // "applicant" | "recruiter"
+    email: null,
+};
+
+function mapUserToAuth(user, token) {
+    return {
+        loggedIn: true,
+        token,
+        userId: user.user_id,
+        userName:
+            user.account_type === "recruiter"
+                ? user.company_name
+                : `${user.f_name} ${user.l_name}`,
+        userType: user.account_type,
+        email: user.email,
+    };
+}
+
 export function AuthProvider({ children }) {
-    const [auth, setAuth] = useState(null)
+    const [auth, setAuth] = useState(null);
 
     useEffect(() => {
-        const saved = localStorage.getItem("auth");
-        setAuth(saved ? JSON.parse(saved) : {
-            loggedIn: false,
-            userId: null,
-            userType: null,       // "candidate" | "employer"
-            userName: null
-        });
+        async function restoreSession() {
+            const token = localStorage.getItem("auth_token");
+
+            if (!token) {
+                setAuth(emptyAuth);
+                return;
+            }
+
+            try {
+                const user = await usersAPI.getMe(token);
+                setAuth(mapUserToAuth(user, token));
+            } catch (error) {
+                localStorage.removeItem("auth_token");
+                setAuth(emptyAuth);
+            }
+        }
+
+        restoreSession();
     }, []);
 
-    // Don't render anything until auth is resolved
-    if (auth === null) return null;
+    async function login(email, password) {
+        const tokenData = await authAPI.login({ email, password });
 
-    const setAndPersist = (newAuth) => {
+        localStorage.setItem("auth_token", tokenData.access_token);
+
+        const user = await usersAPI.getMe(tokenData.access_token);
+        const newAuth = mapUserToAuth(user, tokenData.access_token);
+
         setAuth(newAuth);
-        localStorage.setItem("auth", JSON.stringify(newAuth));
-    };
+        return newAuth;
+    }
 
-    const loginAsCandidate = () => setAndPersist({
-        loggedIn: true,
-        userId: 1,
-        userType: "candidate",
-        userName: "Candi Date",
-    });
+    async function register(data) {
+        return authAPI.register(data);
+    }
 
-    const loginAsEmployer = () => setAndPersist({
-        loggedIn: true,
-        userId: 2,
-        userType: "employer",
-        userName: "Company Inc.",
-    });
+    function logout() {
+        localStorage.removeItem("auth_token");
+        setAuth(emptyAuth);
+    }
 
-    const logout = () => {
-        localStorage.removeItem("auth");
-        setAuth({
-            loggedIn: false,
-            userId: null,
-            userType: null,
-            userName: null,
-        })
-    };
+    if (auth === null) {
+        return null;
+    }
 
     return (
-        <AuthContext.Provider value={{ auth, loginAsCandidate, loginAsEmployer, logout }}>
+        <AuthContext.Provider value={{ auth, login, register, logout }}>
             {children}
         </AuthContext.Provider>
     );

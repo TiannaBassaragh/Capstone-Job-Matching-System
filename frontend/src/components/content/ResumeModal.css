@@ -11,8 +11,8 @@
 }
 
 .modal {
-    background: var(--color-background-primary, #fff);
-    border-radius: var(--border-radius-lg);
+    background: #fff;
+    border-radius: 14px;
     width: 520px;
     max-width: 90vw;
     max-height: 80vh;
@@ -20,6 +20,7 @@
     flex-direction: column;
     overflow: hidden;
     border: 0.5px solid var(--border);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
 }
 
 .modal-header {

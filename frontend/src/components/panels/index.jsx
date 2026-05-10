@@ -1,10 +1,15 @@
 export { default as ActivityFeed } from './ActivityFeed';
+export { default as CandidateProfilePanel } from './CandidateProfilePanel';
 export { default as CompetencyPanel } from './CompetencyPanel';
+export { default as EmployerLinksPanel } from './EmployerLinksPanel';
 export { default as JobPostsPanel } from './JobPostsPanel';
 export { default as ListPanel } from './ListPanel';
+export { default as MatchContextPanel } from './MatchContextPanel';
 export { default as MatchesPanel } from './MatchesPanel';
+export { default as MatchHeroPanel } from './MatchHeroPanel';
 export { default as MatchStatsPanel } from './MatchStatsPanel';
 export { default as RecruiterPanel } from './RecruiterPanel';
+export { default as RoleFactsPanel } from './RoleFactsPanel';
 export { default as ScorePanel } from './ScorePanel';
 export { default as SkillsPanel } from './SkillsPanel';
 export { default as SortPanel } from './SortPanel';

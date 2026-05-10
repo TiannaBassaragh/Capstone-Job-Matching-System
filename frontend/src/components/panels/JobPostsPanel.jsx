@@ -1,42 +1,46 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { filterJobs } from "../../utils/filter";
 import { ListPanel } from "./";
 import "./JobPostsPanel.css";
 
 
 const filterOptions = [
-    { key: "all",      label: "All" },
     { key: "active",   label: "Active" },
     { key: "expiring", label: "Expiring" },
     { key: "inactive", label: "Inactive" },
     { key: "new",      label: "Has new" },
 ];
- 
-const customConditions = [
-    { key: "matches",  label: "Min matches", unit: "matches", min: 0, max: 200, step: 5, initVal: 20 },
-    { key: "newCount", label: "Min new",      unit: "new",     min: 0, max: 50,  step: 1, initVal: 1  },
-];
 
-export default function JobPostsPanel({ jobs = [] }) {
+const DASHBOARD_LIMIT = 10;
+
+export default function JobPostsPanel({ jobs = [], loading = false }) {
+    const navigate = useNavigate();
     const [filterConfig, setFilterConfig] = useState({
         type: "preset",
-        key: "all",
-        label: "All",
+        key: "active",
+        label: "Active",
     });
 
     const filteredJobs = filterJobs(jobs, filterConfig)
+        .slice(0, DASHBOARD_LIMIT)
         .map(j => ({
             ...j,
-            meta: `${j.location} · ${j.workType} · posted ${j.postedDate}`,
+            meta: [
+                    j.location !== "N/A" ? j.location : null,
+                    j.workType !== "N/A" ? j.workType : null,
+                    j.postedDate !== "N/A" ? `posted ${j.postedDate}` : null,
+                ].filter(Boolean).join(" · ") || `posted ${j.postedDate}`,
         }));
 
     const handleNewJobPost = () => {
         console.log("Clicked: Post new job button");
+        navigate("/new-job");
     }
 
     const handleJobPostClick = (job) => {
         console.log("Clicked:", job.title);
-        (job) => navigate(`/jobs/${job.id}`);
+        navigate(`/jobs/${job.id}`);
     }
 
     return (
@@ -55,7 +59,6 @@ export default function JobPostsPanel({ jobs = [] }) {
             filterConfig={filterConfig}
             onFilterChange={setFilterConfig}
             filterOptions={filterOptions}
-            customConditions={customConditions}
             renderRight={(job) => (
                 <>
                     {job.newCount > 0 && 
@@ -63,20 +66,16 @@ export default function JobPostsPanel({ jobs = [] }) {
                             +{job.newCount} new
                         </span>
                     }
-                    <span 
-                        className={`job-posts-badge 
-                            job-posts-badge--${
-                                job.status === "active" 
-                                ? "active" 
-                                : "expiring"
-                            }
-                        `}
+                    <span
+                        className={`job-posts-badge job-posts-badge--${job.status === "active" ? "active" : job.status === "expiring" ? "expiring" : "inactive"}`}
                     >
-                        {job.status === "active" ? "Active" : "Expiring soon"}
+                        {job.status === "active" ? "Active" : job.status === "expiring" ? "Expiring soon" : "Inactive"}
                     </span>
-                    <span className="job-posts-matches">
-                        {job.matches} matches
-                    </span>
+                    {job.matches > 0 && (
+                        <span className="job-posts-matches">
+                            {job.matches} matches
+                        </span>
+                    )}
                 </>
             )}
         />

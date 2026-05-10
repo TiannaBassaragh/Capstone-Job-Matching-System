@@ -1,4 +1,4 @@
-/* OverviewSection.css */
+/* OverviewSection.css — layout only; row-level styles moved to RoleFactsPanel.css */
 
 .overview-layout {
     display: grid;
@@ -21,32 +21,4 @@
     letter-spacing: .06em;
     color: var(--muted);
     margin-bottom: 10px;
-}
-
-.facts {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 12px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border);
-}
-
-.fact-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 0;
-    border-bottom: 0.5px solid var(--border);
-}
-
-.fact-row:last-child { border-bottom: none; }
-
-.fact-key { font-size: 12px; color: var(--muted); }
-
-.fact-val { font-size: 12px; font-weight: 600; color: var(--text); }
-
-.job-description {
-    font-size: 12px;
-    color: var(--subtext);
-    line-height: 1.7;
 }

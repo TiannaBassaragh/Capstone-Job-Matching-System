@@ -1,25 +1,81 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { PageCard, PanelCard, ScorePanel, CompetencyPanel, SkillsPanel, RecruiterPanel } from "../../components";
-import { getInitials, getCompetencyScores } from "../../utils";
-import { candidateMatches } from "../../fake-data/DashboardData";
-import { matchSkills, whyItFits, recruiterInfo } from "../../fake-data/MatchData";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import {
+    PageCard, PanelCard,
+    ScorePanel, CompetencyPanel, SkillsPanel, RecruiterPanel,
+    MatchHeroPanel, RoleFactsPanel, MatchContextPanel,
+} from "../../components";
+import { matchesService } from "../../lib/matchesService";
+import { formatTier } from "../../lib/mappers";
+import { getCompetencyScores } from "../../utils";
 import "./MatchDetails.css";
+
+const NA = "N/A";
+
+// Fallback recruiter card content — backend doesn't expose a per-match recruiter
+// contact yet, so we show the company as a generic hiring team.
+function makeRecruiterFallback(match) {
+    return {
+        userName: "Hiring team",
+        title:    match.userName,            // company name
+        email:    null,
+    };
+}
 
 export default function MatchDetails() {
     const { matchId } = useParams();
     const navigate    = useNavigate();
-    const match       = candidateMatches.find(m => m.id === Number(matchId));
+    const location    = useLocation();
+
+    const [match,       setMatch]       = useState(location.state?.match || null);
+    const [explanation, setExplanation] = useState(null);
+    const [loading,     setLoading]     = useState(!location.state?.match);
+
+    // Load the match if we didn't get it from navigation state. We fall back to
+    // /matches/recommendations + find-by-id because the bare /matches/:id
+    // response doesn't include title / company name.
+    useEffect(() => {
+        if (match) return;
+
+        async function load() {
+            setLoading(true);
+            try {
+                const recs = await matchesService.getRecommendations(50);
+                const found = recs.find(r => String(r.id) === String(matchId));
+                if (found) setMatch(found);
+            } catch (err) {
+                console.error("MatchDetails load error:", err);
+            } finally {
+                setLoading(false);
+            }
+        }
+        load();
+    }, [matchId, match]);
+
+    // Load explanation separately — it's slow (LLM) so we don't want to block
+    // the rest of the UI on it.
+    useEffect(() => {
+        if (!match || match.explanation) return;
+        matchesService.getMatchExplanation(matchId)
+            .then(setExplanation)
+            .catch(() => setExplanation(null));
+    }, [matchId, match]);
+
+    if (loading) {
+        return (
+            <PageCard breadcrumb="Matches / Details" title="Match Details">
+                <PanelCard><p className="muted-message">Loading…</p></PanelCard>
+            </PageCard>
+        );
+    }
 
     if (!match) {
         return (
             <PageCard breadcrumb="Matches / Details" title="Match Details">
                 <PanelCard>
-                    <p style={{ color: "var(--muted)", fontSize: 13 }}>
+                    <p className="muted-message">
                         Match not found.{" "}
-                        <button
-                            onClick={() => navigate("/matches")}
-                            style={{ color: "var(--acc)", fontWeight: 600 }}
-                        >
+                        <button onClick={() => navigate("/matches")} className="muted-message-link">
                             Go back to matches.
                         </button>
                     </p>
@@ -28,10 +84,11 @@ export default function MatchDetails() {
         );
     }
 
-    const comps     = getCompetencyScores(match.score);
-    const skills    = matchSkills[match.id]   || matchSkills[1];
-    const recruiter = recruiterInfo[match.id] || recruiterInfo.default;
-    const why       = whyItFits[match.id]     || whyItFits.default;
+    // Derived values
+    const comps   = getCompetencyScores(match.score);
+    const skills  = matchesService.getSkillsFromMatch(match);
+    const why     = match.explanation || explanation || "Loading explanation…";
+    const recruiter = makeRecruiterFallback(match);
 
     const competencyCounts = {
         strong:  comps.filter(c => c.value >= 80).length,
@@ -39,61 +96,32 @@ export default function MatchDetails() {
         weak:    comps.filter(c => c.value < 60).length,
     };
 
-    const strongest = [...comps].sort((a, b) => b.value - a.value)[0].label;
-    const weakest   = [...comps].sort((a, b) => a.value - b.value)[0].label;
+    const strongest = [...comps].sort((a, b) => b.value - a.value)[0]?.label || NA;
+    const weakest   = [...comps].sort((a, b) => a.value - b.value)[0]?.label || NA;
+
+    const facts = [
+        { key: "Work type", value: match.workType || NA },
+        { key: "Location",  value: match.location  || NA },
+        { key: "Tier",      value: formatTier(match.tier) },
+    ];
 
     return (
         <PageCard breadcrumb={`Matches / ${match.userName} ${match.title}`} title="Match Details">
-            <div className="layout">
+            <div className="match-details-layout">
 
-                <div className="left">
+                <div className="match-details-left">
 
-                    <PanelCard>
-                        <div className="hero">
-                            <div className="hero-icon" style={{ background: match.bg, color: match.color }}>
-                                {getInitials(match.userName)}
-                            </div>
-                            <div className="hero-body">
-                                <div className="hero-title">{match.title}</div>
-                                <div className="hero-meta">
-                                    {match.userName} · {match.location} · ${match.payLow}k – ${match.payHigh}k
-                                </div>
-                            </div>
-                            <button type="button" className="back-btn" onClick={() => navigate("/matches")}>
-                                ← All matches
-                            </button>
-                        </div>
-                    </PanelCard>
+                    <MatchHeroPanel
+                        match={match}
+                        onBack={() => navigate("/matches")}
+                    />
 
                     <PanelCard>
                         <div className="section-label">Why this fits you</div>
                         <p className="why-text">{why}</p>
                     </PanelCard>
 
-                    <PanelCard>
-                        <div className="section-label">About the role</div>
-                        <div className="facts">
-                            <div className="fact-row">
-                                <span className="fact-key">Work type</span>
-                                <span className="fact-val">{match.workType}</span>
-                            </div>
-                            <div className="fact-row">
-                                <span className="fact-key">Location</span>
-                                <span className="fact-val">{match.location}</span>
-                            </div>
-                            <div className="fact-row">
-                                <span className="fact-key">Salary</span>
-                                <span className="fact-val">${match.payLow}k – ${match.payHigh}k</span>
-                            </div>
-                            <div className="fact-row">
-                                <span className="fact-key">Experience</span>
-                                <span className="fact-val">4+ years</span>
-                            </div>
-                        </div>
-                        <div className="job-description">
-                            This role sits within a team focused on building reliable, scalable software systems. You'll work alongside engineers, designers, and product managers to ship features that directly affect end users. The team values ownership, clear communication, and high engineering standards. You'll have room to propose technical direction and be expected to contribute meaningfully to code reviews and design discussions.
-                        </div>
-                    </PanelCard>
+                    <RoleFactsPanel facts={facts} />
 
                     <CompetencyPanel competencies={comps} />
 
@@ -101,35 +129,18 @@ export default function MatchDetails() {
 
                 </div>
 
-                <div className="right">
+                <div className="match-details-right">
 
                     <ScorePanel score={match.score} counts={competencyCounts} />
 
                     <RecruiterPanel recruiter={recruiter} jobTitle={match.title} />
 
-                    <PanelCard>
-                        <div className="section-label">Match context</div>
-                        <div className="context-list">
-                            <div className="context-row">
-                                <span className="context-key">Your score</span>
-                                <span className="context-val">{match.score}%</span>
-                            </div>
-                            <div className="context-row">
-                                <span className="context-key">Skills matched</span>
-                                <span className="context-val">
-                                    {skills.strong.length} of {skills.strong.length + skills.partial.length + skills.missing.length}
-                                </span>
-                            </div>
-                            <div className="context-row">
-                                <span className="context-key">Strongest area</span>
-                                <span className="context-val">{strongest}</span>
-                            </div>
-                            <div className="context-row">
-                                <span className="context-key">Gap area</span>
-                                <span className="context-val">{weakest}</span>
-                            </div>
-                        </div>
-                    </PanelCard>
+                    <MatchContextPanel
+                        score={match.score}
+                        skills={skills}
+                        strongest={strongest}
+                        weakest={weakest}
+                    />
 
                 </div>
             </div>

@@ -33,6 +33,15 @@ export function EmailIcon() {
     );
 }
 
+export function SearchIcon() {
+    return (
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+            <circle cx="5.5" cy="5.5" r="4" stroke="currentColor" strokeWidth="1.4"/>
+            <path d="M8.5 8.5l2.5 2.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+        </svg>
+    );
+}
+
 export function UploadArrowIcon() {
     return (
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">

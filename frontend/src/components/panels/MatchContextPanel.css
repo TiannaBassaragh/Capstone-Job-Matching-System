@@ -1,0 +1,21 @@
+/* MatchContextPanel.css */
+
+.match-context-list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.match-context-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.match-context-key { font-size: 12px; color: var(--muted); }
+
+.match-context-val {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+}

@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { PageCard, PanelCard, DistributionBar, MatchRow, FilterBar } from "../../components";
+import { PageCard, PanelCard, DistributionBar, MatchRow, FilterBar, SearchIcon } from "../../components";
 import { filterMatches } from "../../utils";
-import { candidateMatches } from "../../fake-data/DashboardData";
-import { matchSkills } from "../../fake-data/MatchData";
+import { matchesService } from "../../lib/matchesService";
+import { mapGapProfileToSkills } from "../../lib/mappers";
 import "./MatchesPage.css";
 
 const filterOptions = [
@@ -16,7 +16,6 @@ const filterOptions = [
 
 const sortOptions = [
     { key: "score",  label: "Best match" },
-    { key: "pay",    label: "Highest pay" },
     { key: "az",     label: "A – Z" },
     { key: "recent", label: "Most recent" },
 ];
@@ -26,34 +25,51 @@ const customConditions = [
     { key: "top",     label: "Top",      unit: "results", min: 1,  max: 50,  step: 1,  initVal: 10 },
 ];
 
-function MatchListPanel({ matches, skills, expandedId, onToggle, onViewDetails }) {
+function MatchListPanel({ matches, skills, expandedId, onToggle, onViewDetails, loading }) {
+    if (loading) return <div className="empty">Loading…</div>;
+    if (matches.length === 0) return <div className="empty">No matches found.</div>;
+
     return (
         <div className="rows">
-            {matches.length === 0
-                ? <div className="empty">No matches found.</div>
-                : matches.map(match => (
-                    <MatchRow
-                        key={match.id}
-                        match={match}
-                        skills={skills[match.id] || { strong: [], partial: [] }}
-                        isExpanded={expandedId === match.id}
-                        onToggle={() => onToggle(match.id)}
-                        onViewDetails={onViewDetails}
-                    />
-                ))
-            }
+            {matches.map(match => (
+                <MatchRow
+                    key={match.id}
+                    match={match}
+                    skills={skills[match.id] || { strong: [], partial: [] }}
+                    isExpanded={expandedId === match.id}
+                    onToggle={() => onToggle(match.id)}
+                    onViewDetails={onViewDetails}
+                />
+            ))}
         </div>
     );
 }
 
 export default function MatchesPage() {
     const navigate = useNavigate();
+
+    const [matches,       setMatches]      = useState([]);
+    const [loading,       setLoading]      = useState(true);
     const [expandedId,    setExpandedId]   = useState(null);
     const [filterConfig,  setFilterConfig] = useState({ type: "preset", key: "all", label: "All" });
     const [search,        setSearch]       = useState("");
     const [sortKey,       setSortKey]      = useState("score");
 
-    const filtered = filterMatches(candidateMatches, filterConfig)
+    useEffect(() => {
+        matchesService.getRecommendations(50)
+            .then(setMatches)
+            .catch(err => console.error("Matches load error:", err))
+            .finally(() => setLoading(false));
+    }, []);
+
+    // Derive skills map (gap_profile → { strong, partial, missing }) from the
+    // loaded matches so MatchRow's expanded view doesn't need to re-fetch.
+    const skillsByMatchId = matches.reduce((acc, m) => {
+        acc[m.id] = mapGapProfileToSkills(m.gapProfile);
+        return acc;
+    }, {});
+
+    const filtered = filterMatches(matches, filterConfig)
         .filter(m =>
             search === "" ||
             m.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -61,14 +77,13 @@ export default function MatchesPage() {
         )
         .sort((a, b) => {
             if (sortKey === "score")  return b.score - a.score;
-            if (sortKey === "pay")    return b.payHigh - a.payHigh;
             if (sortKey === "az")     return a.title.localeCompare(b.title);
             if (sortKey === "recent") return b.id - a.id;
             return 0;
         });
 
     const handleToggle      = (id)    => setExpandedId(prev => prev === id ? null : id);
-    const handleViewDetails = (match) => navigate(`/matches/${match.id}`);
+    const handleViewDetails = (match) => navigate(`/matches/${match.id}`, { state: { match } });
 
     return (
         <PageCard breadcrumb="Matches" title="Matches List">
@@ -76,14 +91,13 @@ export default function MatchesPage() {
 
                 <div className="header">
                     <div className="header-left">
-                        <span className="result-count">{filtered.length} results</span>
+                        <span className="result-count">
+                            {loading ? "…" : `${filtered.length} results`}
+                        </span>
                         <DistributionBar items={filtered} />
                     </div>
                     <div className="search">
-                        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
-                            <circle cx="5.5" cy="5.5" r="4" stroke="currentColor" strokeWidth="1.4"/>
-                            <path d="M8.5 8.5l2.5 2.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
-                        </svg>
+                        <SearchIcon />
                         <input
                             type="text"
                             className="search-input"
@@ -121,10 +135,11 @@ export default function MatchesPage() {
 
                 <MatchListPanel
                     matches={filtered}
-                    skills={matchSkills}
+                    skills={skillsByMatchId}
                     expandedId={expandedId}
                     onToggle={handleToggle}
                     onViewDetails={handleViewDetails}
+                    loading={loading}
                 />
 
             </PanelCard>

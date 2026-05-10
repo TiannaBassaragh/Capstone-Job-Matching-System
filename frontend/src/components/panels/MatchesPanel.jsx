@@ -19,7 +19,7 @@ const DASHBOARD_LIMIT = 10;
 //     { key: "top",     label: "Top",   unit: "results", min: 1,  max: 50,  step: 1, initVal: 10 },
 // ];
  
-export default function MatchesPanel({ matches=[] }) {
+export default function MatchesPanel({ matches=[], loading=false, totalCount }) {
     const navigate = useNavigate();
 
     const [filterConfig, setFilterConfig] = useState({
@@ -32,8 +32,25 @@ export default function MatchesPanel({ matches=[] }) {
         .slice(0, DASHBOARD_LIMIT)
         .map(m => ({
             ...m,
-            meta: `${m.userName} · ${m.location} · $${m.payLow}k – $${m.payHigh}k`,
+            meta: [
+                m.userName,
+                m.location,
+                m.payLow ? `$${m.payLow}k – $${m.payHigh}k` : null,
+            ].filter(v => v && v !== "N/A").join(" · ") || m.userName,
         }));
+
+    if (loading) {
+        return (
+            <ListPanel
+                title="Your matches"
+                headerAction={<span style={{ color: "var(--muted)", fontSize: 12 }}>Loading…</span>}
+                rows={[]}
+                filterOptions={filterOptions}
+                filterConfig={filterConfig}
+                onFilterChange={setFilterConfig}
+            />
+        );
+    }
 
     const handleFilterSelect = (key, label) => {
         setFilterConfig(prev =>
@@ -61,7 +78,7 @@ export default function MatchesPanel({ matches=[] }) {
                     type="button"
                     onClick={handleViewAllMatches}
                 >
-                    View all {matches.length} matches ↗
+                    View all {totalCount ?? matches.length} matches ↗
                 </button>
             }
             rows={filteredMatches}
@@ -71,13 +88,16 @@ export default function MatchesPanel({ matches=[] }) {
             filterOptions={filterOptions}
             renderRight={(match) => {
                 const { color, barColor } = getScoreStyle(match.score);
+                const hasScore = match.score != null && match.score > 0;
                 return (
                     <div className="score-block">
-                        <div className="score" style={{ color }}>{match.score}%</div>
+                        <div className="score" style={{ color: hasScore ? color : "var(--muted)" }}>
+                            {hasScore ? `${match.score}%` : "—"}
+                        </div>
                         <div className="score-bar">
                             <div 
                                 className="score-fill" 
-                                style={{ width: `${match.score}%`, background: barColor }} 
+                                style={{ width: `${match.score ?? 0}%`, background: barColor }} 
                             />
                         </div>
                     </div>

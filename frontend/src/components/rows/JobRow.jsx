@@ -28,7 +28,11 @@ export default function JobRow({ job, onClick }) {
                     {job.title}
                 </div>
                 <div className="job-row-meta">
-                    {job.location} · {job.workType} · posted {job.postedDate}
+                    {[
+                        job.location !== "N/A" ? job.location : null,
+                        job.workType !== "N/A" ? job.workType : null,
+                        `posted ${job.postedDate}`,
+                    ].filter(Boolean).join(" · ")}
                 </div>
             </div>
             <div className="job-row-chips">
@@ -42,9 +46,11 @@ export default function JobRow({ job, onClick }) {
                         Expiring soon
                     </span>
                 )}
-                <span className="job-row-chip job-row-chip--match">
-                    {job.matches} matched
-                </span>
+                {job.matches > 0 && (
+                    <span className="job-row-chip job-row-chip--match">
+                        {job.matches} matched
+                    </span>
+                )}
             </div>
             <i className="ti ti-chevron-right job-row-chevron" aria-hidden="true" />
         </button>

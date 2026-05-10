@@ -6,7 +6,7 @@ import { Sidebar } from './components';
 import { 
     Landing,
     Dashboard, 
-    Matches, MatchDetails, 
+    Matches, MatchDetails, QuestionsPage, 
     JobListings, JobDetails, NewJobPage, CandidateDetail,
     Notifications, Settings,
     GeneralSection, ProfileSection, ResumeSection,
@@ -16,14 +16,22 @@ import {
 // ── Guards ────────────────────────────────────────────────────────────────────
 
 function RequireAuth({ user }) {
-    if (!user.loggedIn) {
+    const { auth } = useAuth();
+
+    if (!auth.loggedIn) {
         return <Navigate to="/" replace />;
     }
     return <Outlet />;
 }
 
-function RequireRole({ user, role }) {
-    if (user.userType !== role) {
+function RequireRole({ allowedRoles }) {
+    const { auth } = useAuth();
+
+    if (!auth.loggedIn) {
+        return <Navigate to="/" replace />;
+    }
+
+    if (!allowedRoles.includes(auth.userType)) {
         return <Navigate to="/404" replace />;
     }
     return <Outlet />;
@@ -43,7 +51,7 @@ function AppLayout() {
 // ── App ───────────────────────────────────────────────────────────────────────
 
 export default function App() {
-    const { auth: user } = useAuth();
+    const { auth } = useAuth();
 
     return (
         <BrowserRouter>
@@ -53,7 +61,7 @@ export default function App() {
                 <Route path="/" element={<Landing />} />
 
                 {/* Protected */}
-                <Route element={<RequireAuth user={user} />}>
+                <Route element={<RequireAuth />}>
                     <Route element={<AppLayout />}>
 
                         <Route path="/dashboard" element={<Dashboard />} />
@@ -61,19 +69,20 @@ export default function App() {
                         <Route path="/settings" element={<Settings />}>
                             <Route index element={<GeneralSection />} />
                             <Route path="profile" element={<ProfileSection />} />
-                            <Route element={<RequireRole user={user} role="candidate" />}>
+                            <Route element={<RequireRole allowedRoles={["applicant"]} />}>
                                 <Route path="resume" element={<ResumeSection />} />
                             </Route>
                         </Route>
 
-                        <Route element={<RequireRole user={user} role="candidate" />}>
+                        <Route element={<RequireRole allowedRoles={["applicant"]} />}>
                             <Route path="/matches">
                                 <Route index element={<Matches />} />
                                 <Route path=":matchId" element={<MatchDetails />} />
                             </Route>
+                            <Route path="/questions" element={<QuestionsPage />} />
                         </Route>
 
-                        <Route element={<RequireRole user={user} role="employer" />}>
+                        <Route element={<RequireRole allowedRoles={["recruiter"]} />}>
                             <Route path="/jobs">
                                 <Route index element={<JobListings />} />
                                 <Route path=":jobId" element={<JobDetails />} />

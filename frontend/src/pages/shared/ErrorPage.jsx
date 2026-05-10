@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { PageCard } from "../../components";
-import { useAuth } from "../../context/AuthContext"
 
-export default function PageName() {
+export default function ErrorPage() {
     const navigate = useNavigate();
     
     return (

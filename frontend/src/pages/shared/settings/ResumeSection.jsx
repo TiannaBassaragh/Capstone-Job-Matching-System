@@ -1,18 +1,52 @@
+import { useState, useEffect, useRef } from "react";
 import { PanelCard, FileIcon, UploadArrowIcon } from "../../../components";
 import { useAuth } from "../../../context/AuthContext";
+import { matchesService } from "../../../lib/matchesService";
 import "./SettingsSection.css";
-
-const candidateFile = {
-    name: "alex_johnson_resume_v3.pdf",
-    date: "Uploaded Mar 12, 2026",
-};
 
 export default function ResumeSection() {
     const { auth } = useAuth();
-    const isCandidate = auth.userType === "candidate";
+    const isCandidate = auth.userType === "applicant";
+    const fileInputRef = useRef(null);
 
-    const handleUpload = () => {
-        console.log("Clicked: upload file");
+    const [resume,    setResume]    = useState(null);
+    const [loading,   setLoading]   = useState(true);
+    const [uploading, setUploading] = useState(false);
+    const [status,    setStatus]    = useState(null);
+
+    // Load current resume on mount
+    useEffect(() => {
+        if (!isCandidate) { setLoading(false); return; }
+        matchesService.getMyResume()
+            .then(setResume)
+            .catch(() => setResume(null))
+            .finally(() => setLoading(false));
+    }, [isCandidate]);
+
+    const handleUpload = async (file) => {
+        if (!file) return;
+        setUploading(true);
+        setStatus(null);
+        try {
+            await matchesService.uploadResume(file);
+            // Re-fetch to get the new metadata
+            const updated = await matchesService.getMyResume();
+            setResume(updated);
+            setStatus({ type: "success", msg: "Resume uploaded. Matching will begin shortly." });
+        } catch (err) {
+            setStatus({ type: "error", msg: err.message || "Upload failed." });
+        } finally {
+            setUploading(false);
+        }
+    };
+
+    const handleClick = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files?.[0];
+        if (file) handleUpload(file);
     };
 
     return (
@@ -29,28 +63,57 @@ export default function ResumeSection() {
                     }
                 </p>
 
-                {isCandidate && (
+                {status && (
+                    <div className={`field-status field-status--${status.type}`}>
+                        {status.msg}
+                    </div>
+                )}
+
+                {isCandidate && !loading && resume && (
                     <div className="file-row">
                         <div className="file-icon-wrap">
                             <FileIcon />
                         </div>
                         <div className="file-body">
-                            <div className="file-name">{candidateFile.name}</div>
-                            <div className="file-date">{candidateFile.date}</div>
+                            <div className="file-name">{resume.fileName}</div>
+                            <div className="file-date">Uploaded {resume.uploadDate}</div>
                         </div>
                         <span className="file-badge">Active</span>
                     </div>
                 )}
 
-                <button type="button" className="upload-zone" onClick={handleUpload}>
-                    <div className="upload-icon">
-                        <UploadArrowIcon />
-                    </div>
-                    <div className="upload-title">
-                        {isCandidate ? "Upload new resume" : "Upload job description"}
-                    </div>
-                    <div className="upload-sub">PDF or DOCX · drag & drop or click</div>
-                </button>
+                {loading ? (
+                    <p className="section-desc" style={{ color: "var(--muted)" }}>Loading…</p>
+                ) : (
+                    <>
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept=".pdf,.doc,.docx"
+                            style={{ display: "none" }}
+                            onChange={handleFileChange}
+                        />
+                        <button
+                            type="button"
+                            className="upload-zone"
+                            onClick={handleClick}
+                            disabled={uploading}
+                        >
+                            <div className="upload-icon">
+                                <UploadArrowIcon />
+                            </div>
+                            <div className="upload-title">
+                                {uploading
+                                    ? "Uploading…"
+                                    : isCandidate
+                                        ? "Upload new resume"
+                                        : "Upload job description"
+                                }
+                            </div>
+                            <div className="upload-sub">PDF or DOCX · click to browse</div>
+                        </button>
+                    </>
+                )}
             </PanelCard>
 
         </div>

@@ -244,3 +244,23 @@
 }
 
 .upload-sub { font-size: 12px; color: var(--muted); }
+
+/* ── Status messages ────────────────────────────────────────────────────── */
+
+.field-status {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: var(--border-radius-md);
+    margin-bottom: 14px;
+}
+
+.field-status--success {
+    background: #E1F5EE;
+    color: #0F6E56;
+}
+
+.field-status--error {
+    background: #FFF0F0;
+    color: #a32d2d;
+}

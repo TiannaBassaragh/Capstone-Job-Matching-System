@@ -56,3 +56,9 @@
 .email-btn:hover { background: var(--acc-mid); border-color: var(--acc); }
 
 .email-note { font-size: 10px; color: var(--muted); line-height: 1.5; }
+
+.email-btn--disabled {
+    opacity: .5;
+    cursor: default;
+    pointer-events: none;
+}

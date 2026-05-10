@@ -1,0 +1,33 @@
+/* RoleFactsPanel.css */
+
+.role-facts {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.role-fact-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 0.5px solid var(--border);
+}
+
+.role-fact-row:last-child { border-bottom: none; }
+
+.role-fact-key { font-size: 12px; color: var(--muted); }
+
+.role-fact-val {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.role-facts-description {
+    font-size: 12px;
+    color: var(--subtext);
+    line-height: 1.7;
+}
