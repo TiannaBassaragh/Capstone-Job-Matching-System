@@ -1,6 +1,7 @@
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, UploadFile, File, status
 from fastapi.responses import Response
 from sqlalchemy.orm import Session
+from typing import Optional
 from app.database import get_db
 from app.models.models import Resume, Candidate, User
 from app.schemas.schemas import ResumeResponse
@@ -33,6 +34,21 @@ def get_resume_or_404(resume_id: int, db: Session) -> Resume:
       detail="Resume not found"
     )
   return resume
+
+
+@router.get("/me", response_model=Optional[ResumeResponse])
+def get_my_latest_resume(
+  db: Session = Depends(get_db),
+  current_user: User = Depends(require_applicant)
+):
+  """Return the candidate's most recent resume metadata, or null if none exists."""
+  candidate = get_candidate_or_404(current_user, db)
+  return (
+    db.query(Resume)
+    .filter(Resume.candidate_id == candidate.candidate_id)
+    .order_by(Resume.upload_date.desc())
+    .first()
+  )
 
 
 @router.post("/", response_model=ResumeResponse, status_code=status.HTTP_201_CREATED)
