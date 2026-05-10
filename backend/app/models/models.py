@@ -19,8 +19,8 @@ class User(Base):
   account_type = Column(String(20), CheckConstraint("account_type IN ('applicant', 'recruiter')"), nullable=False)
   created_at   = Column(TIMESTAMP, server_default=func.now())
 
-  candidate = relationship("Candidate", back_populates="user", uselist=False)
-  employer  = relationship("Employer",  back_populates="user", uselist=False)
+  candidate = relationship("Candidate", back_populates="user", uselist=False, passive_deletes=True)
+  employer  = relationship("Employer",  back_populates="user", uselist=False, passive_deletes=True)
 
 
 class TechSkill(Base):
@@ -38,9 +38,9 @@ class Candidate(Base):
   tech_keywords = Column(JSON, nullable=True)   # extracted from most-recent resume
 
   user         = relationship("User", back_populates="candidate")
-  resumes      = relationship("Resume", back_populates="candidate")
-  competencies = relationship("CandidateCompetency", back_populates="candidate")
-  matches      = relationship("Match", back_populates="candidate")
+  resumes      = relationship("Resume", back_populates="candidate", passive_deletes=True)
+  competencies = relationship("CandidateCompetency", back_populates="candidate", passive_deletes=True)
+  matches      = relationship("Match", back_populates="candidate", passive_deletes=True)
   questions    = relationship("ClarifyingQuestion", back_populates="candidate", cascade="all, delete-orphan")
 
 
@@ -52,7 +52,7 @@ class Employer(Base):
   company_name = Column(String(200))
 
   user      = relationship("User", back_populates="employer")
-  job_posts = relationship("JobPost", back_populates="employer")
+  job_posts = relationship("JobPost", back_populates="employer", passive_deletes=True)
 
 
 class Resume(Base):
@@ -77,8 +77,8 @@ class JobPost(Base):
   created_at    = Column(TIMESTAMP, server_default=func.now())
 
   employer     = relationship("Employer", back_populates="job_posts")
-  competencies = relationship("JobCompetency", back_populates="job")
-  matches      = relationship("Match", back_populates="job")
+  competencies = relationship("JobCompetency", back_populates="job", passive_deletes=True)
+  matches      = relationship("Match", back_populates="job", passive_deletes=True)
   questions    = relationship("ClarifyingQuestion", back_populates="job", cascade="all, delete-orphan")
 
 
