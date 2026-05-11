@@ -1,44 +1,44 @@
-import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from "./context/AuthContext";
 import './index.css';
 
 import { Sidebar } from './components';
-import { 
+import {
     Landing,
-    Dashboard, 
-    Matches, MatchDetails, QuestionsPage, 
+    SignInPage, SignUpPage, LogoutPage,
+    Dashboard,
+    Matches, MatchDetails, QuestionsPage,
     JobListings, JobDetails, NewJobPage, CandidateDetail,
     Notifications, Settings,
     GeneralSection, ProfileSection, ResumeSection,
     Template, ErrorPage
 } from './pages';
 
-// ── Guards ────────────────────────────────────────────────────────────────────
-
-function RequireAuth({ user }) {
-    const { auth } = useAuth();
-
-    if (!auth.loggedIn) {
-        return <Navigate to="/" replace />;
-    }
+// Redirects unauthenticated users to sign-in, preserving intended destination
+function RequireAuth() {
+    const { auth, isLoading } = useAuth();
+    const location = useLocation();
+    if (isLoading) return null;
+    if (!auth.loggedIn) return <Navigate to="/sign-in" state={{ from: location }} replace />;
     return <Outlet />;
 }
 
+// Redirects authenticated users away from public pages
+function PublicOnly({ children }) {
+    const { auth, isLoading } = useAuth();
+    if (isLoading) return null;
+    if (auth.loggedIn) return <Navigate to="/dashboard" replace />;
+    return children;
+}
+
+// Guards a route to a specific user role
 function RequireRole({ allowedRoles }) {
     const { auth } = useAuth();
-
-    if (!auth.loggedIn) {
-        return <Navigate to="/" replace />;
-    }
-
-    if (!allowedRoles.includes(auth.userType)) {
-        return <Navigate to="/404" replace />;
-    }
+    if (!allowedRoles.includes(auth.userType)) return <Navigate to="/404" replace />;
     return <Outlet />;
 }
 
-// ── Layout ────────────────────────────────────────────────────────────────────
-
+// Wraps the authenticated app with the sidebar
 function AppLayout() {
     return (
         <div className="App">
@@ -48,19 +48,18 @@ function AppLayout() {
     );
 }
 
-// ── App ───────────────────────────────────────────────────────────────────────
-
 export default function App() {
-    const { auth } = useAuth();
-
     return (
         <BrowserRouter>
             <Routes>
 
-                {/* Public route */}
+                {/* Public routes */}
                 <Route path="/" element={<Landing />} />
+                <Route path="/sign-in" element={<PublicOnly><SignInPage /></PublicOnly>} />
+                <Route path="/sign-up" element={<PublicOnly><SignUpPage /></PublicOnly>} />
+                <Route path="/logout" element={<LogoutPage />} />
 
-                {/* Protected */}
+                {/* Authenticated app */}
                 <Route element={<RequireAuth />}>
                     <Route element={<AppLayout />}>
 
@@ -90,14 +89,16 @@ export default function App() {
                             </Route>
                             <Route path="/new-job" element={<NewJobPage />} />
                         </Route>
-                    
+
                     </Route>
                 </Route>
-                
+
+                {/* Error / fallback */}
                 <Route element={<AppLayout />}>
                     <Route path="/404" element={<ErrorPage />} />
                     <Route path="*" element={<Navigate to="/404" replace />} />
                 </Route>
+
             </Routes>
         </BrowserRouter>
     );

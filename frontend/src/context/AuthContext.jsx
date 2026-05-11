@@ -4,60 +4,52 @@ import { authAPI, usersAPI } from "../lib/api";
 const AuthContext = createContext(null);
 
 const emptyAuth = {
-    loggedIn: false,
-    token: null,
-    userId: null,
-    userName: null,
-    userType: null, // "applicant" | "recruiter"
-    email: null,
+    loggedIn:  false,
+    token:     null,
+    userId:    null,
+    userName:  null,
+    userType:  null,
+    email:     null,
 };
 
 function mapUserToAuth(user, token) {
     return {
-        loggedIn: true,
+        loggedIn:  true,
         token,
-        userId: user.user_id,
-        userName:
-            user.account_type === "recruiter"
-                ? user.company_name
-                : `${user.f_name} ${user.l_name}`,
-        userType: user.account_type,
-        email: user.email,
+        userId:    user.user_id,
+        userName:  user.account_type === "recruiter"
+                       ? user.company_name
+                       : `${user.f_name} ${user.l_name}`,
+        userType:  user.account_type,
+        email:     user.email,
     };
 }
 
 export function AuthProvider({ children }) {
-    const [auth, setAuth] = useState(null);
+    const [auth, setAuth]         = useState(emptyAuth);
+    const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
         async function restoreSession() {
             const token = localStorage.getItem("auth_token");
-
-            if (!token) {
-                setAuth(emptyAuth);
-                return;
-            }
-
+            if (!token) { setLoading(false); return; }
             try {
                 const user = await usersAPI.getMe(token);
                 setAuth(mapUserToAuth(user, token));
-            } catch (error) {
+            } catch {
                 localStorage.removeItem("auth_token");
-                setAuth(emptyAuth);
+            } finally {
+                setLoading(false);
             }
         }
-
         restoreSession();
     }, []);
 
     async function login(email, password) {
         const tokenData = await authAPI.login({ email, password });
-
         localStorage.setItem("auth_token", tokenData.access_token);
-
-        const user = await usersAPI.getMe(tokenData.access_token);
+        const user    = await usersAPI.getMe(tokenData.access_token);
         const newAuth = mapUserToAuth(user, tokenData.access_token);
-
         setAuth(newAuth);
         return newAuth;
     }
@@ -71,12 +63,8 @@ export function AuthProvider({ children }) {
         setAuth(emptyAuth);
     }
 
-    if (auth === null) {
-        return null;
-    }
-
     return (
-        <AuthContext.Provider value={{ auth, login, register, logout }}>
+        <AuthContext.Provider value={{ auth, isLoading, login, register, logout }}>
             {children}
         </AuthContext.Provider>
     );

@@ -1,0 +1,115 @@
+/* RecruiterQuestionsSection.css */
+
+.rq-layout { display: flex; flex-direction: column; gap: 13px; }
+
+.rq-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted);
+    margin-bottom: 14px;
+}
+
+.rq-card {
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
+    margin-top: 14px;
+}
+
+.rq-card:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+
+.rq-chips {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.rq-chip {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 5px;
+}
+
+.rq-chip--competency { background: var(--acc-light); color: var(--acc-dark); }
+.rq-chip--reason     { background: #FFF3E0; color: #854F0B; }
+
+.rq-element { font-size: 10px; color: var(--muted); margin-left: auto; }
+
+.rq-text {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 8px;
+}
+
+.rq-textarea {
+    width: 100%;
+    padding: 8px 11px;
+    border: 1.5px solid var(--acc-mid);
+    border-radius: var(--border-radius-md);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    resize: vertical;
+    background: var(--acc-light);
+    color: var(--text);
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color .15s;
+}
+
+.rq-textarea:focus { border-color: var(--acc); }
+.rq-textarea::placeholder { color: var(--muted); }
+
+.rq-footer { display: flex; justify-content: flex-end; margin-top: 6px; }
+
+.rq-submit {
+    padding: 6px 14px;
+    background: var(--acc);
+    border: none;
+    border-radius: var(--border-radius-md);
+    color: #fff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s;
+}
+
+.rq-submit:disabled { opacity: .45; cursor: not-allowed; }
+.rq-submit:not(:disabled):hover { background: var(--acc-dark); }
+
+.rq-error { font-size: 12px; color: #a32d2d; margin-bottom: 6px; }
+
+.rq-empty {
+    padding: 20px 0;
+    text-align: center;
+}
+
+.rq-empty-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+}
+
+.rq-empty-sub { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+.rq-resolved-list { display: flex; flex-direction: column; gap: 10px; }
+
+.rq-resolved-row {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+}
+
+.rq-resolved-row:last-child { border-bottom: none; padding-bottom: 0; }
+
+.rq-resolved-text { font-size: 12px; color: var(--subtext); }
+.rq-resolved-answer { font-size: 12px; color: var(--muted); font-style: italic; }

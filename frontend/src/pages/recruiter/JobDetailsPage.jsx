@@ -6,6 +6,7 @@ import { getInitials } from "../../utils";
 import { jobsService } from "../../lib/jobsService";
 import OverviewSection from "./OverviewSection";
 import CandidatesSection from "./CandidatesSection";
+import RecruiterQuestionsSection from "./RecruiterQuestionsSection";
 import "./JobDetailsPage.css";
 
 const statusConfig = {
@@ -144,6 +145,13 @@ export default function JobDetailsPage() {
                         Candidates
                         <span className="job-tab-badge">{candidates.length}</span>
                     </button>
+                    <button
+                        type="button"
+                        className={`job-tab${activeTab === "questions" ? " job-tab--active" : ""}`}
+                        onClick={() => setActiveTab("questions")}
+                    >
+                        Questions
+                    </button>
                 </div>
             </PanelCard>
 
@@ -159,6 +167,10 @@ export default function JobDetailsPage() {
 
             {activeTab === "candidates" && (
                 <CandidatesSection candidates={candidates} jobId={jobId} />
+            )}
+
+            {activeTab === "questions" && (
+                <RecruiterQuestionsSection jobId={jobId} />
             )}
 
             {showDelete && (

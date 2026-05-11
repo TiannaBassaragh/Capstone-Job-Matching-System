@@ -3,7 +3,6 @@ export const candidateNav = [
     { label: "MAIN", section: true },
     { id: "matches",       label: "My matches",         icon: "matches",       path: "/matches" },
     { id: "questions",     label: "Questions",          icon: "questions",     path: "/questions" },
-    { id: "resume",        label: "Upload resume",      icon: "resume",        path: "/settings/resume" },
     { label: "ACCOUNT", section: true },
     { id: "notifications", label: "Notifications",      icon: "notifications", path: "/notifications" },
     { id: "settings",      label: "Settings & profile", icon: "settings",      path: "/settings" },

@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext'
 import { NotificationProvider } from './context/NotificationContext'
 import { QuestionsProvider } from './context/QuestionsContext'
 import './index.css'
+import './styles/landing.css'
 import App from './App.jsx'
 
 createRoot(document.getElementById('root')).render(
