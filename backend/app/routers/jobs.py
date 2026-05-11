@@ -1,4 +1,4 @@
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, status
+from fastapi import APIRouter, BackgroundTasks, Depends, File, HTTPException, Query, UploadFile, status
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from app.database import get_db
@@ -6,6 +6,7 @@ from app.models.models import JobPost, Employer, User, Match, Candidate, JobComp
 from app.schemas.schemas import JobPostCreate, JobPostUpdate, JobPostResponse, JobStatusUpdate, CandidateRankingEntry, JobProfileResponse, JobCompetencyEntry
 from app.core.dependencies import get_current_user, require_recruiter
 from app.services.scorer import score_job_post
+from app.services.resume_parser import parse_resume_bytes
 from app.routers.matches import _run_job_matching
 
 router = APIRouter(prefix="/jobs", tags=["Jobs"])
@@ -29,6 +30,20 @@ def get_job_or_404(job_id: int, db: Session) -> JobPost:
       detail="Job post not found"
     )
   return job
+
+
+@router.post("/parse-description", status_code=status.HTTP_200_OK)
+async def parse_job_description(
+  file: UploadFile = File(...),
+  current_user: User = Depends(require_recruiter)
+):
+  """Extract plain text from an uploaded PDF or DOCX job description."""
+  data = await file.read()
+  try:
+    text = parse_resume_bytes(data)
+  except ValueError as e:
+    raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e))
+  return {"text": text}
 
 
 @router.post("/", response_model=JobPostResponse, status_code=status.HTTP_201_CREATED)
