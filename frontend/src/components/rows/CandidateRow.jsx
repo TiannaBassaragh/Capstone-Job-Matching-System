@@ -8,18 +8,21 @@ export default function CandidateRow({ candidate, onClick }) {
 
     const handleShortlist = (e) => {
         e.stopPropagation();
-        console.log("Toggled shortlist:", candidate.userName);
         setShortlisted(prev => !prev);
     };
 
+    const handleRowClick = (e) => {
+        if (e.target.closest(".shortlist-btn")) return;
+        if (onClick) onClick(candidate);
+    };
+
     return (
-        <button
-            type="button"
+        <div
+            role="button"
+            tabIndex={0}
             className="candidate-row"
-            onClick={() => {
-                console.log("Clicked candidate:", candidate.userName);
-                if (onClick) onClick(candidate);
-            }}
+            onClick={handleRowClick}
+            onKeyDown={e => { if (e.key === "Enter" || e.key === " ") handleRowClick(e); }}
         >
             <div className="candidate-row-icon" style={{ background: candidate.bg, color: candidate.color }}>
                 {getInitials(candidate.userName)}
@@ -48,6 +51,6 @@ export default function CandidateRow({ candidate, onClick }) {
                     <div className="candidate-row-fill" style={{ width: `${candidate.score}%`, background: barColor }} />
                 </div>
             </div>
-        </button>
+        </div>
     );
 }

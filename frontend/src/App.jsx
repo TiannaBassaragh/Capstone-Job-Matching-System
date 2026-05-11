@@ -23,14 +23,6 @@ function RequireAuth() {
     return <Outlet />;
 }
 
-// Redirects authenticated users away from public pages
-function PublicOnly({ children }) {
-    const { auth, isLoading } = useAuth();
-    if (isLoading) return null;
-    if (auth.loggedIn) return <Navigate to="/dashboard" replace />;
-    return children;
-}
-
 // Guards a route to a specific user role
 function RequireRole({ allowedRoles }) {
     const { auth } = useAuth();
@@ -55,8 +47,8 @@ export default function App() {
 
                 {/* Public routes */}
                 <Route path="/" element={<Landing />} />
-                <Route path="/sign-in" element={<PublicOnly><SignInPage /></PublicOnly>} />
-                <Route path="/sign-up" element={<PublicOnly><SignUpPage /></PublicOnly>} />
+                <Route path="/sign-in" element={<SignInPage />} />
+                <Route path="/sign-up" element={<SignUpPage />} />
                 <Route path="/logout" element={<LogoutPage />} />
 
                 {/* Authenticated app */}

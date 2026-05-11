@@ -1,25 +1,16 @@
-/* DistributionBar.css */
-
-/* ── Inline variant ───────────────────── */
 .wrapping {
     display: flex;
     align-items: center;
     gap: 6px;
+    flex-shrink: 0;
 }
 
 .bar {
-    display: flex;
     width: 72px;
     height: 6px;
     border-radius: 99px;
-    overflow: hidden;
-    background: var(--acc-light);
+    flex-shrink: 0;
 }
-
-.segment { height: 100%; flex-shrink: 0; }
-.strong-segment { background: #22a84a; }
-.decent-segment { background: #EF9F27; }
-.weak-segment   { background: #E24B4A; }
 
 .bar-label { font-size: 11px; font-weight: 600; white-space: nowrap; }
 .bar-label--strong { color: #1D6B2E; }
@@ -28,21 +19,11 @@
 
 .separator { font-size: 11px; color: var(--muted); }
 
-/* ── List variant ────────────────────────────────────────────────────────── */
 .dist-list { display: flex; flex-direction: column; gap: 6px; }
 
-.list-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
+.list-row { display: flex; align-items: center; gap: 8px; }
 
-.list-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
+.list-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 
 .list-label { font-size: 11px; color: var(--muted); flex: 1; }
 
@@ -56,10 +37,4 @@
 
 .list-fill { height: 100%; border-radius: 99px; }
 
-.list-count {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text);
-    min-width: 22px;
-    text-align: right;
-}
+.list-count { font-size: 11px; font-weight: 600; color: var(--text); min-width: 22px; text-align: right; }

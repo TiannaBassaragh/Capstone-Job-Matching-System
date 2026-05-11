@@ -1,0 +1,23 @@
+.topnav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.topnav-username {
+    font-size: 0.9rem;
+    color: var(--tm-fg-muted);
+}
+
+.topnav-logout {
+    color: #b33a35;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 8px;
+    transition: background 150ms, color 150ms;
+}
+
+.topnav-logout:hover {
+    background: #ffe3e2;
+    color: #8a1f1c;
+}

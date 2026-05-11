@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import AppHeader from "../../components/auth/AppHeader";
 
 export default function LandingPage() {
+    const { auth } = useAuth();
+
     return (
         <div className="tm-root">
             <AppHeader />
@@ -20,8 +23,16 @@ export default function LandingPage() {
                                 clear explanations of why a result is strong, weak, or incomplete.
                             </p>
                             <div className="cta-row">
-                                <Link className="button primary" to="/sign-up">Create account</Link>
-                                <Link className="button secondary" to="/sign-in">Sign in</Link>
+                                {auth.loggedIn ? (
+                                    <Link className="button primary" to="/dashboard">
+                                        Go to dashboard →
+                                    </Link>
+                                ) : (
+                                    <>
+                                        <Link className="button primary" to="/sign-up">Create account</Link>
+                                        <Link className="button secondary" to="/sign-in">Sign in</Link>
+                                    </>
+                                )}
                             </div>
                         </div>
 

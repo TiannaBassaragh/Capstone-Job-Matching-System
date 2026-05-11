@@ -1,5 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import "./AppHeader.css";
 
 export default function AppHeader() {
     const { auth } = useAuth();
@@ -11,12 +12,8 @@ export default function AppHeader() {
                 <nav className="topnav">
                     {auth.loggedIn ? (
                         <>
-                            <span style={{ fontSize: "0.93rem" }}>
-                                Signed in as <strong>{auth.userName}</strong>
-                            </span>
-                            <Link to="/dashboard" style={{ fontWeight: 700, color: "var(--tm-blue)" }}>
-                                Go to dashboard
-                            </Link>
+                            <span className="topnav-username">{auth.userName}</span>
+                            <Link to="/logout" className="topnav-logout">Log out</Link>
                         </>
                     ) : (
                         <>

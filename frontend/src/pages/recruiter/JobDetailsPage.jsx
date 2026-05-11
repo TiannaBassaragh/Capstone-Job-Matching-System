@@ -166,11 +166,15 @@ export default function JobDetailsPage() {
             )}
 
             {activeTab === "candidates" && (
-                <CandidatesSection candidates={candidates} jobId={jobId} />
+                <div style={{ marginTop: "13px" }}>
+                    <CandidatesSection candidates={candidates} jobId={jobId} />
+                </div>
             )}
 
             {activeTab === "questions" && (
-                <RecruiterQuestionsSection jobId={jobId} />
+                <div style={{ marginTop: "13px" }}>
+                    <RecruiterQuestionsSection jobId={jobId} />
+                </div>
             )}
 
             {showDelete && (
