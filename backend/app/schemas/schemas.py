@@ -81,11 +81,21 @@ class ResumeResponse(BaseModel):
 class JobPostCreate(BaseModel):
   title: str
   description: str
+  location:   Optional[str] = None
+  work_type:  Optional[str] = None
+  pay_low:    Optional[int] = None
+  pay_high:   Optional[int] = None
+  experience: Optional[str] = None
 
 
 class JobPostUpdate(BaseModel):
-  title: Optional[str] = None
+  title:      Optional[str] = None
   description: Optional[str] = None
+  location:   Optional[str] = None
+  work_type:  Optional[str] = None
+  pay_low:    Optional[int] = None
+  pay_high:   Optional[int] = None
+  experience: Optional[str] = None
 
 
 class JobPostResponse(BaseModel):
@@ -93,6 +103,11 @@ class JobPostResponse(BaseModel):
   employer_id: int
   title: str
   description: str
+  location:   Optional[str] = None
+  work_type:  Optional[str] = None
+  pay_low:    Optional[int] = None
+  pay_high:   Optional[int] = None
+  experience: Optional[str] = None
   is_active: bool = True
   created_at: datetime
 

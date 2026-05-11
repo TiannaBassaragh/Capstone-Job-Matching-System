@@ -73,7 +73,12 @@ class JobPost(Base):
   employer_id   = Column(Integer, ForeignKey("employers.employer_id", ondelete="CASCADE"), nullable=False)
   title         = Column(String(200))
   description   = Column(Text)
-  tech_keywords = Column(JSON, nullable=True)   # extracted from job description
+  location      = Column(String(50),  nullable=True)
+  work_type     = Column(String(50),  nullable=True)
+  pay_low       = Column(Integer,     nullable=True)
+  pay_high      = Column(Integer,     nullable=True)
+  experience    = Column(String(50),  nullable=True)
+  tech_keywords = Column(JSON, nullable=True)
   is_active     = Column(Boolean, default=True, nullable=False)
   created_at    = Column(TIMESTAMP, server_default=func.now())
 

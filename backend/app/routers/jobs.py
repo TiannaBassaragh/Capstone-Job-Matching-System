@@ -41,9 +41,14 @@ def create_job(
   employer = get_employer_or_404(current_user, db)
 
   job = JobPost(
-    employer_id=employer.employer_id,
-    title=payload.title,
-    description=payload.description
+    employer_id = employer.employer_id,
+    title       = payload.title,
+    description = payload.description,
+    location    = payload.location,
+    work_type   = payload.work_type,
+    pay_low     = payload.pay_low,
+    pay_high    = payload.pay_high,
+    experience  = payload.experience,
   )
   db.add(job)
   db.commit()
