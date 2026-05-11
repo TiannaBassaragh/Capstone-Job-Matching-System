@@ -8,7 +8,10 @@ export default function AppHeader() {
     return (
         <header className="topbar">
             <div className="container topbar-inner">
-                <Link to="/" className="brand-mark">Transparent Match</Link>
+                <Link to="/" className="brand-mark">
+                    <img src="/favicon.svg" alt="" width="24" height="24" style={{ borderRadius: "6px" }} />
+                    Transparent Match
+                </Link>
                 <nav className="topnav">
                     {auth.loggedIn ? (
                         <>

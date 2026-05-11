@@ -253,3 +253,9 @@
 .sb-logout:hover .sb-icon {
     color: #b91c1c;
 }
+
+.brand-mark {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}

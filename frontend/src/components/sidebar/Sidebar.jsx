@@ -52,9 +52,9 @@ export default function Sidebar() {
             <aside className={`sb-panel${open ? " sb-panel--open" : ""}`}>
 
                 <button className="sb-logo" onClick={() => handleNav("/")} aria-label="Go to home">
-                    <div className="sb-logo-mark">{icons.logoMark}</div>
+                    <img src="/favicon.svg" alt="" width="28" height="28" style={{ borderRadius: "7px", flexShrink: 0 }} />
                     <div>
-                        <div className="sb-logo-name">Job Matcher</div>
+                        <div className="sb-logo-name">Transparent Match</div>
                         <div className="sb-logo-tag">
                             {auth.userType === "applicant" ? "Job seeker" : "Recruiter"}
                         </div>
