@@ -1,0 +1,133 @@
+/* RoleSelect.css */
+
+.rs-shell {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.rs-card {
+    background: #EEF3FD;
+    border-radius: 20px;
+    box-shadow: 0 4px 32px rgba(75,127,227,0.13), 0 1px 4px rgba(75,127,227,0.08);
+    padding: 40px 36px 36px;
+    width: 100%;
+    max-width: 440px;
+    position: relative;
+    z-index: 1;
+}
+
+.rs-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.rs-logo {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    background: var(--acc-hero);
+    color: var(--acc-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 700;
+    margin: 0 auto 18px;
+    letter-spacing: 0.03em;
+}
+
+.rs-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.3px;
+    margin-bottom: 6px;
+}
+
+.rs-sub {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.rs-options {
+    display: flex;
+    flex-direction: column;
+}
+
+.rs-option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 14px;
+    border-radius: 12px;
+    border: 1.5px solid var(--acc-mid);
+    background: #fff;
+    cursor: pointer;
+    transition: border-color .15s, background .15s, box-shadow .15s;
+    text-align: left;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    width: 100%;
+}
+
+.rs-option:hover {
+    border-color: var(--acc);
+    background: var(--acc-light);
+    box-shadow: 0 2px 12px rgba(75,127,227,0.1);
+}
+
+.rs-option:active {
+    transform: scale(0.99);
+}
+
+.rs-option-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+
+.rs-option-icon--candidate {
+    background: var(--acc-light);
+    color: var(--acc-dark);
+}
+
+.rs-option-icon--employer {
+    background: #FFF3E0;
+    color: #854F0B;
+}
+
+.rs-option-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.rs-option-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.rs-option-desc {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.rs-option-arrow {
+    color: var(--muted);
+    flex-shrink: 0;
+    transition: color .15s, transform .15s;
+}
+
+.rs-option:hover .rs-option-arrow {
+    color: var(--acc);
+    transform: translateX(2px);
+}
+
+.rs-divider {
+    height: 1px;
+    background: var(--acc-light);
+    margin: 6px 0;
+}

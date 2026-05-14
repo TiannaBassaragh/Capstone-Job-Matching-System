@@ -1,0 +1,120 @@
+/* MatchDetails.css — layout only; row-level styles now live with their components */
+
+.match-details-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: 13px;
+    align-items: start;
+}
+
+.match-details-left,
+.match-details-right {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.match-details-right {
+    position: sticky;
+    top: 16px;
+}
+
+.section-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted);
+    margin-bottom: 10px;
+}
+
+.why-text {
+    font-size: 13px;
+    color: var(--subtext);
+    line-height: 1.7;
+}
+
+.why-heading {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--text);
+    margin: 12px 0 4px;
+}
+
+.why-heading:first-child { margin-top: 0; }
+
+.why-bullets {
+    margin: 0 0 4px 16px;
+    padding: 0;
+    list-style: disc;
+}
+
+.why-bullets li {
+    font-size: 13px;
+    color: var(--subtext);
+    line-height: 1.6;
+    margin-bottom: 3px;
+}
+
+.muted-message {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.muted-message-link {
+    color: var(--acc);
+    font-weight: 600;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+/* ── Interest button ──────────────────────────────────────────────────── */
+
+.interest-btn {
+    width: 100%;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--acc-light);
+    border: 1.5px solid var(--acc-mid);
+    color: var(--acc-dark);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: background .15s, border-color .15s;
+}
+
+.interest-btn:hover:not(:disabled) {
+    border-color: var(--acc);
+    background: #dde9fb;
+}
+
+.interest-btn--active {
+    background: #FBEAF0;
+    border-color: #E8A0B9;
+    color: #72243E;
+    cursor: default;
+}
+
+.interest-btn:disabled { opacity: 0.7; cursor: default; }
+
+.shortlisted-badge {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #0F6E56;
+    background: #E1F5EE;
+    padding: 6px 10px;
+    border-radius: 6px;
+}
