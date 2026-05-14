@@ -1,0 +1,250 @@
+/* QuestionsPage.css */
+
+.q-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: 13px;
+    align-items: start;
+}
+
+.q-main,
+.q-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.section-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted);
+    margin-bottom: 14px;
+}
+
+/* Question card */
+
+.q-card {
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    margin-top: 16px;
+}
+
+.q-card:first-child {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+}
+
+.q-chips {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.q-chip {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 5px;
+}
+
+.q-chip--competency {
+    background: var(--acc-light);
+    color: var(--acc-dark);
+}
+
+.q-chip--reason {
+    background: #FFF3E0;
+    color: #854F0B;
+}
+
+.q-element {
+    font-size: 10px;
+    color: var(--muted);
+    margin-left: auto;
+}
+
+.q-text {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.65;
+    margin-bottom: 10px;
+}
+
+.q-textarea {
+    width: 100%;
+    padding: 9px 11px;
+    border: 1.5px solid var(--acc-mid);
+    border-radius: var(--border-radius-md);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    resize: vertical;
+    background: var(--acc-light);
+    color: var(--text);
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color .15s;
+}
+
+.q-textarea:focus { border-color: var(--acc); }
+.q-textarea::placeholder { color: var(--muted); }
+
+.q-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+
+.q-submit {
+    padding: 7px 16px;
+    background: var(--acc);
+    border: none;
+    border-radius: var(--border-radius-md);
+    color: #fff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s;
+}
+
+.q-submit:disabled { opacity: .45; cursor: not-allowed; }
+.q-submit:not(:disabled):hover { background: var(--acc-dark); }
+
+.q-error {
+    font-size: 12px;
+    color: #a32d2d;
+    margin-bottom: 8px;
+}
+
+/* Empty / loading */
+
+.q-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 28px 0 16px;
+    gap: 8px;
+}
+
+.q-empty-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.q-empty-sub {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 280px;
+}
+
+.q-loading {
+    font-size: 13px;
+    color: var(--muted);
+    padding: 16px 0;
+}
+
+/* Resolved list */
+
+.q-resolved-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.q-resolved-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.q-resolved-row:last-child { border-bottom: none; padding-bottom: 0; }
+
+.q-resolved-text {
+    font-size: 12px;
+    color: var(--subtext);
+    line-height: 1.5;
+}
+
+.q-resolved-answer {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+}
+
+/* Sidebar info */
+
+.q-info-text {
+    font-size: 12px;
+    color: var(--subtext);
+    line-height: 1.7;
+    margin-bottom: 12px;
+}
+
+.q-info-points {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.q-info-point {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--subtext);
+    line-height: 1.5;
+}
+
+.q-info-point svg { flex-shrink: 0; margin-top: 1px; }
+
+/* Stats */
+
+.q-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.q-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.q-stat-label { font-size: 12px; color: var(--muted); }
+
+.q-stat-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.q-stat-value--green { color: #0F6E56; }
+
+.q-refresh {
+    width: 100%;
+    padding: 7px;
+    background: var(--acc-light);
+    border: 1.5px solid var(--acc-mid);
+    border-radius: var(--border-radius-md);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--subtext);
+    cursor: pointer;
+    transition: border-color .15s;
+}
+
+.q-refresh:hover { border-color: var(--acc); color: var(--acc-dark); }

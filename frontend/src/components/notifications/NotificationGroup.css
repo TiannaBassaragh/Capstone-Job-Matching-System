@@ -1,0 +1,21 @@
+/* NotificationGroup.css */
+
+.notification-group { margin-bottom: 8px; }
+
+.notification-group-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--muted);
+    margin-bottom: 6px;
+    padding: 0 2px;
+}
+
+.notification-group-list { padding: 0; }
+
+.notification-group-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0 16px;
+}

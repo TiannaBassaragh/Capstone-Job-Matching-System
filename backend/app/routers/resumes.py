@@ -1,0 +1,197 @@
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, UploadFile, File, status
+from fastapi.responses import Response
+from sqlalchemy.orm import Session
+from typing import Optional
+from app.database import get_db
+from app.models.models import Resume, Candidate, User, Match, CandidateCompetency, Notification
+from app.schemas.schemas import ResumeResponse
+from app.core.dependencies import get_current_user, require_applicant
+from app.services.resume_parser import parse_resume_bytes
+from app.services.scorer import score_resume
+from app.routers.matches import _run_candidate_matching
+
+router = APIRouter(prefix="/resumes", tags=["Resumes"])
+
+ALLOWED_TYPES = {"application/pdf", "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document"}
+
+
+def get_candidate_or_404(user: User, db: Session) -> Candidate:
+  candidate = db.query(Candidate).filter(Candidate.user_id == user.user_id).first()
+  if not candidate:
+    raise HTTPException(
+      status_code=status.HTTP_404_NOT_FOUND,
+      detail="Candidate profile not found"
+    )
+  return candidate
+
+
+def get_resume_or_404(resume_id: int, db: Session) -> Resume:
+  resume = db.query(Resume).filter(Resume.resume_id == resume_id).first()
+  if not resume:
+    raise HTTPException(
+      status_code=status.HTTP_404_NOT_FOUND,
+      detail="Resume not found"
+    )
+  return resume
+
+
+@router.get("/me", response_model=Optional[ResumeResponse])
+def get_my_latest_resume(
+  db: Session = Depends(get_db),
+  current_user: User = Depends(require_applicant)
+):
+  """Return the candidate's most recent resume metadata, or null if none exists."""
+  candidate = get_candidate_or_404(current_user, db)
+  return (
+    db.query(Resume)
+    .filter(Resume.candidate_id == candidate.candidate_id)
+    .order_by(Resume.upload_date.desc())
+    .first()
+  )
+
+
+@router.post("/", response_model=ResumeResponse, status_code=status.HTTP_201_CREATED)
+async def upload_resume(
+  background_tasks: BackgroundTasks,
+  file: UploadFile = File(...),
+  db: Session = Depends(get_db),
+  current_user: User = Depends(require_applicant)
+):
+  if file.content_type not in ALLOWED_TYPES:
+    raise HTTPException(
+      status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+      detail="Only PDF and Word documents are accepted"
+    )
+
+  candidate = get_candidate_or_404(current_user, db)
+  contents = await file.read()
+
+  resume = Resume(candidate_id=candidate.candidate_id, resume_file=contents)
+  db.add(resume)
+  db.commit()
+  db.refresh(resume)
+  score_resume(candidate, resume, db)
+  background_tasks.add_task(_run_candidate_matching, candidate.candidate_id)
+  return resume
+
+
+@router.get("/{resume_id}", response_model=ResumeResponse)
+def get_resume(
+  resume_id: int,
+  db: Session = Depends(get_db),
+  current_user: User = Depends(require_applicant)
+):
+  candidate = get_candidate_or_404(current_user, db)
+  resume = get_resume_or_404(resume_id, db)
+
+  if resume.candidate_id != candidate.candidate_id:
+    raise HTTPException(
+      status_code=status.HTTP_403_FORBIDDEN,
+      detail="You can only access your own resumes"
+    )
+
+  return resume
+
+
+@router.get("/{resume_id}/download")
+def download_resume(
+  resume_id: int,
+  db: Session = Depends(get_db),
+  current_user: User = Depends(require_applicant)
+):
+  candidate = get_candidate_or_404(current_user, db)
+  resume = get_resume_or_404(resume_id, db)
+
+  if resume.candidate_id != candidate.candidate_id:
+    raise HTTPException(
+      status_code=status.HTTP_403_FORBIDDEN,
+      detail="You can only access your own resumes"
+    )
+
+  return Response(
+    content=resume.resume_file,
+    media_type="application/octet-stream",
+    headers={"Content-Disposition": f"attachment; filename=resume_{resume_id}.pdf"}
+  )
+
+
+@router.get("/{resume_id}/parse")
+def parse_resume(
+  resume_id: int,
+  db: Session = Depends(get_db),
+  current_user: User = Depends(require_applicant)
+):
+  candidate = get_candidate_or_404(current_user, db)
+  resume = get_resume_or_404(resume_id, db)
+
+  if resume.candidate_id != candidate.candidate_id:
+    raise HTTPException(
+      status_code=status.HTTP_403_FORBIDDEN,
+      detail="You can only parse your own resumes"
+    )
+
+  try:
+    text = parse_resume_bytes(resume.resume_file)
+  except ValueError as e:
+    raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e))
+
+  return {"resume_id": resume_id, "text": text}
+
+
+@router.put("/{resume_id}", response_model=ResumeResponse)
+async def update_resume(
+  resume_id: int,
+  background_tasks: BackgroundTasks,
+  file: UploadFile = File(...),
+  db: Session = Depends(get_db),
+  current_user: User = Depends(require_applicant)
+):
+  if file.content_type not in ALLOWED_TYPES:
+    raise HTTPException(
+      status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+      detail="Only PDF and Word documents are accepted"
+    )
+
+  candidate = get_candidate_or_404(current_user, db)
+  resume = get_resume_or_404(resume_id, db)
+
+  if resume.candidate_id != candidate.candidate_id:
+    raise HTTPException(
+      status_code=status.HTTP_403_FORBIDDEN,
+      detail="You can only update your own resumes"
+    )
+
+  resume.resume_file = await file.read()
+  db.commit()
+  db.refresh(resume)
+  score_resume(candidate, resume, db)
+  background_tasks.add_task(_run_candidate_matching, candidate.candidate_id)
+  return resume
+
+
+@router.delete("/{resume_id}", status_code=status.HTTP_200_OK)
+def delete_resume(
+  resume_id: int,
+  db: Session = Depends(get_db),
+  current_user: User = Depends(require_applicant)
+):
+  candidate = get_candidate_or_404(current_user, db)
+  resume = get_resume_or_404(resume_id, db)
+
+  if resume.candidate_id != candidate.candidate_id:
+    raise HTTPException(
+      status_code=status.HTTP_403_FORBIDDEN,
+      detail="You can only delete your own resumes"
+    )
+
+  # Delete matches (and notifications linked to those matches) + competencies
+  match_ids = [m.match_id for m in db.query(Match.match_id).filter(Match.candidate_id == candidate.candidate_id).all()]
+  if match_ids:
+    db.query(Notification).filter(Notification.match_id.in_(match_ids)).delete(synchronize_session=False)
+    db.query(Match).filter(Match.candidate_id == candidate.candidate_id).delete(synchronize_session=False)
+  db.query(CandidateCompetency).filter(CandidateCompetency.candidate_id == candidate.candidate_id).delete(synchronize_session=False)
+
+  db.delete(resume)
+  db.commit()
+  return {"message": "Resume deleted successfully"}

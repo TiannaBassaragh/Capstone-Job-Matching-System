@@ -1,0 +1,197 @@
+/* FilterBar.css */
+
+/* ── Filter area wrapper ─────────────────────────────────────────────────── */
+
+.filter-area {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-bottom: 6px;
+}
+
+/* ── Filter pills ────────────────────────────────────────────────────────── */
+
+.filter-pill-row {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.filter-pill {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1.5px solid var(--acc-mid);
+    background: var(--acc-light);
+    color: var(--acc-dark);
+    cursor: pointer;
+    white-space: nowrap;
+    user-select: none;
+    transition: all .15s;
+}
+
+.filter-pill:hover { 
+    border-color: var(--acc); 
+}
+.filter-pill-on { 
+    background: var(--acc); 
+    border-color: var(--acc); 
+    color: #fff; 
+}
+.filter-pill-cp { 
+    border-style: dashed; 
+    background: #fff; 
+    color: var(--muted); 
+}
+.filter-pill-cp.filter-pill-on { 
+    border-style: solid; 
+    background: var(--acc); 
+    color: #fff; 
+}
+
+/* ── Custom filter bar ───────────────────────────────────────────────────── */
+
+.filter-custom-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    background: var(--acc-bar);
+    border: 1.5px solid var(--acc-mid);
+    padding: 9px 18px;
+}
+ 
+.filter-custom-condition {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex-shrink: 0;
+}
+ 
+.filter-custom-checkbox {
+    width: 14px;
+    height: 14px;
+    accent-color: var(--acc);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.filter-custom-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--acc-dark);
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.filter-custom-unit {
+    font-size: 11px;
+    color: var(--muted);
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+/* ── Stepper ─────────────────────────────────────────────────────────────── */
+ 
+.filter-stepper {
+    display: inline-grid;
+    grid-template-columns: 24px 1px 36px 1px 24px;
+    align-items: center;
+    height: 27px;
+    border: 1.5px solid var(--acc-mid);
+    border-radius: 8px;
+    background: #fff;
+    overflow: hidden;
+    flex-shrink: 0;
+    transition: opacity .15s;
+}
+ 
+.filter-stepper--dim { 
+    opacity: 0.4; 
+    pointer-events: none; 
+}
+
+.filter-stepper-btn {
+    width: 24px;
+    height: 27px;
+    border: none;
+    background: #fff;
+    color: var(--acc);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: background .12s;
+}
+
+.filter-stepper-btn:hover:not(:disabled) { 
+    background: var(--acc-light); 
+}
+.filter-stepper-btn:disabled { 
+    cursor: default; 
+}
+
+.filter-stepper-divider {
+    width: 1px;
+    height: 16px;
+    background: var(--acc-mid);
+}
+
+.filter-stepper-input {
+    width: 36px;
+    height: 27px;
+    border: none;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: #0d1e3a;
+    background: #fff;
+    text-align: center;
+    outline: none;
+    -moz-appearance: textfield;
+    appearance: textfield;
+    padding: 0;
+}
+
+.filter-stepper-input::-webkit-outer-spin-button,
+.filter-stepper-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* ── Apply + active tag ──────────────────────────────────────────────────── */
+
+.filter-apply-btn {
+    height: 27px;
+    min-width: 52px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: none;
+    background: var(--acc);
+    color: #fff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.filter-apply-btn:hover { background: var(--acc-dark); }
+
+.filter-active-tag {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--acc);
+    background: var(--acc-light);
+    padding: 2px 9px;
+    border-radius: 20px;
+    border: 1.5px solid var(--acc-mid);
+    flex-shrink: 0;
+    white-space: nowrap;
+}

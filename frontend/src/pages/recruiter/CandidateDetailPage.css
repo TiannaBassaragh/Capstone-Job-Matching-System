@@ -1,0 +1,30 @@
+/* CandidateDetailPage.css — layout only; profile-card styles now live in CandidateProfilePanel.css */
+
+.candidate-detail-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+    gap: 13px;
+    align-items: start;
+}
+
+.candidate-detail-left,
+.candidate-detail-right {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.candidate-detail-left {
+    position: sticky;
+    top: 16px;
+}
+
+.muted-message {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.muted-message-sm {
+    color: var(--muted);
+    font-size: 12px;
+}

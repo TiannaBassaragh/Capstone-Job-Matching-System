@@ -37,3 +37,9 @@ site/
 htmlcov/
 .coverage*
 coverage.xml
+
+# Misc
+Tables.sql
+smoke_test.sh
+vacancy-resume-matching-dataset-main/
+job_postings/

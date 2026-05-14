@@ -1,0 +1,1114 @@
+{
+  "detect_exact_2.B.3.e_combined": {
+    "competencies": {
+      "2.B.3.e": {
+        "level": 75
+      },
+      "2.B.2.i": {
+        "level": 70
+      },
+      "2.A.2.a": {
+        "level": 72
+      },
+      "2.A.2.b": {
+        "level": 68
+      },
+      "1.A.1.b.4": {
+        "level": 70
+      },
+      "1.A.1.b.5": {
+        "level": 70
+      },
+      "2.C.3.a": {
+        "level": 78
+      },
+      "4.A.2.b.1": {
+        "level": 72
+      },
+      "4.A.2.b.3": {
+        "level": 68
+      }
+    },
+    "tech_keywords": []
+  },
+  "detect_syn_2.B.3.e_combined": {
+    "competencies": {
+      "2.B.3.e": {
+        "level": 75
+      },
+      "2.C.3.a": {
+        "level": 75
+      },
+      "2.A.2.a": {
+        "level": 70
+      },
+      "2.A.1.a": {
+        "level": 70
+      },
+      "2.A.1.c": {
+        "level": 70
+      },
+      "2.B.4.g": {
+        "level": 65
+      },
+      "2.B.2.i": {
+        "level": 65
+      },
+      "1.A.1.b.4": {
+        "level": 70
+      },
+      "1.A.1.b.5": {
+        "level": 70
+      },
+      "4.A.2.a.4": {
+        "level": 70
+      },
+      "4.A.3.b.1": {
+        "level": 75
+      }
+    },
+    "tech_keywords": []
+  },
+  "detect_exact_2.A.2.a_combined": {
+    "competencies": {
+      "2.A.2.a": {
+        "level": 86
+      },
+      "1.A.1.b.3": {
+        "level": 86
+      },
+      "1.A.1.b.4": {
+        "level": 80
+      },
+      "1.A.1.b.5": {
+        "level": 80
+      },
+      "2.B.4.e": {
+        "level": 80
+      },
+      "4.A.2.b.1": {
+        "level": 86
+      }
+    },
+    "tech_keywords": []
+  },
+  "detect_syn_2.A.2.a_combined": {
+    "competencies": {
+      "2.A.2.a": {
+        "level": 75
+      },
+      "2.B.4.e": {
+        "level": 75
+      },
+      "1.A.1.b.3": {
+        "level": 70
+      },
+      "1.A.1.b.4": {
+        "level": 70
+      },
+      "4.A.2.a.4": {
+        "level": 75
+      },
+      "4.A.2.b.1": {
+        "level": 75
+      }
+    },
+    "tech_keywords": []
+  },
+  "detect_exact_2.B.2.i_combined": {
+    "competencies": {
+      "2.B.2.i": {
+        "level": 86
+      },
+      "2.A.2.a": {
+        "level": 86
+      },
+      "2.A.2.b": {
+        "level": 80
+      },
+      "4.A.2.a.4": {
+        "level": 85
+      },
+      "4.A.2.b.1": {
+        "level": 85
+      },
+      "1.A.1.b.3": {
+        "level": 85
+      }
+    },
+    "tech_keywords": []
+  },
+  "detect_syn_2.B.2.i_combined": {
+    "competencies": {
+      "2.B.2.i": {
+        "level": 75
+      },
+      "2.A.2.a": {
+        "level": 75
+      },
+      "1.A.1.b.3": {
+        "level": 70
+      },
+      "1.A.1.b.4": {
+        "level": 70
+      },
+      "2.A.2.b": {
+        "level": 70
+      },
+      "4.A.2.b.1": {
+        "level": 75
+      }
+    },
+    "tech_keywords": []
+  },
+  "detect_exact_2.B.5.d_combined": {
+    "competencies": {
+      "2.B.5.d": {
+        "level": 86
+      },
+      "4.A.4.b.4": {
+        "level": 86
+      },
+      "4.A.4.b.5": {
+        "level": 86
+      },
+      "4.A.4.b.2": {
+        "level": 80
+      },
+      "2.B.1.a": {
+        "level": 80
+      },
+      "4.A.4.a.2": {
+        "level": 80
+      },
+      "4.A.2.b.4": {
+        "level": 75
+      },
+      "2.B.4.e": {
+        "level": 75
+      },
+      "2.C.1.f": {
+        "level": 86
+      }
+    },
+    "tech_keywords": []
+  },
+  "detect_syn_2.B.5.d_combined": {
+    "competencies": {
+      "2.B.5.d": {
+        "level": 86
+      },
+      "4.A.4.b.2": {
+        "level": 86
+      },
+      "4.A.4.b.4": {
+        "level": 86
+      },
+      "4.A.4.b.5": {
+        "level": 80
+      },
+      "2.B.1.a": {
+        "level": 80
+      },
+      "4.A.4.a.2": {
+        "level": 80
+      },
+      "2.B.4.e": {
+        "level": 75
+      },
+      "4.A.4.c.2": {
+        "level": 75
+      },
+      "2.C.1.f": {
+        "level": 75
+      },
+      "4.A.4.b.3": {
+        "level": 70
+      },
+      "2.B.1.c": {
+        "level": 70
+      },
+      "2.A.2.a": {
+        "level": 70
+      }
+    },
+    "tech_keywords": []
+  },
+  "detect_exact_2.B.1.f_combined": {
+    "competencies": {
+      "2.B.1.f": {
+        "level": 86
+      }
+    },
+    "tech_keywords": []
+  },
+  "detect_syn_2.B.1.f_combined": {
+    "competencies": {
+      "2.B.1.f": {
+        "level": 86
+      },
+      "2.B.1.a": {
+        "level": 78
+      },
+      "4.A.4.a.5": {
+        "level": 75
+      },
+      "4.A.4.a.4": {
+        "level": 72
+      },
+      "2.B.4.e": {
+        "level": 70
+      }
+    },
+    "tech_keywords": []
+  },
+  "detect_exact_2.C.3.a_combined": {
+    "competencies": {
+      "2.C.3.a": {
+        "level": 86
+      },
+      "2.C.3.b": {
+        "level": 86
+      },
+      "2.B.3.e": {
+        "level": null
+      },
+      "2.A.2.b": {
+        "level": null
+      }
+    },
+    "tech_keywords": []
+  },
+  "detect_syn_2.C.3.a_combined": {
+    "competencies": {
+      "2.C.3.a": {
+        "level": 70
+      },
+      "2.C.3.b": {
+        "level": 57
+      },
+      "4.A.3.b.5": {
+        "level": 57
+      },
+      "2.A.2.b": {
+        "level": null
+      },
+      "1.A.1.b.4": {
+        "level": null
+      }
+    },
+    "tech_keywords": []
+  },
+  "range_job_combined": {
+    "competencies": {
+      "2.B.3.e": {
+        "required_level": 80,
+        "importance": 0.95,
+        "requirement_type": "required"
+      },
+      "2.A.2.a": {
+        "required_level": 75,
+        "importance": 0.9,
+        "requirement_type": "required"
+      },
+      "2.B.2.i": {
+        "required_level": 80,
+        "importance": 0.9,
+        "requirement_type": "required"
+      },
+      "2.C.3.a": {
+        "required_level": 85,
+        "importance": 0.95,
+        "requirement_type": "required"
+      },
+      "2.A.2.b": {
+        "required_level": null,
+        "importance": 0.7,
+        "requirement_type": "preferred"
+      },
+      "1.A.1.b.4": {
+        "required_level": 75,
+        "importance": 0.85,
+        "requirement_type": "required"
+      },
+      "1.A.1.b.5": {
+        "required_level": 75,
+        "importance": 0.85,
+        "requirement_type": "required"
+      },
+      "2.B.3.k": {
+        "required_level": 75,
+        "importance": 0.85,
+        "requirement_type": "required"
+      }
+    },
+    "tech_keywords": []
+  },
+  "range_high_combined": {
+    "competencies": {
+      "2.C.3.a": {
+        "level": 88
+      },
+      "2.A.2.a": {
+        "level": 86
+      },
+      "2.B.2.i": {
+        "level": 86
+      },
+      "2.A.2.b": {
+        "level": 80
+      },
+      "1.A.1.b.4": {
+        "level": 82
+      },
+      "1.A.1.b.5": {
+        "level": 82
+      },
+      "2.B.4.g": {
+        "level": 78
+      },
+      "2.A.1.a": {
+        "level": null
+      },
+      "4.A.2.b.3": {
+        "level": 80
+      }
+    },
+    "tech_keywords": [
+      "go",
+      "oracle java",
+      "python"
+    ]
+  },
+  "range_medium_combined": {
+    "competencies": {
+      "2.C.3.a": {
+        "level": 28
+      },
+      "2.B.2.i": {
+        "level": 28
+      },
+      "2.A.2.a": {
+        "level": 57
+      },
+      "1.A.1.b.3": {
+        "level": null
+      },
+      "4.A.3.b.1": {
+        "level": 57
+      }
+    },
+    "tech_keywords": [
+      "python"
+    ]
+  },
+  "range_low_combined": {
+    "competencies": {
+      "2.B.1.f": {
+        "level": 86
+      },
+      "2.B.1.c": {
+        "level": 80
+      },
+      "4.A.4.a.6": {
+        "level": 80
+      },
+      "4.A.4.b.4": {
+        "level": 75
+      },
+      "4.A.4.b.1": {
+        "level": 75
+      },
+      "2.B.5.c": {
+        "level": 75
+      },
+      "2.B.5.a": {
+        "level": 70
+      },
+      "4.A.4.a.2": {
+        "level": 75
+      },
+      "4.A.4.a.3": {
+        "level": 70
+      },
+      "2.A.1.d": {
+        "level": 75
+      },
+      "2.B.4.e": {
+        "level": 70
+      },
+      "4.A.2.b.6": {
+        "level": 70
+      },
+      "2.B.1.b": {
+        "level": 70
+      },
+      "2.C.1.a": {
+        "level": 65
+      },
+      "2.C.1.e": {
+        "level": 80
+      },
+      "2.C.2.a": {
+        "level": 60
+      }
+    },
+    "tech_keywords": []
+  },
+  "disc_job_combined": {
+    "competencies": {
+      "2.B.3.e": {
+        "required_level": 85,
+        "importance": 0.95,
+        "requirement_type": "required"
+      },
+      "2.A.2.a": {
+        "required_level": 80,
+        "importance": 0.9,
+        "requirement_type": "required"
+      },
+      "2.B.2.i": {
+        "required_level": 80,
+        "importance": 0.9,
+        "requirement_type": "required"
+      },
+      "2.C.3.a": {
+        "required_level": 85,
+        "importance": 0.95,
+        "requirement_type": "required"
+      },
+      "4.A.3.b.1": {
+        "required_level": 80,
+        "importance": 0.9,
+        "requirement_type": "required"
+      },
+      "2.B.3.b": {
+        "required_level": 75,
+        "importance": 0.7,
+        "requirement_type": "preferred"
+      },
+      "2.B.4.g": {
+        "required_level": 75,
+        "importance": 0.7,
+        "requirement_type": "preferred"
+      },
+      "2.A.2.b": {
+        "required_level": 75,
+        "importance": 0.75,
+        "requirement_type": "preferred"
+      }
+    },
+    "tech_keywords": [
+      "python"
+    ]
+  },
+  "disc_software_engineer_combined": {
+    "competencies": {
+      "2.B.3.e": {
+        "level": 86
+      },
+      "2.C.3.a": {
+        "level": 86
+      },
+      "2.A.2.a": {
+        "level": 80
+      },
+      "2.B.4.g": {
+        "level": 75
+      },
+      "2.B.3.b": {
+        "level": 72
+      },
+      "2.A.2.b": {
+        "level": 70
+      },
+      "4.A.3.b.1": {
+        "level": 85
+      },
+      "2.B.2.i": {
+        "level": 78
+      },
+      "2.C.3.b": {
+        "level": 68
+      }
+    },
+    "tech_keywords": [
+      "go",
+      "python",
+      "typescript"
+    ]
+  },
+  "disc_tech_project_manager_combined": {
+    "competencies": {
+      "4.A.4.b.1": {
+        "level": 86
+      },
+      "4.A.4.b.4": {
+        "level": 82
+      },
+      "4.A.2.b.6": {
+        "level": 80
+      },
+      "4.A.2.b.4": {
+        "level": 78
+      },
+      "4.A.2.b.5": {
+        "level": 80
+      },
+      "4.A.4.a.2": {
+        "level": 82
+      },
+      "4.A.4.a.3": {
+        "level": 75
+      },
+      "2.B.2.i": {
+        "level": 75
+      },
+      "2.A.2.a": {
+        "level": 76
+      },
+      "2.B.4.e": {
+        "level": 78
+      },
+      "2.B.5.a": {
+        "level": 80
+      },
+      "2.B.5.d": {
+        "level": 82
+      },
+      "2.C.3.a": {
+        "level": 57
+      },
+      "2.C.1.a": {
+        "level": 72
+      },
+      "1.A.1.b.3": {
+        "level": 75
+      },
+      "1.A.1.b.4": {
+        "level": 72
+      },
+      "2.A.1.a": {
+        "level": 80
+      },
+      "2.A.1.d": {
+        "level": 80
+      }
+    },
+    "tech_keywords": []
+  },
+  "disc_electrician_combined": {
+    "competencies": {
+      "2.B.3.k": {
+        "level": 86
+      },
+      "2.B.3.l": {
+        "level": 86
+      },
+      "2.B.3.j": {
+        "level": 82
+      },
+      "2.B.3.d": {
+        "level": 78
+      },
+      "2.A.2.a": {
+        "level": 80
+      },
+      "2.C.3.b": {
+        "level": 75
+      },
+      "2.C.3.e": {
+        "level": 72
+      },
+      "4.A.3.b.4": {
+        "level": 86
+      },
+      "4.A.3.b.5": {
+        "level": 82
+      },
+      "4.A.3.a.2": {
+        "level": 78
+      },
+      "4.A.1.b.2": {
+        "level": 80
+      },
+      "2.A.1.a": {
+        "level": 75
+      },
+      "1.A.1.b.3": {
+        "level": 82
+      },
+      "1.A.1.f.2": {
+        "level": 76
+      },
+      "1.A.3.a.3": {
+        "level": 78
+      },
+      "1.A.3.b.1": {
+        "level": 76
+      },
+      "2.B.4.e": {
+        "level": 78
+      },
+      "2.B.3.g": {
+        "level": 75
+      }
+    },
+    "tech_keywords": []
+  },
+  "disc_retail_manager_combined": {
+    "competencies": {
+      "2.B.1.f": {
+        "level": 86
+      },
+      "4.A.4.a.6": {
+        "level": 80
+      },
+      "4.A.4.a.3": {
+        "level": 78
+      },
+      "4.A.4.a.7": {
+        "level": 75
+      },
+      "4.A.4.b.4": {
+        "level": 80
+      },
+      "4.A.4.b.2": {
+        "level": 75
+      },
+      "2.B.5.a": {
+        "level": 78
+      },
+      "2.B.5.c": {
+        "level": 76
+      },
+      "2.B.4.e": {
+        "level": 72
+      },
+      "2.A.1.d": {
+        "level": 80
+      },
+      "2.B.1.b": {
+        "level": 77
+      },
+      "4.A.4.a.2": {
+        "level": 78
+      },
+      "2.B.1.c": {
+        "level": 75
+      },
+      "2.B.1.d": {
+        "level": 70
+      },
+      "4.A.4.a.4": {
+        "level": 74
+      },
+      "2.A.2.a": {
+        "level": 68
+      }
+    },
+    "tech_keywords": []
+  },
+  "consistency_run_1_combined": {
+    "competencies": {
+      "2.C.3.a": {
+        "level": 88
+      },
+      "2.A.2.a": {
+        "level": 86
+      },
+      "2.B.2.i": {
+        "level": 86
+      },
+      "2.B.4.g": {
+        "level": 82
+      },
+      "2.B.3.b": {
+        "level": 80
+      },
+      "2.A.2.b": {
+        "level": 78
+      },
+      "1.A.1.b.4": {
+        "level": 82
+      },
+      "1.A.1.b.5": {
+        "level": 80
+      },
+      "2.A.1.a": {
+        "level": null
+      },
+      "2.A.1.c": {
+        "level": null
+      },
+      "4.A.3.b.1": {
+        "level": null
+      }
+    },
+    "tech_keywords": [
+      "go",
+      "python"
+    ]
+  },
+  "consistency_run_2_combined": {
+    "competencies": {
+      "2.C.3.a": {
+        "level": 88
+      },
+      "2.A.2.a": {
+        "level": 86
+      },
+      "2.B.2.i": {
+        "level": 86
+      },
+      "2.B.4.g": {
+        "level": 82
+      },
+      "2.B.3.b": {
+        "level": 80
+      },
+      "2.A.2.b": {
+        "level": 78
+      },
+      "1.A.1.b.4": {
+        "level": 82
+      },
+      "1.A.1.b.5": {
+        "level": 80
+      },
+      "2.A.1.a": {
+        "level": null
+      },
+      "2.A.1.c": {
+        "level": null
+      },
+      "4.A.2.b.3": {
+        "level": null
+      }
+    },
+    "tech_keywords": [
+      "go",
+      "python"
+    ]
+  },
+  "pm_job_combined": {
+    "competencies": {
+      "4.A.4.b.1": {
+        "required_level": 85,
+        "importance": 0.95,
+        "requirement_type": "required"
+      },
+      "2.B.4.e": {
+        "required_level": 80,
+        "importance": 0.95,
+        "requirement_type": "required"
+      },
+      "2.B.5.d": {
+        "required_level": 85,
+        "importance": 0.95,
+        "requirement_type": "required"
+      },
+      "2.B.5.a": {
+        "required_level": 80,
+        "importance": 0.9,
+        "requirement_type": "required"
+      },
+      "2.A.2.a": {
+        "required_level": 80,
+        "importance": 0.9,
+        "requirement_type": "required"
+      },
+      "2.A.1.b": {
+        "required_level": 75,
+        "importance": 0.75,
+        "requirement_type": "preferred"
+      },
+      "2.A.1.d": {
+        "required_level": 75,
+        "importance": 0.75,
+        "requirement_type": "preferred"
+      },
+      "4.A.1.a.2": {
+        "required_level": 70,
+        "importance": 0.7,
+        "requirement_type": "preferred"
+      },
+      "1.A.1.b.3": {
+        "required_level": 75,
+        "importance": 0.7,
+        "requirement_type": "preferred"
+      }
+    },
+    "tech_keywords": []
+  },
+  "pm_senior_pm_combined": {
+    "competencies": {
+      "4.A.4.b.1": {
+        "level": 86
+      },
+      "4.A.4.b.4": {
+        "level": 86
+      },
+      "4.A.4.b.5": {
+        "level": 86
+      },
+      "2.B.4.e": {
+        "level": 86
+      },
+      "2.B.5.a": {
+        "level": 86
+      },
+      "2.A.2.a": {
+        "level": 80
+      },
+      "4.A.2.b.1": {
+        "level": 80
+      },
+      "4.A.2.b.6": {
+        "level": 86
+      },
+      "4.A.4.a.2": {
+        "level": 86
+      },
+      "4.A.4.a.3": {
+        "level": 86
+      },
+      "4.A.1.a.2": {
+        "level": 80
+      },
+      "2.A.1.c": {
+        "level": 80
+      },
+      "2.A.1.d": {
+        "level": 80
+      },
+      "4.A.2.a.4": {
+        "level": 80
+      },
+      "4.A.3.b.6": {
+        "level": 80
+      },
+      "2.B.5.b": {
+        "level": 80
+      },
+      "2.B.5.d": {
+        "level": 86
+      },
+      "1.A.1.b.3": {
+        "level": 80
+      },
+      "4.A.2.b.4": {
+        "level": 80
+      },
+      "2.B.1.a": {
+        "level": 80
+      },
+      "2.A.1.a": {
+        "level": 80
+      }
+    },
+    "tech_keywords": []
+  },
+  "pm_mid_level_pm_combined": {
+    "competencies": {
+      "2.B.5.d": {
+        "level": 75
+      },
+      "2.B.5.a": {
+        "level": 78
+      },
+      "2.B.4.e": {
+        "level": 76
+      },
+      "2.A.2.a": {
+        "level": 74
+      },
+      "2.B.1.b": {
+        "level": 77
+      },
+      "4.A.4.b.4": {
+        "level": 72
+      },
+      "4.A.4.a.2": {
+        "level": 75
+      },
+      "4.A.2.b.6": {
+        "level": 78
+      },
+      "4.A.2.b.4": {
+        "level": 74
+      },
+      "4.A.1.a.2": {
+        "level": 72
+      },
+      "2.A.1.c": {
+        "level": 70
+      },
+      "2.A.1.d": {
+        "level": 73
+      },
+      "4.A.4.a.7": {
+        "level": 68
+      },
+      "4.A.2.a.4": {
+        "level": 71
+      },
+      "2.C.1.a": {
+        "level": 76
+      }
+    },
+    "tech_keywords": []
+  },
+  "pm_junior_pm_combined": {
+    "competencies": {
+      "2.B.4.e": {
+        "level": 42
+      },
+      "2.B.5.a": {
+        "level": 65
+      },
+      "2.A.2.a": {
+        "level": 58
+      },
+      "2.B.1.b": {
+        "level": 50
+      },
+      "4.A.4.a.2": {
+        "level": 55
+      },
+      "4.A.4.b.1": {
+        "level": 45
+      },
+      "4.A.2.b.6": {
+        "level": 60
+      },
+      "2.A.1.c": {
+        "level": 55
+      },
+      "2.A.1.b": {
+        "level": 50
+      },
+      "4.A.4.c.1": {
+        "level": 58
+      },
+      "2.C.1.a": {
+        "level": 48
+      }
+    },
+    "tech_keywords": []
+  },
+  "pm_project_coordinator_combined": {
+    "competencies": {
+      "2.A.1.a": {
+        "level": 72
+      },
+      "2.A.1.c": {
+        "level": 68
+      },
+      "2.A.1.d": {
+        "level": 70
+      },
+      "2.A.2.a": {
+        "level": 65
+      },
+      "2.A.2.d": {
+        "level": 72
+      },
+      "2.B.1.b": {
+        "level": 68
+      },
+      "2.B.4.e": {
+        "level": 60
+      },
+      "2.B.5.a": {
+        "level": 72
+      },
+      "2.B.5.c": {
+        "level": 65
+      },
+      "4.A.2.a.2": {
+        "level": 70
+      },
+      "4.A.2.b.5": {
+        "level": 72
+      },
+      "4.A.2.b.6": {
+        "level": 70
+      },
+      "4.A.4.a.2": {
+        "level": 70
+      },
+      "4.A.4.c.1": {
+        "level": 72
+      },
+      "2.C.1.a": {
+        "level": 65
+      },
+      "2.C.3.a": {
+        "level": 60
+      }
+    },
+    "tech_keywords": [
+      "atlassian jira",
+      "microsoft excel",
+      "microsoft office software",
+      "microsoft project"
+    ]
+  },
+  "pm_software_developer_combined": {
+    "competencies": {
+      "2.B.2.i": {
+        "level": 75
+      },
+      "2.A.2.a": {
+        "level": 75
+      },
+      "2.C.3.a": {
+        "level": 86
+      },
+      "2.C.3.b": {
+        "level": 80
+      },
+      "2.B.3.e": {
+        "level": 86
+      },
+      "2.B.3.k": {
+        "level": 78
+      },
+      "2.B.4.g": {
+        "level": 72
+      },
+      "2.A.1.a": {
+        "level": 70
+      },
+      "2.A.1.d": {
+        "level": 60
+      },
+      "2.B.1.e": {
+        "level": 45
+      },
+      "4.A.4.a.2": {
+        "level": 65
+      },
+      "4.A.2.b.1": {
+        "level": 75
+      },
+      "4.A.2.b.3": {
+        "level": 72
+      },
+      "2.A.2.b": {
+        "level": 70
+      },
+      "1.A.1.b.3": {
+        "level": 78
+      },
+      "1.A.1.b.4": {
+        "level": 75
+      },
+      "1.A.1.b.5": {
+        "level": 76
+      }
+    },
+    "tech_keywords": []
+  }
+}

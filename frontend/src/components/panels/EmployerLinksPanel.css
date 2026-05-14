@@ -1,0 +1,36 @@
+/* EmployerLinksPanel.css */
+
+.employer-links-primary {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: var(--acc);
+    border: none;
+    border-radius: var(--border-radius-md);
+    color: #fff;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 8px;
+    transition: background .15s;
+}
+
+.employer-links-primary:hover { background: var(--acc-dark); }
+
+.employer-links-secondary {
+    display: block;
+    width: 100%;
+    padding: 9px;
+    background: transparent;
+    border: 1.5px solid var(--border);
+    border-radius: var(--border-radius-md);
+    color: var(--subtext);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color .15s;
+}
+
+.employer-links-secondary:hover { border-color: var(--acc); color: var(--acc-dark); }

@@ -1,0 +1,3497 @@
+{
+  "job_1": {
+    "2.C.3.a": {
+      "required_level": 90,
+      "importance": 1.0,
+      "requirement_type": "required"
+    },
+    "2.B.3.e": {
+      "required_level": 85,
+      "importance": 0.95,
+      "requirement_type": "required"
+    },
+    "2.B.3.k": {
+      "required_level": 75,
+      "importance": 0.85,
+      "requirement_type": "required"
+    },
+    "2.A.2.a": {
+      "required_level": 75,
+      "importance": 0.9,
+      "requirement_type": "required"
+    },
+    "2.B.2.i": {
+      "required_level": 70,
+      "importance": 0.85,
+      "requirement_type": "required"
+    },
+    "2.A.1.a": {
+      "required_level": 75,
+      "importance": 0.8,
+      "requirement_type": "required"
+    },
+    "2.A.1.c": {
+      "required_level": 75,
+      "importance": 0.8,
+      "requirement_type": "required"
+    },
+    "2.A.1.d": {
+      "required_level": 75,
+      "importance": 0.8,
+      "requirement_type": "required"
+    },
+    "2.B.1.b": {
+      "required_level": 70,
+      "importance": 0.8,
+      "requirement_type": "required"
+    },
+    "2.B.4.e": {
+      "required_level": 70,
+      "importance": 0.75,
+      "requirement_type": "required"
+    },
+    "2.B.5.a": {
+      "required_level": 70,
+      "importance": 0.75,
+      "requirement_type": "required"
+    },
+    "2.B.1.e": {
+      "required_level": 65,
+      "importance": 0.7,
+      "requirement_type": "required"
+    },
+    "2.B.1.a": {
+      "required_level": 70,
+      "importance": 0.75,
+      "requirement_type": "required"
+    },
+    "4.A.3.b.1": {
+      "required_level": 85,
+      "importance": 0.9,
+      "requirement_type": "required"
+    },
+    "4.A.3.b.5": {
+      "required_level": 75,
+      "importance": 0.8,
+      "requirement_type": "required"
+    },
+    "4.A.2.b.3": {
+      "required_level": 70,
+      "importance": 0.75,
+      "requirement_type": "required"
+    },
+    "4.A.4.a.2": {
+      "required_level": 70,
+      "importance": 0.75,
+      "requirement_type": "required"
+    },
+    "4.A.4.b.5": {
+      "required_level": 65,
+      "importance": 0.7,
+      "requirement_type": "required"
+    },
+    "4.A.2.b.6": {
+      "required_level": 70,
+      "importance": 0.75,
+      "requirement_type": "required"
+    },
+    "2.C.1.a": {
+      "required_level": 65,
+      "importance": 0.65,
+      "requirement_type": "required"
+    },
+    "2.B.3.m": {
+      "required_level": 65,
+      "importance": 0.7,
+      "requirement_type": "preferred"
+    },
+    "2.C.4.a": {
+      "required_level": 60,
+      "importance": 0.6,
+      "requirement_type": "preferred"
+    },
+    "2.C.1.c": {
+      "required_level": null,
+      "importance": 0.5,
+      "requirement_type": "preferred"
+    }
+  },
+  "job_2": {
+    "1.A.1.b.3": {
+      "required_level": 85,
+      "importance": 0.95,
+      "requirement_type": "required"
+    },
+    "1.A.1.b.4": {
+      "required_level": 80,
+      "importance": 0.9,
+      "requirement_type": "required"
+    },
+    "1.A.1.b.5": {
+      "required_level": 80,
+      "importance": 0.9,
+      "requirement_type": "required"
+    },
+    "1.A.1.c.1": {
+      "required_level": 75,
+      "importance": 0.8,
+      "requirement_type": "required"
+    },
+    "1.A.1.e.1": {
+      "required_level": 85,
+      "importance": 0.95,
+      "requirement_type": "required"
+    },
+    "1.A.4.a.1": {
+      "required_level": 80,
+      "importance": 0.85,
+      "requirement_type": "required"
+    },
+    "2.A.1.a": {
+      "required_level": 80,
+      "importance": 0.85,
+      "requirement_type": "required"
+    },
+    "2.A.1.c": {
+      "required_level": 75,
+      "importance": 0.8,
+      "requirement_type": "required"
+    },
+    "2.A.2.a": {
+      "required_level": 80,
+      "importance": 0.9,
+      "requirement_type": "required"
+    },
+    "2.A.2.b": {
+      "required_level": 75,
+      "importance": 0.8,
+      "requirement_type": "required"
+    },
+    "2.B.1.b": {
+      "required_level": 70,
+      "importance": 0.75,
+      "requirement_type": "required"
+    },
+    "2.B.2.i": {
+      "required_level": 80,
+      "importance": 0.9,
+      "requirement_type": "required"
+    },
+    "2.B.3.g": {
+      "required_level": 75,
+      "importance": 0.8,
+      "requirement_type": "required"
+    },
+    "2.B.3.k": {
+      "required_level": 75,
+      "importance": 0.85,
+      "requirement_type": "required"
+    },
+    "2.B.3.m": {
+      "required_level": 85,
+      "importance": 0.95,
+      "requirement_type": "required"
+    },
+    "2.B.4.e": {
+      "required_level": 75,
+      "importance": 0.85,
+      "requirement_type": "required"
+    },
+    "2.B.4.g": {
+      "required_level": 75,
+      "importance": 0.8,
+      "requirement_type": "required"
+    },
+    "2.C.3.a": {
+      "required_level": 85,
+      "importance": 0.95,
+      "requirement_type": "required"
+    },
+    "2.C.3.b": {
+      "required_level": 80,
+      "importance": 0.9,
+      "requirement_type": "required"
+    },
+    "2.C.3.e": {
+      "required_level": 75,
+      "importance": 0.8,
+      "requirement_type": "required"
+    },
+    "2.C.8.a": {
+      "required_level": 75,
+      "importance": 0.85,
+      "requirement_type": "required"
+    },
+    "4.A.1.a.1": {
+      "required_level": 80,
+      "importance": 0.85,
+      "requirement_type": "required"
+    },
+    "4.A.1.b.2": {
+      "required_level": 80,
+      "importance": 0.85,
+      "requirement_type": "required"
+    },
+    "4.A.2.a.3": {
+      "required_level": 80,
+      "importance": 0.9,
+      "requirement_type": "required"
+    },
+    "4.A.2.a.4": {
+      "required_level": 80,
+      "importance": 0.9,
+      "requirement_type": "required"
+    },
+    "4.A.2.b.1": {
+      "required_level": 80,
+      "importance": 0.9,
+      "requirement_type": "required"
+    },
+    "4.A.3.b.1": {
+      "required_level": 85,
+      "importance": 0.95,
+      "requirement_type": "required"
+    },
+    "4.A.3.b.4": {
+      "required_level": 75,
+      "importance": 0.8,
+      "requirement_type": "required"
+    },
+    "4.A.3.b.5": {
+      "required_level": 75,
+      "importance": 0.8,
+      "requirement_type": "required"
+    },
+    "4.A.3.b.6": {
+      "required_level": 75,
+      "importance": 0.8,
+      "requirement_type": "required"
+    },
+    "4.A.4.a.2": {
+      "required_level": 70,
+      "importance": 0.75,
+      "requirement_type": "required"
+    },
+    "4.A.4.a.3": {
+      "required_level": 70,
+      "importance": 0.75,
+      "requirement_type": "required"
+    },
+    "4.A.4.b.1": {
+      "required_level": 70,
+      "importance": 0.75,
+      "requirement_type": "required"
+    },
+    "2.C.4.a": {
+      "required_level": 70,
+      "importance": 0.7,
+      "requirement_type": "preferred"
+    },
+    "2.C.4.b": {
+      "required_level": 70,
+      "importance": 0.7,
+      "requirement_type": "preferred"
+    },
+    "2.C.9.a": {
+      "required_level": 70,
+      "importance": 0.7,
+      "requirement_type": "preferred"
+    }
+  },
+  "job_3": {
+    "2.C.3.a": {
+      "required_level": 85,
+      "importance": 0.95,
+      "requirement_type": "required"
+    },
+    "2.B.3.e": {
+      "required_level": 85,
+      "importance": 0.95,
+      "requirement_type": "required"
+    },
+    "2.A.1.a": {
+      "required_level": 75,
+      "importance": 0.8,
+      "requirement_type": "required"
+    },
+    "2.A.2.a": {
+      "required_level": 80,
+      "importance": 0.85,
+      "requirement_type": "required"
+    },
+    "2.B.2.i": {
+      "required_level": 75,
+      "importance": 0.8,
+      "requirement_type": "required"
+    },
+    "2.C.1.c": {
+      "required_level": 50,
+      "importance": 0.4,
+      "requirement_type": "preferred"
+    },
+    "2.B.3.g": {
+      "required_level": 70,
+      "importance": 0.7,
+      "requirement_type": "required"
+    },
+    "2.B.3.k": {
+      "required_level": 75,
+      "importance": 0.75,
+      "requirement_type": "required"
+    },
+    "4.A.3.b.1": {
+      "required_level": 85,
+      "importance": 0.9,
+      "requirement_type": "required"
+    },
+    "2.A.2.b": {
+      "required_level": 75,
+      "importance": 0.75,
+      "requirement_type": "required"
+    },
+    "4.A.2.a.4": {
+      "required_level": 75,
+      "importance": 0.75,
+      "requirement_type": "required"
+    },
+    "2.B.1.b": {
+      "required_level": 65,
+      "importance": 0.6,
+      "requirement_type": "preferred"
+    },
+    "4.A.4.a.2": {
+      "required_level": 65,
+      "importance": 0.6,
+      "requirement_type": "preferred"
+    }
+  },
+  "job_4": {
+    "2.C.3.a": {
+      "required_level": 85,
+      "importance": 0.95,
+      "requirement_type": "required"
+    },
+    "2.C.3.b": {
+      "required_level": 80,
+      "importance": 0.9,
+      "requirement_type": "required"
+    },
+    "2.B.3.e": {
+      "required_level": 80,
+      "importance": 0.85,
+      "requirement_type": "required"
+    },
+    "2.B.3.k": {
+      "required_level": 75,
+      "importance": 0.8,
+      "requirement_type": "required"
+    },
+    "2.B.2.i": {
+      "required_level": 85,
+      "importance": 0.9,
+      "requirement_type": "required"
+    },
+    "2.A.2.a": {
+      "required_level": 80,
+      "importance": 0.85,
+      "requirement_type": "required"
+    },
+    "2.B.3.g": {
+      "required_level": 70,
+      "importance": 0.75,
+      "requirement_type": "required"
+    },
+    "2.B.3.m": {
+      "required_level": 70,
+      "importance": 0.7,
+      "requirement_type": "required"
+    },
+    "2.A.1.a": {
+      "required_level": 75,
+      "importance": 0.75,
+      "requirement_type": "required"
+    },
+    "2.A.1.c": {
+      "required_level": 75,
+      "importance": 0.75,
+      "requirement_type": "required"
+    },
+    "2.B.4.e": {
+      "required_level": 75,
+      "importance": 0.8,
+      "requirement_type": "required"
+    },
+    "2.B.4.g": {
+      "required_level": 75,
+      "importance": 0.75,
+      "requirement_type": "required"
+    },
+    "2.C.4.a": {
+      "required_level": 70,
+      "importance": 0.7,
+      "requirement_type": "required"
+    },
+    "2.B.1.b": {
+      "required_level": 70,
+      "importance": 0.7,
+      "requirement_type": "required"
+    },
+    "4.A.3.b.1": {
+      "required_level": 75,
+      "importance": 0.75,
+      "requirement_type": "required"
+    },
+    "2.C.7.a": {
+      "required_level": 70,
+      "importance": 0.65,
+      "requirement_type": "preferred"
+    },
+    "2.C.7.c": {
+      "required_level": 65,
+      "importance": 0.6,
+      "requirement_type": "preferred"
+    },
+    "2.B.3.j": {
+      "required_level": 70,
+      "importance": 0.65,
+      "requirement_type": "preferred"
+    },
+    "2.A.2.b": {
+      "required_level": 70,
+      "importance": 0.7,
+      "requirement_type": "required"
+    },
+    "4.A.4.a.2": {
+      "required_level": 70,
+      "importance": 0.65,
+      "requirement_type": "required"
+    }
+  },
+  "job_5": {
+    "2.C.3.a": {
+      "required_level": 75,
+      "importance": 0.95,
+      "requirement_type": "required"
+    },
+    "2.C.3.b": {
+      "required_level": 70,
+      "importance": 0.9,
+      "requirement_type": "required"
+    },
+    "2.A.1.a": {
+      "required_level": 70,
+      "importance": 0.75,
+      "requirement_type": "required"
+    },
+    "2.A.2.a": {
+      "required_level": 65,
+      "importance": 0.8,
+      "requirement_type": "required"
+    },
+    "2.B.2.i": {
+      "required_level": 65,
+      "importance": 0.75,
+      "requirement_type": "required"
+    },
+    "2.B.3.e": {
+      "required_level": 75,
+      "importance": 0.9,
+      "requirement_type": "required"
+    },
+    "2.B.3.g": {
+      "required_level": 60,
+      "importance": 0.7,
+      "requirement_type": "required"
+    },
+    "2.B.3.k": {
+      "required_level": 60,
+      "importance": 0.65,
+      "requirement_type": "required"
+    },
+    "2.B.4.e": {
+      "required_level": 65,
+      "importance": 0.7,
+      "requirement_type": "required"
+    },
+    "2.B.4.g": {
+      "required_level": 65,
+      "importance": 0.75,
+      "requirement_type": "required"
+    },
+    "2.A.1.c": {
+      "required_level": 65,
+      "importance": 0.7,
+      "requirement_type": "required"
+    },
+    "4.A.3.b.1": {
+      "required_level": 75,
+      "importance": 0.85,
+      "requirement_type": "required"
+    },
+    "4.A.4.a.2": {
+      "required_level": 60,
+      "importance": 0.65,
+      "requirement_type": "required"
+    },
+    "2.C.1.a": {
+      "required_level": 55,
+      "importance": 0.6,
+      "requirement_type": "preferred"
+    },
+    "2.B.1.b": {
+      "required_level": 60,
+      "importance": 0.65,
+      "requirement_type": "preferred"
+    },
+    "2.A.2.b": {
+      "required_level": 65,
+      "importance": 0.7,
+      "requirement_type": "preferred"
+    }
+  },
+  "cv_1": {
+    "2.C.3.a": {
+      "level": 82
+    },
+    "2.C.3.b": {
+      "level": 75
+    },
+    "2.C.4.a": {
+      "level": 70
+    },
+    "2.C.1.c": {
+      "level": 60
+    },
+    "2.A.1.c": {
+      "level": 78
+    },
+    "2.A.1.a": {
+      "level": 75
+    },
+    "2.A.2.a": {
+      "level": 72
+    },
+    "2.A.2.b": {
+      "level": 68
+    },
+    "2.B.3.e": {
+      "level": 85
+    },
+    "2.B.3.k": {
+      "level": 70
+    },
+    "2.B.3.m": {
+      "level": 68
+    },
+    "2.B.4.g": {
+      "level": 72
+    },
+    "2.B.4.e": {
+      "level": 70
+    },
+    "2.B.1.e": {
+      "level": 62
+    },
+    "2.B.1.f": {
+      "level": 65
+    },
+    "4.A.3.b.1": {
+      "level": 85
+    },
+    "4.A.2.a.4": {
+      "level": 72
+    },
+    "4.A.2.b.3": {
+      "level": 68
+    },
+    "4.A.4.a.2": {
+      "level": 65
+    },
+    "4.A.4.c.1": {
+      "level": 62
+    },
+    "2.C.3.e": {
+      "level": 70
+    },
+    "2.C.9.a": {
+      "level": 65
+    }
+  },
+  "cv_2": {
+    "1.A.1.b.3": {
+      "level": 75
+    },
+    "1.A.1.b.4": {
+      "level": 72
+    },
+    "1.A.1.b.5": {
+      "level": 74
+    },
+    "1.A.1.b.6": {
+      "level": 70
+    },
+    "1.A.1.c.1": {
+      "level": 68
+    },
+    "1.A.1.c.2": {
+      "level": 65
+    },
+    "2.A.1.a": {
+      "level": 80
+    },
+    "2.A.1.c": {
+      "level": 75
+    },
+    "2.A.1.d": {
+      "level": 70
+    },
+    "2.A.2.a": {
+      "level": 76
+    },
+    "2.A.2.b": {
+      "level": 72
+    },
+    "2.A.2.d": {
+      "level": 74
+    },
+    "2.B.1.b": {
+      "level": 68
+    },
+    "2.B.2.i": {
+      "level": 74
+    },
+    "2.B.3.a": {
+      "level": 72
+    },
+    "2.B.3.e": {
+      "level": 82
+    },
+    "2.B.3.g": {
+      "level": 70
+    },
+    "2.B.3.k": {
+      "level": 71
+    },
+    "2.B.3.m": {
+      "level": 68
+    },
+    "2.B.4.e": {
+      "level": 70
+    },
+    "2.B.4.g": {
+      "level": 73
+    },
+    "2.B.4.h": {
+      "level": 71
+    },
+    "2.B.5.a": {
+      "level": 68
+    },
+    "2.C.1.a": {
+      "level": 65
+    },
+    "2.C.3.a": {
+      "level": 85
+    },
+    "2.C.3.b": {
+      "level": 80
+    },
+    "2.C.4.a": {
+      "level": 70
+    },
+    "4.A.1.a.1": {
+      "level": 72
+    },
+    "4.A.1.a.2": {
+      "level": 70
+    },
+    "4.A.2.a.2": {
+      "level": 74
+    },
+    "4.A.2.a.4": {
+      "level": 73
+    },
+    "4.A.2.b.1": {
+      "level": 75
+    },
+    "4.A.2.b.2": {
+      "level": 70
+    },
+    "4.A.2.b.3": {
+      "level": 72
+    },
+    "4.A.2.b.6": {
+      "level": 69
+    },
+    "4.A.3.b.1": {
+      "level": 84
+    },
+    "4.A.3.b.6": {
+      "level": 72
+    },
+    "4.A.4.a.2": {
+      "level": 68
+    },
+    "4.A.4.a.3": {
+      "level": 65
+    }
+  },
+  "cv_3": {
+    "2.C.3.a": {
+      "level": 85
+    },
+    "2.C.3.b": {
+      "level": 72
+    },
+    "2.B.3.k": {
+      "level": 75
+    },
+    "2.B.3.e": {
+      "level": 82
+    },
+    "2.A.1.a": {
+      "level": 80
+    },
+    "2.A.1.c": {
+      "level": 75
+    },
+    "2.A.2.a": {
+      "level": 72
+    },
+    "2.A.2.b": {
+      "level": 70
+    },
+    "2.B.4.g": {
+      "level": 68
+    },
+    "2.C.4.a": {
+      "level": 65
+    },
+    "4.A.3.b.1": {
+      "level": 85
+    },
+    "4.A.2.a.4": {
+      "level": 72
+    },
+    "4.A.2.b.3": {
+      "level": 70
+    },
+    "4.A.4.a.2": {
+      "level": null
+    },
+    "2.C.1.d": {
+      "level": 55
+    },
+    "2.C.7.c": {
+      "level": 60
+    },
+    "2.C.7.b": {
+      "level": null
+    }
+  },
+  "cv_4": {
+    "2.C.3.a": {
+      "level": 86
+    },
+    "2.A.1.a": {
+      "level": 75
+    },
+    "2.A.1.c": {
+      "level": 70
+    },
+    "2.A.2.b": {
+      "level": 75
+    },
+    "2.A.2.a": {
+      "level": 72
+    },
+    "2.B.2.i": {
+      "level": 70
+    },
+    "2.B.3.k": {
+      "level": 68
+    },
+    "2.B.4.g": {
+      "level": 65
+    },
+    "2.B.1.b": {
+      "level": 70
+    },
+    "2.B.1.e": {
+      "level": 60
+    },
+    "2.C.3.b": {
+      "level": 78
+    },
+    "2.C.4.a": {
+      "level": 65
+    },
+    "2.C.1.a": {
+      "level": 60
+    },
+    "4.A.3.b.1": {
+      "level": 85
+    },
+    "4.A.2.a.4": {
+      "level": 72
+    },
+    "4.A.2.b.1": {
+      "level": 70
+    },
+    "4.A.2.b.3": {
+      "level": 68
+    },
+    "4.A.4.a.2": {
+      "level": 70
+    },
+    "4.A.4.b.3": {
+      "level": 60
+    },
+    "4.A.4.c.1": {
+      "level": 55
+    },
+    "1.A.1.b.4": {
+      "level": 72
+    },
+    "1.A.1.b.5": {
+      "level": 70
+    },
+    "1.A.1.c.1": {
+      "level": 68
+    }
+  },
+  "cv_5": {
+    "2.C.3.a": {
+      "level": 86
+    },
+    "2.C.3.b": {
+      "level": 78
+    },
+    "2.B.3.e": {
+      "level": 85
+    },
+    "2.B.3.k": {
+      "level": 72
+    },
+    "2.B.4.g": {
+      "level": 75
+    },
+    "2.A.2.b": {
+      "level": 74
+    },
+    "2.A.2.a": {
+      "level": 72
+    },
+    "2.A.1.a": {
+      "level": 80
+    },
+    "2.A.1.c": {
+      "level": 75
+    },
+    "2.B.1.b": {
+      "level": 68
+    },
+    "4.A.3.b.1": {
+      "level": 86
+    },
+    "4.A.2.a.4": {
+      "level": 74
+    },
+    "4.A.2.b.3": {
+      "level": 72
+    },
+    "2.C.4.a": {
+      "level": 70
+    },
+    "2.C.1.c": {
+      "level": 65
+    },
+    "2.B.3.g": {
+      "level": 70
+    },
+    "2.C.3.e": {
+      "level": 76
+    }
+  },
+  "cv_6": {
+    "1.A.1.b.4": {
+      "level": 75
+    },
+    "1.A.1.b.5": {
+      "level": 75
+    },
+    "1.A.1.c.1": {
+      "level": 70
+    },
+    "2.A.1.a": {
+      "level": 85
+    },
+    "2.A.1.c": {
+      "level": 80
+    },
+    "2.A.2.a": {
+      "level": 75
+    },
+    "2.A.2.b": {
+      "level": 70
+    },
+    "2.B.2.i": {
+      "level": 72
+    },
+    "2.B.3.a": {
+      "level": 70
+    },
+    "2.B.3.b": {
+      "level": 75
+    },
+    "2.B.3.e": {
+      "level": 80
+    },
+    "2.B.3.g": {
+      "level": 65
+    },
+    "2.B.3.k": {
+      "level": 68
+    },
+    "2.B.4.e": {
+      "level": 70
+    },
+    "2.B.4.g": {
+      "level": 72
+    },
+    "2.C.1.a": {
+      "level": 60
+    },
+    "2.C.3.a": {
+      "level": 85
+    },
+    "2.C.3.b": {
+      "level": 78
+    },
+    "2.C.4.a": {
+      "level": 65
+    },
+    "4.A.1.a.1": {
+      "level": 75
+    },
+    "4.A.2.a.2": {
+      "level": 75
+    },
+    "4.A.2.a.4": {
+      "level": 75
+    },
+    "4.A.2.b.1": {
+      "level": 72
+    },
+    "4.A.2.b.3": {
+      "level": 70
+    },
+    "4.A.3.b.1": {
+      "level": 85
+    },
+    "4.A.3.b.6": {
+      "level": 75
+    },
+    "4.A.4.a.2": {
+      "level": null
+    }
+  },
+  "cv_7": {
+    "2.C.3.a": {
+      "level": 82
+    },
+    "2.B.3.e": {
+      "level": 80
+    },
+    "2.A.1.c": {
+      "level": 75
+    },
+    "2.A.2.a": {
+      "level": 70
+    },
+    "2.A.2.b": {
+      "level": 68
+    },
+    "2.B.4.g": {
+      "level": 65
+    },
+    "4.A.3.b.1": {
+      "level": 82
+    },
+    "4.A.2.a.4": {
+      "level": 70
+    },
+    "4.A.2.b.3": {
+      "level": 68
+    },
+    "4.A.4.a.2": {
+      "level": 60
+    },
+    "2.C.3.c": {
+      "level": 72
+    },
+    "2.C.4.a": {
+      "level": 55
+    },
+    "2.B.3.k": {
+      "level": 65
+    },
+    "2.A.1.a": {
+      "level": 75
+    },
+    "1.A.1.b.5": {
+      "level": 70
+    },
+    "2.B.1.b": {
+      "level": 60
+    },
+    "4.A.2.b.6": {
+      "level": 62
+    },
+    "2.C.1.b": {
+      "level": 58
+    }
+  },
+  "cv_8": {
+    "1.A.1.b.3": {
+      "level": 75
+    },
+    "1.A.1.b.4": {
+      "level": 72
+    },
+    "1.A.1.b.5": {
+      "level": 74
+    },
+    "1.A.1.b.6": {
+      "level": 70
+    },
+    "1.A.1.c.1": {
+      "level": 68
+    },
+    "2.A.1.a": {
+      "level": 80
+    },
+    "2.A.1.c": {
+      "level": 75
+    },
+    "2.A.2.a": {
+      "level": 76
+    },
+    "2.A.2.b": {
+      "level": 72
+    },
+    "2.B.2.i": {
+      "level": 74
+    },
+    "2.B.3.a": {
+      "level": 70
+    },
+    "2.B.3.e": {
+      "level": 85
+    },
+    "2.B.3.k": {
+      "level": 73
+    },
+    "2.B.3.m": {
+      "level": 72
+    },
+    "2.B.4.e": {
+      "level": 70
+    },
+    "2.B.4.g": {
+      "level": 71
+    },
+    "2.C.3.a": {
+      "level": 87
+    },
+    "2.C.3.b": {
+      "level": 80
+    },
+    "2.C.4.a": {
+      "level": 65
+    },
+    "4.A.1.a.1": {
+      "level": 75
+    },
+    "4.A.2.a.2": {
+      "level": 73
+    },
+    "4.A.2.a.4": {
+      "level": 74
+    },
+    "4.A.2.b.1": {
+      "level": 73
+    },
+    "4.A.2.b.3": {
+      "level": 72
+    },
+    "4.A.3.b.1": {
+      "level": 88
+    },
+    "4.A.3.b.5": {
+      "level": 76
+    },
+    "4.A.3.b.6": {
+      "level": 74
+    },
+    "4.A.4.a.2": {
+      "level": null
+    }
+  },
+  "cv_9": {
+    "1.A.1.a.2": {
+      "level": 85
+    },
+    "1.A.1.a.4": {
+      "level": 80
+    },
+    "1.A.1.b.4": {
+      "level": 75
+    },
+    "1.A.1.b.5": {
+      "level": 72
+    },
+    "1.A.1.b.6": {
+      "level": 70
+    },
+    "2.A.1.a": {
+      "level": 85
+    },
+    "2.A.1.c": {
+      "level": 78
+    },
+    "2.A.2.a": {
+      "level": 75
+    },
+    "2.A.2.b": {
+      "level": 72
+    },
+    "2.B.1.b": {
+      "level": 70
+    },
+    "2.B.2.i": {
+      "level": 73
+    },
+    "2.B.3.k": {
+      "level": 74
+    },
+    "2.B.3.m": {
+      "level": 70
+    },
+    "2.B.4.e": {
+      "level": 68
+    },
+    "2.B.4.g": {
+      "level": 72
+    },
+    "2.C.3.a": {
+      "level": 88
+    },
+    "2.C.3.b": {
+      "level": 80
+    },
+    "2.C.1.e": {
+      "level": 65
+    },
+    "4.A.1.a.1": {
+      "level": 75
+    },
+    "4.A.2.a.2": {
+      "level": 72
+    },
+    "4.A.2.a.4": {
+      "level": 73
+    },
+    "4.A.2.b.1": {
+      "level": 72
+    },
+    "4.A.2.b.3": {
+      "level": 70
+    },
+    "4.A.3.b.1": {
+      "level": 88
+    },
+    "4.A.3.b.6": {
+      "level": 75
+    },
+    "4.A.4.a.2": {
+      "level": 70
+    },
+    "4.A.4.b.3": {
+      "level": 68
+    }
+  },
+  "cv_10": {
+    "2.C.3.a": {
+      "level": 88
+    },
+    "2.C.3.b": {
+      "level": 75
+    },
+    "2.C.3.c": {
+      "level": 72
+    },
+    "2.A.1.c": {
+      "level": 80
+    },
+    "2.A.1.a": {
+      "level": 78
+    },
+    "2.A.2.a": {
+      "level": 75
+    },
+    "2.A.2.b": {
+      "level": 70
+    },
+    "2.B.3.e": {
+      "level": 87
+    },
+    "2.B.3.k": {
+      "level": 72
+    },
+    "2.B.4.e": {
+      "level": 70
+    },
+    "2.B.4.g": {
+      "level": 68
+    },
+    "4.A.3.b.1": {
+      "level": 85
+    },
+    "4.A.2.b.2": {
+      "level": 72
+    },
+    "4.A.2.a.4": {
+      "level": 70
+    },
+    "4.A.4.a.2": {
+      "level": null
+    },
+    "2.B.5.a": {
+      "level": 65
+    },
+    "1.A.1.b.5": {
+      "level": 75
+    }
+  },
+  "cv_11": {
+    "2.C.3.a": {
+      "level": 82
+    },
+    "2.C.3.b": {
+      "level": 75
+    },
+    "2.C.3.e": {
+      "level": 70
+    },
+    "2.C.9.a": {
+      "level": 65
+    },
+    "2.A.1.c": {
+      "level": null
+    },
+    "2.A.2.a": {
+      "level": 72
+    },
+    "2.A.2.b": {
+      "level": null
+    },
+    "2.B.3.k": {
+      "level": 75
+    },
+    "2.B.3.m": {
+      "level": 70
+    },
+    "2.B.1.e": {
+      "level": 65
+    },
+    "2.B.4.g": {
+      "level": 68
+    },
+    "4.A.3.b.1": {
+      "level": 82
+    },
+    "4.A.2.a.4": {
+      "level": 72
+    },
+    "4.A.2.b.3": {
+      "level": 70
+    },
+    "4.A.4.a.2": {
+      "level": 65
+    },
+    "2.C.7.a": {
+      "level": 75
+    },
+    "1.A.1.b.4": {
+      "level": 72
+    },
+    "1.A.1.b.5": {
+      "level": 70
+    }
+  },
+  "cv_12": {
+    "1.A.1.a.1": {
+      "level": null
+    },
+    "1.A.1.a.2": {
+      "level": null
+    },
+    "1.A.1.a.3": {
+      "level": null
+    },
+    "1.A.1.a.4": {
+      "level": 75
+    },
+    "1.A.1.b.1": {
+      "level": 80
+    },
+    "1.A.1.b.3": {
+      "level": 82
+    },
+    "1.A.1.b.4": {
+      "level": 85
+    },
+    "1.A.1.b.5": {
+      "level": 85
+    },
+    "1.A.1.b.6": {
+      "level": 78
+    },
+    "1.A.1.c.1": {
+      "level": 80
+    },
+    "2.A.1.a": {
+      "level": 85
+    },
+    "2.A.1.b": {
+      "level": null
+    },
+    "2.A.1.c": {
+      "level": 75
+    },
+    "2.A.1.d": {
+      "level": null
+    },
+    "2.A.2.a": {
+      "level": 82
+    },
+    "2.A.2.b": {
+      "level": 80
+    },
+    "2.A.2.d": {
+      "level": 78
+    },
+    "2.B.1.b": {
+      "level": 75
+    },
+    "2.B.1.c": {
+      "level": 70
+    },
+    "2.B.1.e": {
+      "level": 72
+    },
+    "2.B.2.i": {
+      "level": 85
+    },
+    "2.B.3.a": {
+      "level": 80
+    },
+    "2.B.3.g": {
+      "level": 75
+    },
+    "2.B.3.k": {
+      "level": 78
+    },
+    "2.B.4.e": {
+      "level": 80
+    },
+    "2.B.4.g": {
+      "level": 82
+    },
+    "2.B.4.h": {
+      "level": 78
+    },
+    "2.B.5.a": {
+      "level": 75
+    },
+    "2.B.5.d": {
+      "level": 72
+    },
+    "2.C.1.a": {
+      "level": 70
+    },
+    "2.C.3.a": {
+      "level": 92
+    },
+    "2.C.3.b": {
+      "level": 88
+    },
+    "2.C.4.a": {
+      "level": 75
+    },
+    "4.A.1.a.1": {
+      "level": 80
+    },
+    "4.A.2.a.2": {
+      "level": 82
+    },
+    "4.A.2.a.4": {
+      "level": 85
+    },
+    "4.A.2.b.1": {
+      "level": 82
+    },
+    "4.A.2.b.2": {
+      "level": 78
+    },
+    "4.A.2.b.4": {
+      "level": 75
+    },
+    "4.A.2.b.6": {
+      "level": 76
+    },
+    "4.A.3.b.1": {
+      "level": 92
+    },
+    "4.A.3.b.6": {
+      "level": 80
+    },
+    "4.A.4.a.2": {
+      "level": 75
+    },
+    "4.A.4.a.3": {
+      "level": 72
+    },
+    "4.A.4.b.1": {
+      "level": 75
+    },
+    "4.A.4.b.2": {
+      "level": 72
+    },
+    "4.A.4.b.3": {
+      "level": 70
+    },
+    "4.A.4.b.4": {
+      "level": 72
+    },
+    "4.A.4.b.5": {
+      "level": 70
+    },
+    "4.A.4.c.1": {
+      "level": 70
+    },
+    "4.A.4.c.3": {
+      "level": 72
+    }
+  },
+  "cv_13": {
+    "2.C.3.a": {
+      "level": 82
+    },
+    "2.C.3.b": {
+      "level": 70
+    },
+    "2.C.3.c": {
+      "level": 75
+    },
+    "2.C.4.a": {
+      "level": 65
+    },
+    "2.A.1.c": {
+      "level": 78
+    },
+    "2.A.1.a": {
+      "level": 75
+    },
+    "2.A.2.a": {
+      "level": 72
+    },
+    "2.A.2.b": {
+      "level": 68
+    },
+    "2.B.2.i": {
+      "level": 70
+    },
+    "2.B.3.k": {
+      "level": 68
+    },
+    "2.B.4.e": {
+      "level": 65
+    },
+    "2.B.1.b": {
+      "level": 70
+    },
+    "4.A.3.b.1": {
+      "level": 85
+    },
+    "4.A.2.a.4": {
+      "level": 72
+    },
+    "4.A.2.b.2": {
+      "level": 68
+    },
+    "4.A.4.a.2": {
+      "level": 70
+    },
+    "4.A.4.b.2": {
+      "level": 65
+    },
+    "2.A.1.d": {
+      "level": 75
+    },
+    "1.A.1.b.3": {
+      "level": 70
+    }
+  },
+  "cv_14": {
+    "2.C.3.a": {
+      "level": 90
+    },
+    "2.C.3.b": {
+      "level": 85
+    },
+    "2.C.1.a": {
+      "level": 75
+    },
+    "2.C.1.c": {
+      "level": 60
+    },
+    "2.A.1.a": {
+      "level": 85
+    },
+    "2.A.1.c": {
+      "level": 80
+    },
+    "2.A.1.d": {
+      "level": 70
+    },
+    "2.A.2.a": {
+      "level": 80
+    },
+    "2.A.2.b": {
+      "level": 75
+    },
+    "2.B.2.i": {
+      "level": 80
+    },
+    "2.B.3.a": {
+      "level": 75
+    },
+    "2.B.3.g": {
+      "level": 70
+    },
+    "2.B.3.k": {
+      "level": 75
+    },
+    "2.B.4.e": {
+      "level": 75
+    },
+    "2.B.4.g": {
+      "level": 80
+    },
+    "2.B.4.h": {
+      "level": 75
+    },
+    "2.B.5.a": {
+      "level": 70
+    },
+    "2.B.5.c": {
+      "level": 65
+    },
+    "2.B.5.d": {
+      "level": 70
+    },
+    "2.B.1.b": {
+      "level": 75
+    },
+    "2.B.1.e": {
+      "level": 70
+    },
+    "4.A.2.a.4": {
+      "level": 80
+    },
+    "4.A.2.b.1": {
+      "level": 80
+    },
+    "4.A.2.b.3": {
+      "level": 75
+    },
+    "4.A.2.b.4": {
+      "level": 75
+    },
+    "4.A.2.b.6": {
+      "level": 75
+    },
+    "4.A.3.b.1": {
+      "level": 90
+    },
+    "4.A.3.b.6": {
+      "level": 75
+    },
+    "4.A.4.a.2": {
+      "level": 70
+    },
+    "4.A.4.b.1": {
+      "level": 70
+    },
+    "4.A.4.b.4": {
+      "level": 70
+    },
+    "4.A.4.c.1": {
+      "level": 65
+    },
+    "4.A.4.c.3": {
+      "level": 65
+    },
+    "2.C.4.a": {
+      "level": 70
+    }
+  },
+  "cv_15": {
+    "2.C.3.a": {
+      "level": 88
+    },
+    "2.C.3.b": {
+      "level": 75
+    },
+    "2.C.3.c": {
+      "level": 80
+    },
+    "2.C.1.a": {
+      "level": 65
+    },
+    "2.A.1.c": {
+      "level": 82
+    },
+    "2.A.1.a": {
+      "level": 85
+    },
+    "2.A.2.a": {
+      "level": 78
+    },
+    "2.A.2.b": {
+      "level": 72
+    },
+    "2.B.3.k": {
+      "level": 75
+    },
+    "2.B.3.g": {
+      "level": 70
+    },
+    "2.B.4.g": {
+      "level": 72
+    },
+    "2.B.4.h": {
+      "level": 68
+    },
+    "2.B.2.i": {
+      "level": 75
+    },
+    "4.A.3.b.1": {
+      "level": 90
+    },
+    "4.A.2.a.4": {
+      "level": 76
+    },
+    "4.A.2.b.3": {
+      "level": 74
+    },
+    "4.A.4.a.2": {
+      "level": null
+    },
+    "4.A.4.c.1": {
+      "level": 65
+    },
+    "4.A.3.b.6": {
+      "level": 72
+    },
+    "1.A.1.b.5": {
+      "level": 80
+    },
+    "1.A.1.b.4": {
+      "level": 78
+    }
+  },
+  "cv_16": {
+    "2.C.3.a": {
+      "level": 88
+    },
+    "2.C.3.b": {
+      "level": 85
+    },
+    "2.C.4.a": {
+      "level": 72
+    },
+    "2.A.1.a": {
+      "level": null
+    },
+    "2.A.1.b": {
+      "level": null
+    },
+    "2.A.1.c": {
+      "level": null
+    },
+    "2.A.2.a": {
+      "level": 75
+    },
+    "2.A.2.b": {
+      "level": 70
+    },
+    "2.B.1.b": {
+      "level": null
+    },
+    "2.B.1.e": {
+      "level": 65
+    },
+    "2.B.2.i": {
+      "level": 78
+    },
+    "2.B.3.a": {
+      "level": 80
+    },
+    "2.B.3.g": {
+      "level": 72
+    },
+    "2.B.3.k": {
+      "level": 70
+    },
+    "2.B.4.e": {
+      "level": 75
+    },
+    "2.B.4.g": {
+      "level": 80
+    },
+    "2.B.5.a": {
+      "level": 70
+    },
+    "4.A.2.a.4": {
+      "level": 78
+    },
+    "4.A.2.b.1": {
+      "level": 80
+    },
+    "4.A.2.b.3": {
+      "level": 75
+    },
+    "4.A.2.b.4": {
+      "level": 78
+    },
+    "4.A.3.b.1": {
+      "level": 88
+    },
+    "4.A.4.a.2": {
+      "level": null
+    },
+    "4.A.4.b.3": {
+      "level": 65
+    },
+    "4.A.4.b.5": {
+      "level": 65
+    }
+  },
+  "cv_17": {
+    "2.C.3.a": {
+      "level": 85
+    },
+    "2.C.3.b": {
+      "level": 75
+    },
+    "2.B.3.e": {
+      "level": 82
+    },
+    "2.B.3.k": {
+      "level": 70
+    },
+    "2.B.3.g": {
+      "level": 68
+    },
+    "2.B.4.g": {
+      "level": 72
+    },
+    "2.B.2.i": {
+      "level": 70
+    },
+    "2.A.2.b": {
+      "level": 75
+    },
+    "2.A.2.a": {
+      "level": 72
+    },
+    "2.A.1.a": {
+      "level": 80
+    },
+    "2.A.1.c": {
+      "level": 75
+    },
+    "2.B.1.b": {
+      "level": 68
+    },
+    "4.A.3.b.1": {
+      "level": 85
+    },
+    "4.A.2.b.3": {
+      "level": 72
+    },
+    "4.A.2.a.4": {
+      "level": 70
+    },
+    "4.A.4.a.2": {
+      "level": 68
+    },
+    "2.C.4.a": {
+      "level": 65
+    },
+    "2.C.2.a": {
+      "level": 60
+    }
+  },
+  "cv_18": {
+    "2.C.3.a": {
+      "level": 85
+    },
+    "2.C.3.b": {
+      "level": 80
+    },
+    "2.C.3.c": {
+      "level": 75
+    },
+    "2.B.3.e": {
+      "level": 82
+    },
+    "2.B.3.k": {
+      "level": 78
+    },
+    "2.B.3.m": {
+      "level": 72
+    },
+    "2.B.2.i": {
+      "level": 75
+    },
+    "2.A.2.b": {
+      "level": 78
+    },
+    "2.A.2.a": {
+      "level": 76
+    },
+    "2.A.1.a": {
+      "level": 80
+    },
+    "2.A.1.c": {
+      "level": 77
+    },
+    "2.B.4.e": {
+      "level": 74
+    },
+    "2.B.4.g": {
+      "level": 72
+    },
+    "2.B.1.b": {
+      "level": 70
+    },
+    "4.A.2.b.2": {
+      "level": 73
+    },
+    "4.A.2.b.3": {
+      "level": 75
+    },
+    "4.A.2.b.6": {
+      "level": 72
+    },
+    "4.A.3.b.1": {
+      "level": 84
+    },
+    "4.A.3.b.6": {
+      "level": 76
+    },
+    "4.A.4.a.2": {
+      "level": 68
+    },
+    "4.A.4.b.3": {
+      "level": 65
+    },
+    "2.B.1.e": {
+      "level": 65
+    },
+    "2.A.2.c": {
+      "level": 70
+    },
+    "1.A.1.b.3": {
+      "level": 76
+    },
+    "1.A.1.b.4": {
+      "level": 74
+    },
+    "1.A.1.b.5": {
+      "level": 75
+    }
+  },
+  "cv_19": {
+    "2.C.3.a": {
+      "level": 85
+    },
+    "2.C.3.b": {
+      "level": 75
+    },
+    "2.C.3.c": {
+      "level": 70
+    },
+    "2.C.4.a": {
+      "level": 65
+    },
+    "2.A.1.a": {
+      "level": 80
+    },
+    "2.A.1.c": {
+      "level": 75
+    },
+    "2.A.2.a": {
+      "level": 75
+    },
+    "2.A.2.b": {
+      "level": 70
+    },
+    "2.B.3.k": {
+      "level": 75
+    },
+    "2.B.3.g": {
+      "level": 70
+    },
+    "2.B.4.g": {
+      "level": 70
+    },
+    "2.B.4.e": {
+      "level": 65
+    },
+    "4.A.3.b.1": {
+      "level": 85
+    },
+    "4.A.2.a.4": {
+      "level": 75
+    },
+    "4.A.2.b.3": {
+      "level": 70
+    },
+    "4.A.4.a.2": {
+      "level": 65
+    },
+    "2.A.1.b": {
+      "level": null
+    },
+    "2.A.1.d": {
+      "level": null
+    },
+    "2.B.1.a": {
+      "level": null
+    },
+    "2.B.1.b": {
+      "level": null
+    }
+  },
+  "cv_20": {
+    "2.C.3.a": {
+      "level": 82
+    },
+    "2.B.3.e": {
+      "level": 80
+    },
+    "2.A.1.c": {
+      "level": 75
+    },
+    "2.A.2.a": {
+      "level": 70
+    },
+    "2.A.2.b": {
+      "level": 68
+    },
+    "2.B.2.i": {
+      "level": 65
+    },
+    "4.A.3.b.1": {
+      "level": 80
+    },
+    "4.A.2.a.4": {
+      "level": 65
+    },
+    "4.A.4.a.2": {
+      "level": 70
+    },
+    "4.A.4.b.3": {
+      "level": 60
+    },
+    "2.B.1.b": {
+      "level": 65
+    },
+    "2.B.4.e": {
+      "level": 65
+    },
+    "2.A.1.a": {
+      "level": 75
+    },
+    "2.A.1.b": {
+      "level": 70
+    },
+    "4.A.2.b.3": {
+      "level": 70
+    },
+    "2.C.3.b": {
+      "level": 75
+    },
+    "2.B.3.g": {
+      "level": 60
+    },
+    "2.B.3.k": {
+      "level": 65
+    },
+    "4.A.2.b.6": {
+      "level": 60
+    },
+    "2.B.5.c": {
+      "level": 55
+    }
+  },
+  "cv_21": {
+    "2.C.3.a": {
+      "level": 57
+    },
+    "2.C.3.c": {
+      "level": 57
+    },
+    "2.A.1.c": {
+      "level": 65
+    },
+    "2.A.1.a": {
+      "level": null
+    },
+    "2.A.2.b": {
+      "level": 60
+    },
+    "2.A.2.a": {
+      "level": 55
+    },
+    "4.A.3.b.1": {
+      "level": 57
+    },
+    "4.A.2.a.4": {
+      "level": 55
+    },
+    "2.B.1.b": {
+      "level": 50
+    },
+    "4.A.4.a.2": {
+      "level": 50
+    },
+    "2.C.1.c": {
+      "level": 45
+    },
+    "2.B.1.d": {
+      "level": 45
+    }
+  },
+  "cv_22": {
+    "2.C.3.a": {
+      "level": 82
+    },
+    "2.C.1.c": {
+      "level": 75
+    },
+    "2.A.1.a": {
+      "level": 80
+    },
+    "2.A.1.b": {
+      "level": 75
+    },
+    "2.A.1.c": {
+      "level": 78
+    },
+    "2.A.2.a": {
+      "level": 72
+    },
+    "2.A.2.b": {
+      "level": 68
+    },
+    "2.B.3.g": {
+      "level": 75
+    },
+    "2.B.3.k": {
+      "level": 70
+    },
+    "2.B.4.g": {
+      "level": 72
+    },
+    "2.B.4.h": {
+      "level": 68
+    },
+    "2.C.4.a": {
+      "level": 70
+    },
+    "2.C.4.b": {
+      "level": 65
+    },
+    "4.A.2.a.4": {
+      "level": 75
+    },
+    "4.A.3.b.1": {
+      "level": 82
+    },
+    "4.A.4.a.2": {
+      "level": 65
+    },
+    "4.A.4.c.1": {
+      "level": 60
+    },
+    "1.A.1.b.4": {
+      "level": 72
+    },
+    "1.A.1.b.5": {
+      "level": 70
+    },
+    "1.A.1.c.1": {
+      "level": 72
+    },
+    "2.B.1.e": {
+      "level": 60
+    }
+  },
+  "cv_23": {
+    "1.A.1.b.4": {
+      "level": 82
+    },
+    "1.A.1.b.5": {
+      "level": 80
+    },
+    "1.A.1.c.1": {
+      "level": 75
+    },
+    "2.A.1.a": {
+      "level": 85
+    },
+    "2.A.1.c": {
+      "level": 80
+    },
+    "2.A.2.a": {
+      "level": 82
+    },
+    "2.A.2.b": {
+      "level": 78
+    },
+    "2.B.2.i": {
+      "level": 80
+    },
+    "2.B.3.a": {
+      "level": 78
+    },
+    "2.B.3.e": {
+      "level": 88
+    },
+    "2.B.3.g": {
+      "level": 75
+    },
+    "2.B.3.k": {
+      "level": 76
+    },
+    "2.B.4.e": {
+      "level": 78
+    },
+    "2.B.4.g": {
+      "level": 80
+    },
+    "2.B.5.a": {
+      "level": 72
+    },
+    "2.C.1.a": {
+      "level": 70
+    },
+    "2.C.2.a": {
+      "level": 75
+    },
+    "2.C.3.a": {
+      "level": 90
+    },
+    "2.C.3.b": {
+      "level": 88
+    },
+    "2.C.3.d": {
+      "level": 65
+    },
+    "2.C.3.e": {
+      "level": 82
+    },
+    "2.C.4.a": {
+      "level": 72
+    },
+    "2.C.4.b": {
+      "level": 68
+    },
+    "4.A.1.a.1": {
+      "level": 80
+    },
+    "4.A.2.a.2": {
+      "level": 82
+    },
+    "4.A.2.a.4": {
+      "level": 80
+    },
+    "4.A.2.b.1": {
+      "level": 80
+    },
+    "4.A.2.b.3": {
+      "level": 78
+    },
+    "4.A.3.b.1": {
+      "level": 88
+    },
+    "4.A.3.b.6": {
+      "level": 80
+    },
+    "4.A.4.a.2": {
+      "level": 72
+    }
+  },
+  "cv_24": {
+    "2.C.3.a": {
+      "level": 85
+    },
+    "2.C.3.b": {
+      "level": 78
+    },
+    "2.B.3.e": {
+      "level": 82
+    },
+    "2.B.3.k": {
+      "level": 72
+    },
+    "2.B.4.g": {
+      "level": 70
+    },
+    "2.A.1.a": {
+      "level": null
+    },
+    "2.A.1.c": {
+      "level": null
+    },
+    "2.A.2.a": {
+      "level": 75
+    },
+    "2.A.2.b": {
+      "level": 70
+    },
+    "2.B.3.g": {
+      "level": 68
+    },
+    "2.B.3.h": {
+      "level": 72
+    },
+    "2.B.3.j": {
+      "level": 65
+    },
+    "4.A.3.b.1": {
+      "level": null
+    },
+    "4.A.3.b.5": {
+      "level": 75
+    },
+    "4.A.3.b.6": {
+      "level": null
+    },
+    "4.A.2.a.4": {
+      "level": 70
+    },
+    "2.C.4.a": {
+      "level": 65
+    },
+    "2.B.1.b": {
+      "level": null
+    },
+    "4.A.4.a.2": {
+      "level": null
+    }
+  },
+  "cv_25": {
+    "2.C.3.a": {
+      "level": 88
+    },
+    "2.C.3.b": {
+      "level": 75
+    },
+    "2.C.1.a": {
+      "level": 72
+    },
+    "2.C.1.c": {
+      "level": 60
+    },
+    "2.A.1.c": {
+      "level": 80
+    },
+    "2.A.1.d": {
+      "level": 82
+    },
+    "2.A.1.a": {
+      "level": 85
+    },
+    "2.A.2.a": {
+      "level": 78
+    },
+    "2.A.2.b": {
+      "level": 75
+    },
+    "2.B.2.i": {
+      "level": 76
+    },
+    "2.B.3.g": {
+      "level": 74
+    },
+    "2.B.3.k": {
+      "level": 72
+    },
+    "2.B.4.e": {
+      "level": 78
+    },
+    "2.B.4.g": {
+      "level": 75
+    },
+    "2.B.5.a": {
+      "level": 76
+    },
+    "2.B.5.d": {
+      "level": 74
+    },
+    "2.B.1.b": {
+      "level": 80
+    },
+    "2.B.1.e": {
+      "level": 78
+    },
+    "2.B.1.a": {
+      "level": 76
+    },
+    "4.A.3.b.1": {
+      "level": 88
+    },
+    "4.A.4.a.2": {
+      "level": 82
+    },
+    "4.A.4.a.3": {
+      "level": 78
+    },
+    "4.A.4.b.1": {
+      "level": 80
+    },
+    "4.A.4.b.4": {
+      "level": 76
+    },
+    "4.A.4.b.3": {
+      "level": 78
+    },
+    "4.A.2.b.4": {
+      "level": 76
+    },
+    "4.A.2.b.6": {
+      "level": 78
+    },
+    "4.A.2.a.4": {
+      "level": 74
+    },
+    "4.A.4.c.1": {
+      "level": 72
+    },
+    "2.C.4.a": {
+      "level": 65
+    },
+    "2.C.9.a": {
+      "level": 68
+    },
+    "2.C.7.a": {
+      "level": 85
+    }
+  },
+  "cv_26": {
+    "2.C.3.a": {
+      "level": 88
+    },
+    "2.C.3.b": {
+      "level": 75
+    },
+    "2.C.4.a": {
+      "level": 70
+    },
+    "2.A.1.a": {
+      "level": 85
+    },
+    "2.A.1.c": {
+      "level": 80
+    },
+    "2.A.1.d": {
+      "level": 75
+    },
+    "2.A.2.a": {
+      "level": 82
+    },
+    "2.A.2.b": {
+      "level": 78
+    },
+    "2.B.2.i": {
+      "level": 80
+    },
+    "2.B.3.g": {
+      "level": 75
+    },
+    "2.B.3.k": {
+      "level": 78
+    },
+    "2.B.4.e": {
+      "level": 76
+    },
+    "2.B.4.g": {
+      "level": 74
+    },
+    "2.B.4.h": {
+      "level": 72
+    },
+    "2.B.5.a": {
+      "level": 70
+    },
+    "2.B.5.d": {
+      "level": 68
+    },
+    "2.B.1.b": {
+      "level": 72
+    },
+    "2.B.1.e": {
+      "level": 70
+    },
+    "4.A.2.a.4": {
+      "level": 80
+    },
+    "4.A.2.b.1": {
+      "level": 78
+    },
+    "4.A.2.b.2": {
+      "level": 75
+    },
+    "4.A.2.b.3": {
+      "level": 76
+    },
+    "4.A.2.b.4": {
+      "level": 74
+    },
+    "4.A.2.b.6": {
+      "level": 72
+    },
+    "4.A.3.b.1": {
+      "level": 85
+    },
+    "4.A.3.b.6": {
+      "level": 78
+    },
+    "4.A.4.a.2": {
+      "level": 72
+    },
+    "4.A.4.b.1": {
+      "level": 68
+    },
+    "4.A.4.b.3": {
+      "level": 70
+    },
+    "4.A.4.b.5": {
+      "level": 68
+    },
+    "4.A.4.b.6": {
+      "level": 65
+    },
+    "2.C.1.a": {
+      "level": 65
+    },
+    "2.C.7.a": {
+      "level": 85
+    }
+  },
+  "cv_27": {
+    "2.C.3.a": {
+      "level": 82
+    },
+    "2.C.3.b": {
+      "level": 75
+    },
+    "2.C.3.e": {
+      "level": 70
+    },
+    "2.C.1.c": {
+      "level": 65
+    },
+    "2.C.4.a": {
+      "level": 60
+    },
+    "2.A.1.a": {
+      "level": 75
+    },
+    "2.A.1.b": {
+      "level": null
+    },
+    "2.A.1.c": {
+      "level": 70
+    },
+    "2.A.1.d": {
+      "level": null
+    },
+    "2.A.2.a": {
+      "level": 70
+    },
+    "2.A.2.b": {
+      "level": 75
+    },
+    "2.B.2.i": {
+      "level": 68
+    },
+    "2.B.3.a": {
+      "level": 72
+    },
+    "2.B.3.e": {
+      "level": 80
+    },
+    "2.B.3.g": {
+      "level": 65
+    },
+    "2.B.3.k": {
+      "level": 70
+    },
+    "2.B.3.m": {
+      "level": 65
+    },
+    "2.B.4.e": {
+      "level": 68
+    },
+    "2.B.4.g": {
+      "level": 70
+    },
+    "2.B.4.h": {
+      "level": 65
+    },
+    "2.B.1.b": {
+      "level": null
+    },
+    "2.B.1.e": {
+      "level": null
+    },
+    "4.A.3.b.1": {
+      "level": 82
+    },
+    "4.A.3.b.5": {
+      "level": 70
+    },
+    "4.A.3.b.6": {
+      "level": 75
+    },
+    "4.A.2.a.4": {
+      "level": 70
+    },
+    "4.A.2.b.1": {
+      "level": 70
+    },
+    "4.A.2.b.3": {
+      "level": 75
+    },
+    "4.A.4.a.2": {
+      "level": null
+    },
+    "4.A.4.b.1": {
+      "level": null
+    },
+    "2.C.7.a": {
+      "level": 75
+    }
+  },
+  "cv_28": {
+    "2.C.3.a": {
+      "level": 88
+    },
+    "2.C.3.b": {
+      "level": 75
+    },
+    "2.C.3.e": {
+      "level": 65
+    },
+    "2.C.1.c": {
+      "level": 50
+    },
+    "2.C.4.a": {
+      "level": 60
+    },
+    "2.A.1.a": {
+      "level": null
+    },
+    "2.A.1.c": {
+      "level": null
+    },
+    "2.A.2.a": {
+      "level": 75
+    },
+    "2.A.2.b": {
+      "level": 70
+    },
+    "2.B.2.i": {
+      "level": 72
+    },
+    "2.B.3.a": {
+      "level": 70
+    },
+    "2.B.3.e": {
+      "level": 85
+    },
+    "2.B.3.g": {
+      "level": 65
+    },
+    "2.B.3.k": {
+      "level": 68
+    },
+    "2.B.4.e": {
+      "level": 70
+    },
+    "2.B.4.g": {
+      "level": 72
+    },
+    "2.B.4.h": {
+      "level": 68
+    },
+    "2.B.5.a": {
+      "level": 65
+    },
+    "2.B.1.b": {
+      "level": null
+    },
+    "4.A.3.b.1": {
+      "level": 88
+    },
+    "4.A.2.a.4": {
+      "level": 75
+    },
+    "4.A.2.b.2": {
+      "level": 70
+    },
+    "4.A.2.b.3": {
+      "level": 72
+    },
+    "4.A.4.a.2": {
+      "level": null
+    },
+    "4.A.4.c.1": {
+      "level": 60
+    },
+    "1.A.1.b.4": {
+      "level": 75
+    },
+    "1.A.1.b.5": {
+      "level": 72
+    },
+    "1.A.1.c.1": {
+      "level": 68
+    }
+  },
+  "cv_29": {
+    "2.C.3.a": {
+      "level": 82
+    },
+    "2.C.3.b": {
+      "level": 75
+    },
+    "2.C.3.e": {
+      "level": 70
+    },
+    "2.C.4.a": {
+      "level": 65
+    },
+    "2.A.1.c": {
+      "level": 75
+    },
+    "2.A.2.b": {
+      "level": 72
+    },
+    "2.A.2.a": {
+      "level": 68
+    },
+    "2.B.3.e": {
+      "level": 80
+    },
+    "2.B.3.k": {
+      "level": 65
+    },
+    "2.B.4.g": {
+      "level": 70
+    },
+    "2.A.1.a": {
+      "level": null
+    },
+    "2.A.1.d": {
+      "level": null
+    },
+    "2.B.1.b": {
+      "level": null
+    },
+    "4.A.3.b.1": {
+      "level": 82
+    },
+    "4.A.2.a.4": {
+      "level": 70
+    },
+    "4.A.2.b.2": {
+      "level": 68
+    },
+    "4.A.4.a.2": {
+      "level": null
+    },
+    "4.A.4.b.1": {
+      "level": null
+    },
+    "2.C.1.a": {
+      "level": 55
+    },
+    "2.C.7.c": {
+      "level": 60
+    }
+  },
+  "cv_30": {
+    "2.C.3.a": {
+      "level": 72
+    },
+    "2.C.3.b": {
+      "level": 65
+    },
+    "2.C.3.c": {
+      "level": 68
+    },
+    "2.A.1.c": {
+      "level": 70
+    },
+    "2.A.2.a": {
+      "level": 65
+    },
+    "2.A.2.b": {
+      "level": 60
+    },
+    "2.B.3.k": {
+      "level": 62
+    },
+    "2.B.3.m": {
+      "level": 65
+    },
+    "4.A.3.b.1": {
+      "level": 72
+    },
+    "4.A.2.a.4": {
+      "level": 62
+    },
+    "1.A.1.b.5": {
+      "level": 65
+    },
+    "2.A.1.a": {
+      "level": 70
+    }
+  },
+  "tech_job_1": [
+    "c#",
+    "google angular",
+    "javascript",
+    "jquery",
+    "microsoft asp.net",
+    "microsoft sql server",
+    "microsoft sql server integration services ssis",
+    "microsoft sql server reporting services ssrs",
+    "microsoft team foundation server",
+    "microsoft visual basic for applications vba",
+    "microsoft visual studio"
+  ],
+  "tech_job_2": [
+    "c",
+    "c++",
+    "javascript",
+    "linux",
+    "mysql",
+    "perl",
+    "php",
+    "postgresql",
+    "python",
+    "ruby",
+    "shell script",
+    "unix",
+    "unix shell"
+  ],
+  "tech_job_3": [
+    "c++",
+    "python",
+    "structured query language sql",
+    "unix"
+  ],
+  "tech_job_4": [
+    "amazon elastic compute cloud ec2",
+    "amazon web services aws software",
+    "cascading style sheets css",
+    "docker",
+    "drupal",
+    "elasticsearch",
+    "go",
+    "hubspot software",
+    "hypertext markup language html",
+    "javascript",
+    "php",
+    "postgresql",
+    "python",
+    "redis",
+    "restful api",
+    "vue.js"
+  ],
+  "tech_job_5": [
+    "apache tomcat",
+    "c#",
+    "eclipse ide",
+    "elasticsearch",
+    "microsoft windows",
+    "oracle database",
+    "structured query language sql",
+    "unix"
+  ],
+  "tech_cv_1": [
+    "apache maven",
+    "apache tomcat",
+    "bootstrap",
+    "cascading style sheets css",
+    "eclipse ide",
+    "git",
+    "github",
+    "hibernate orm",
+    "hypertext markup language html",
+    "javascript",
+    "javascript object notation json",
+    "jquery",
+    "junit",
+    "linux",
+    "microsoft windows",
+    "mongodb",
+    "mysql",
+    "nosql",
+    "postman",
+    "restful api",
+    "spring boot",
+    "spring framework",
+    "structured query language sql"
+  ],
+  "tech_cv_2": [
+    "apache kafka",
+    "apache maven",
+    "apple macos",
+    "atlassian jira",
+    "cascading style sheets css",
+    "docker",
+    "eclipse ide",
+    "github",
+    "hypertext markup language html",
+    "javascript",
+    "javascript object notation json",
+    "junit",
+    "linux",
+    "microsoft windows",
+    "mongodb",
+    "mysql",
+    "postgresql",
+    "postman",
+    "react",
+    "redis",
+    "restful api",
+    "spring boot",
+    "wordpress"
+  ],
+  "tech_cv_3": [
+    "adobe acrobat",
+    "adobe illustrator",
+    "adobe photoshop",
+    "adobe xd",
+    "apache kafka",
+    "apache maven",
+    "apple macos",
+    "atlassian bitbucket",
+    "atlassian jira",
+    "bootstrap",
+    "cascading style sheets css",
+    "eclipse ide",
+    "figma",
+    "git",
+    "github",
+    "google angular",
+    "hibernate orm",
+    "hypertext markup language html",
+    "javascript",
+    "javascript object notation json",
+    "jquery",
+    "junit",
+    "microsoft access",
+    "microsoft excel",
+    "microsoft visual basic for applications vba",
+    "microsoft visual studio",
+    "microsoft windows",
+    "microsoft word",
+    "mongodb",
+    "mysql",
+    "node.js",
+    "react",
+    "react redux",
+    "restful api",
+    "spring boot",
+    "spring framework",
+    "spring framework",
+    "structured query language sql",
+    "typescript",
+    "vue.js"
+  ],
+  "tech_cv_4": [
+    "apache kafka",
+    "apache maven",
+    "apache subversion svn",
+    "atlassian jira",
+    "docker",
+    "eclipse ide",
+    "extensible markup language xml",
+    "git",
+    "go",
+    "google angular",
+    "hibernate orm",
+    "ibm websphere mq",
+    "javascript",
+    "jenkins ci",
+    "junit",
+    "mongodb",
+    "mysql",
+    "perforce software",
+    "postgresql",
+    "postman",
+    "restful api",
+    "spring boot",
+    "spring framework",
+    "typescript"
+  ],
+  "tech_cv_5": [
+    "apache cassandra",
+    "apache kafka",
+    "atlassian confluence",
+    "atlassian jira",
+    "docker",
+    "eclipse ide",
+    "go",
+    "google angular",
+    "javascript",
+    "jenkins ci",
+    "junit",
+    "kubernetes",
+    "linux",
+    "microsoft visual studio",
+    "microsoft windows",
+    "mongodb",
+    "mysql",
+    "node.js",
+    "oracle java",
+    "python",
+    "react",
+    "red hat openshift",
+    "restful api",
+    "spring boot",
+    "spring framework",
+    "structured query language sql"
+  ],
+  "tech_cv_6": [
+    "apache kafka",
+    "apache maven",
+    "apache tomcat",
+    "apple macos",
+    "atlassian bitbucket",
+    "atlassian jira",
+    "bootstrap",
+    "c#",
+    "c++",
+    "cascading style sheets css",
+    "docker",
+    "eclipse ide",
+    "extensible markup language xml",
+    "git",
+    "github",
+    "hibernate orm",
+    "javascript",
+    "javascript object notation json",
+    "junit",
+    "kubernetes",
+    "linux",
+    "microsoft active directory",
+    "microsoft internet information services (iis)",
+    "microsoft visual basic for applications vba",
+    "microsoft visual studio",
+    "microsoft windows",
+    "microsoft windows server",
+    "mongodb",
+    "mysql",
+    "node.js",
+    "php",
+    "postgresql",
+    "postman",
+    "react",
+    "react redux",
+    "restful api",
+    "spring boot",
+    "spring framework",
+    "typescript"
+  ],
+  "tech_cv_7": [
+    "adobe illustrator",
+    "adobe photoshop",
+    "ajax",
+    "atlassian jira",
+    "bootstrap",
+    "c#",
+    "cascading style sheets css",
+    "eclipse ide",
+    "extensible markup language xml",
+    "figma",
+    "github",
+    "hypertext markup language html",
+    "javascript",
+    "javascript object notation json",
+    "jquery",
+    "linux",
+    "microsoft .net framework",
+    "microsoft windows",
+    "mongodb",
+    "mysql",
+    "node.js",
+    "postman",
+    "python",
+    "react",
+    "react redux",
+    "restful api",
+    "slack",
+    "transact-sql"
+  ],
+  "tech_cv_8": [
+    "atlassian jira",
+    "c++",
+    "cascading style sheets css",
+    "eclipse ide",
+    "extensible markup language xml",
+    "git",
+    "google android",
+    "hypertext markup language html",
+    "javascript object notation json",
+    "microsoft visual studio",
+    "restful api"
+  ],
+  "tech_cv_9": [
+    "adobe photoshop",
+    "ajax",
+    "bootstrap",
+    "c",
+    "c#",
+    "c++",
+    "cascading style sheets css",
+    "eclipse ide",
+    "figma",
+    "git",
+    "github",
+    "google angular",
+    "hypertext markup language html",
+    "javascript",
+    "jest",
+    "microsoft asp.net",
+    "microsoft teams",
+    "microsoft visual studio",
+    "node.js",
+    "react",
+    "slack"
+  ],
+  "tech_cv_10": [
+    "adobe photoshop",
+    "apple macos",
+    "bootstrap",
+    "cascading style sheets css",
+    "figma",
+    "github",
+    "google angular",
+    "hypertext markup language html",
+    "javascript",
+    "jquery",
+    "linux",
+    "microsoft windows",
+    "mysql",
+    "node.js",
+    "php",
+    "react",
+    "react redux",
+    "typescript",
+    "wordpress"
+  ],
+  "tech_cv_11": [
+    "apache subversion svn",
+    "atlassian jira",
+    "c",
+    "c#",
+    "c++",
+    "extensible markup language xml",
+    "git",
+    "hypertext markup language html",
+    "ibm db2",
+    "linux",
+    "microsoft visual studio",
+    "microsoft windows",
+    "shell script",
+    "structured query language sql",
+    "unix",
+    "unix shell",
+    "version control software"
+  ],
+  "tech_cv_12": [
+    "atlassian jira",
+    "c#",
+    "c++",
+    "cascading style sheets css",
+    "git",
+    "javascript",
+    "javascript object notation json",
+    "jest",
+    "microsoft .net framework",
+    "microsoft team foundation server",
+    "microsoft visual basic for applications vba",
+    "node.js",
+    "postgresql",
+    "react",
+    "react redux",
+    "restful api",
+    "structured query language sql",
+    "transact-sql",
+    "typescript"
+  ],
+  "tech_cv_13": [
+    "apple macos",
+    "asana",
+    "atlassian jira",
+    "bootstrap",
+    "cascading style sheets css",
+    "django",
+    "git",
+    "hypertext markup language html",
+    "javascript",
+    "jquery",
+    "linux",
+    "microsoft windows",
+    "mysql",
+    "node.js",
+    "php",
+    "postgresql",
+    "python",
+    "react",
+    "react redux"
+  ],
+  "tech_cv_14": [
+    "atlassian bitbucket",
+    "c#",
+    "cascading style sheets css",
+    "extensible markup language xml",
+    "hypertext markup language html",
+    "javascript",
+    "jquery",
+    "microsoft .net framework",
+    "microsoft active directory",
+    "microsoft asp.net",
+    "microsoft internet information services (iis)",
+    "microsoft powershell",
+    "microsoft sharepoint",
+    "microsoft sql server",
+    "microsoft visual studio",
+    "mysql",
+    "node.js",
+    "oracle java",
+    "php",
+    "react",
+    "structured query language sql",
+    "unix shell"
+  ],
+  "tech_cv_15": [
+    "ajax",
+    "bootstrap",
+    "cascading style sheets css",
+    "google angular",
+    "hypertext markup language html",
+    "javascript",
+    "javascript object notation json",
+    "jquery",
+    "mongodb",
+    "mysql",
+    "node.js",
+    "perl",
+    "python",
+    "react",
+    "restful api",
+    "typescript",
+    "web application software"
+  ],
+  "tech_cv_16": [
+    "apache cassandra",
+    "apache kafka",
+    "cascading style sheets css",
+    "docker",
+    "git",
+    "gitlab",
+    "hypertext markup language html",
+    "javascript",
+    "oracle database",
+    "postgresql",
+    "python",
+    "scala",
+    "spring framework",
+    "structured query language sql"
+  ],
+  "tech_cv_17": [
+    "atlassian bitbucket",
+    "cascading style sheets css",
+    "django",
+    "docker",
+    "hypertext markup language html",
+    "javascript",
+    "jquery",
+    "mysql",
+    "postgresql",
+    "python",
+    "react",
+    "react redux",
+    "restful api",
+    "structured query language sql",
+    "vue.js"
+  ],
+  "tech_cv_18": [
+    "apple ios",
+    "git",
+    "restful api"
+  ],
+  "tech_cv_19": [
+    "adobe acrobat",
+    "adobe illustrator",
+    "adobe photoshop",
+    "adobe xd",
+    "apache kafka",
+    "apache maven",
+    "apple macos",
+    "atlassian bitbucket",
+    "atlassian jira",
+    "bootstrap",
+    "cascading style sheets css",
+    "eclipse ide",
+    "figma",
+    "git",
+    "github",
+    "google angular",
+    "hibernate orm",
+    "hypertext markup language html",
+    "javascript",
+    "javascript object notation json",
+    "jquery",
+    "junit",
+    "microsoft access",
+    "microsoft excel",
+    "microsoft visual basic for applications vba",
+    "microsoft visual studio",
+    "microsoft windows",
+    "microsoft word",
+    "mongodb",
+    "mysql",
+    "node.js",
+    "postgresql",
+    "react",
+    "react redux",
+    "restful api",
+    "spring boot",
+    "spring framework",
+    "structured query language sql",
+    "typescript",
+    "vue.js"
+  ],
+  "tech_cv_20": [
+    "amazon web services aws software",
+    "apple ios",
+    "docker",
+    "facebook",
+    "git",
+    "go",
+    "google",
+    "google angular",
+    "javascript",
+    "mongodb",
+    "mysql",
+    "node.js",
+    "php",
+    "postgresql",
+    "python",
+    "react",
+    "react redux",
+    "restful api",
+    "vue.js"
+  ],
+  "tech_cv_21": [
+    "cascading style sheets css",
+    "figma",
+    "google angular",
+    "hypertext markup language html",
+    "javascript",
+    "microsoft sql server",
+    "react",
+    "structured query language sql"
+  ],
+  "tech_cv_22": [
+    "c#",
+    "extensible markup language xml",
+    "oracle database",
+    "oracle pl/sql",
+    "python",
+    "structured query language sql"
+  ],
+  "tech_cv_23": [
+    "apache maven",
+    "apache subversion svn",
+    "atlassian jira",
+    "bash",
+    "c",
+    "c++",
+    "docker",
+    "git",
+    "go",
+    "javascript",
+    "jenkins ci",
+    "jquery",
+    "linux",
+    "mysql",
+    "oracle pl/sql",
+    "perl",
+    "php",
+    "postgresql",
+    "python",
+    "ruby"
+  ],
+  "tech_cv_24": [
+    "apple ios",
+    "atlassian jira",
+    "bootstrap",
+    "c",
+    "c#",
+    "c++",
+    "cascading style sheets css",
+    "git",
+    "google",
+    "google angular",
+    "hypertext markup language html",
+    "jenkins ci",
+    "jquery",
+    "mongodb",
+    "mysql",
+    "php",
+    "postgresql",
+    "restful api",
+    "spring framework",
+    "structured query language sql",
+    "swift"
+  ],
+  "tech_cv_25": [
+    "bootstrap",
+    "c#",
+    "cascading style sheets css",
+    "git",
+    "google angular",
+    "graphql",
+    "hypertext markup language html",
+    "microsoft .net framework",
+    "microsoft asp.net",
+    "microsoft azure software",
+    "microsoft power bi",
+    "microsoft sql server",
+    "microsoft sql server reporting services ssrs",
+    "mongodb",
+    "node.js",
+    "redis",
+    "restful api",
+    "solidity",
+    "typescript"
+  ],
+  "tech_cv_26": [
+    "c",
+    "c++",
+    "django",
+    "docker",
+    "elasticsearch",
+    "javascript",
+    "kubernetes",
+    "postgresql",
+    "python"
+  ],
+  "tech_cv_27": [
+    "docker",
+    "docker",
+    "git",
+    "go",
+    "hibernate orm",
+    "junit",
+    "mysql",
+    "postgresql",
+    "spring framework"
+  ],
+  "tech_cv_28": [
+    "adobe illustrator",
+    "adobe photoshop",
+    "apache maven",
+    "apple macos",
+    "autodesk 3ds max",
+    "bootstrap",
+    "c++",
+    "cascading style sheets css",
+    "eclipse ide",
+    "github",
+    "google",
+    "hibernate orm",
+    "hypertext markup language html",
+    "javascript",
+    "jquery",
+    "linux",
+    "microsoft visual studio",
+    "microsoft windows",
+    "mongodb",
+    "mysql",
+    "node.js",
+    "php",
+    "postman",
+    "react",
+    "react redux",
+    "restful api",
+    "spring boot",
+    "typescript"
+  ],
+  "tech_cv_29": [
+    "adobe photoshop",
+    "bootstrap",
+    "c++",
+    "cascading style sheets css",
+    "drupal",
+    "git",
+    "github",
+    "hibernate orm",
+    "hypertext markup language html",
+    "javascript",
+    "mongodb",
+    "node.js",
+    "postgresql",
+    "react",
+    "spring boot",
+    "spring framework",
+    "structured query language sql"
+  ],
+  "tech_cv_30": [
+    "bootstrap",
+    "cascading style sheets css",
+    "git",
+    "hypertext markup language html",
+    "javascript",
+    "node.js",
+    "react",
+    "react redux",
+    "restful api"
+  ]
+}

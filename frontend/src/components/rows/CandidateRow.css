@@ -1,0 +1,123 @@
+/* CandidateRow.css */
+
+.candidate-row {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    width: 100%;
+    padding: 10px 14px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    transition: background .12s;
+    transform: none;
+}
+
+.candidate-row:hover { background: var(--acc-light); transform: none; }
+
+.candidate-row-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    flex-shrink: 0;
+    border: 1.5px solid rgba(0,0,0,.06);
+}
+
+.candidate-row-body { flex: 1; min-width: 0; }
+
+.candidate-row-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.candidate-row-new {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+    background: var(--acc-light);
+    color: var(--acc-dark);
+    border: 1px solid var(--acc-mid);
+}
+
+.candidate-row-headline {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 4px;
+}
+
+.candidate-row-skills {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.candidate-row-skill {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: var(--acc-light);
+    color: var(--acc-dark);
+}
+
+.shortlist-btn {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    flex-shrink: 0;
+    white-space: nowrap;
+    transition: all .15s;
+    transform: none;
+}
+
+.shortlist-btn:hover { border-color: var(--acc-mid); color: var(--acc-dark); transform: none; }
+
+.shortlist-btn--active {
+    background: #FFF3E0;
+    border-color: #F0C070;
+    color: #854F0B;
+}
+
+.shortlist-btn--active:hover { background: #FAEEDA; transform: none; }
+
+.candidate-row-score {
+    text-align: right;
+    flex-shrink: 0;
+    min-width: 52px;
+}
+
+.candidate-row-pct {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.candidate-row-bar {
+    width: 52px;
+    height: 4px;
+    border-radius: 99px;
+    background: var(--acc-light);
+    overflow: hidden;
+}
+
+.candidate-row-fill { height: 100%; border-radius: 99px; }

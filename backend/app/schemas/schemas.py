@@ -1,0 +1,358 @@
+from pydantic import BaseModel, EmailStr
+from typing import Optional, Literal, List
+from datetime import datetime
+
+
+# ─── AUTH ─────────────────────────────────────────────────────────────────────
+
+class RegisterRequest(BaseModel):
+  f_name: str
+  l_name: str
+  email: EmailStr
+  password: str
+  account_type: Literal["applicant", "recruiter"]
+  company_name: Optional[str] = None
+
+
+class LoginRequest(BaseModel):
+  email: EmailStr
+  password: str
+
+
+class TokenResponse(BaseModel):
+  access_token: str
+  token_type: str = "bearer"
+
+
+# ─── USERS ────────────────────────────────────────────────────────────────────
+
+class UserResponse(BaseModel):
+  user_id: int
+  f_name: str
+  l_name: str
+  email: str
+  account_type: str
+  created_at: datetime
+
+  class Config:
+    from_attributes = True
+
+
+class MeResponse(BaseModel):
+  user_id: int
+  f_name: str
+  l_name: str
+  email: str
+  account_type: str
+  created_at: datetime
+  avatar: Optional[str] = None
+  candidate_id: Optional[int] = None
+  employer_id: Optional[int] = None
+  company_name: Optional[str] = None
+  employer_logo: Optional[str] = None
+  headline: Optional[str] = None
+  bio: Optional[str] = None
+
+  class Config:
+    from_attributes = True
+
+
+class UserUpdate(BaseModel):
+  f_name: Optional[str] = None
+  l_name: Optional[str] = None
+  email: Optional[EmailStr] = None
+  company_name: Optional[str] = None
+  avatar: Optional[str] = None
+  logo: Optional[str] = None
+
+
+class CandidateProfileUpdate(BaseModel):
+  headline: Optional[str] = None
+  bio: Optional[str] = None
+
+
+class PasswordChangeRequest(BaseModel):
+  old_password: str
+  new_password: str
+
+
+# ─── RESUMES ──────────────────────────────────────────────────────────────────
+
+class ResumeResponse(BaseModel):
+  resume_id: int
+  candidate_id: int
+  upload_date: datetime
+
+  class Config:
+    from_attributes = True
+
+
+# ─── JOB POSTS ────────────────────────────────────────────────────────────────
+
+class JobPostCreate(BaseModel):
+  title: str
+  description: str
+  location:   Optional[str] = None
+  work_type:  Optional[str] = None
+  pay_low:    Optional[int] = None
+  pay_high:   Optional[int] = None
+  experience: Optional[str] = None
+  expires_at: Optional[datetime] = None
+
+
+class JobPostUpdate(BaseModel):
+  title:      Optional[str] = None
+  description: Optional[str] = None
+  location:   Optional[str] = None
+  work_type:  Optional[str] = None
+  pay_low:    Optional[int] = None
+  pay_high:   Optional[int] = None
+  experience: Optional[str] = None
+  expires_at: Optional[datetime] = None
+
+
+class JobPostResponse(BaseModel):
+  job_id: int
+  employer_id: int
+  title: str
+  description: str
+  location:   Optional[str] = None
+  work_type:  Optional[str] = None
+  pay_low:    Optional[int] = None
+  pay_high:   Optional[int] = None
+  experience: Optional[str] = None
+  is_active: bool = True
+  expires_at: Optional[datetime] = None
+  created_at: datetime
+
+  class Config:
+    from_attributes = True
+
+
+class JobStatusUpdate(BaseModel):
+  is_active: bool
+
+
+# ─── COMPETENCIES ─────────────────────────────────────────────────────────────
+
+class CompetencyResponse(BaseModel):
+  competency_id: int
+  competency_name: str
+  category: Optional[str] = None
+  onet_element_id: Optional[str] = None
+  description: Optional[str] = None
+
+  class Config:
+    from_attributes = True
+
+
+# ─── COMPETENCY PROFILES ──────────────────────────────────────────────────────
+
+class CandidateCompetencyEntry(BaseModel):
+  competency_id:   int
+  competency_name: str
+  onet_element_id: Optional[str] = None
+  category:        Optional[str] = None
+  level_score:     Optional[float] = None
+
+  class Config:
+    from_attributes = True
+
+
+class CandidateProfileResponse(BaseModel):
+  candidate_id:  int
+  tech_keywords: Optional[List[str]] = []
+  competencies:  List[CandidateCompetencyEntry]
+
+
+class JobCompetencyEntry(BaseModel):
+  competency_id:    int
+  competency_name:  str
+  onet_element_id:  Optional[str] = None
+  category:         Optional[str] = None
+  required_level:   Optional[float] = None
+  importance:       Optional[float] = None
+  requirement_type: Optional[str] = None
+
+  class Config:
+    from_attributes = True
+
+
+class JobProfileResponse(BaseModel):
+  job_id:        int
+  title:         str
+  tech_keywords: Optional[List[str]] = []
+  competencies:  List[JobCompetencyEntry]
+
+
+# ─── CLARIFYING QUESTIONS ─────────────────────────────────────────────────────
+
+class QuestionResponse(BaseModel):
+  question_id:     int
+  candidate_id:    Optional[int] = None
+  job_id:          Optional[int] = None
+  element_id:      str
+  competency_name: str
+  directed_at:     str
+  reason:          str
+  question_text:   str
+  answer_text:     Optional[str] = None
+  resolved:        bool
+  created_at:      datetime
+
+  class Config:
+    from_attributes = True
+
+
+class AnswerRequest(BaseModel):
+  answer_text: str
+
+
+# ─── RANKINGS / RECOMMENDATIONS ───────────────────────────────────────────────
+
+class CandidateRankingEntry(BaseModel):
+  rank: int
+  match_id: int
+  job_id: int
+  candidate_id: int
+  candidate_name: str
+  candidate_avatar: Optional[str] = None
+  match_score: float
+  coverage: float
+  job_score: float
+  qualification_tier: str
+  knockout_failed: bool
+  shortlisted: bool = False
+  interested: bool = False
+  match_created_at: Optional[datetime] = None
+
+  class Config:
+    from_attributes = True
+
+
+class JobRecommendation(BaseModel):
+  rank: int
+  match_id: int
+  job_id: int
+  employer_id: int
+  title: str
+  company_name: str
+  company_logo: Optional[str] = None
+  description: Optional[str] = None
+  location: Optional[str] = None
+  work_type: Optional[str] = None
+  pay_low: Optional[int] = None
+  pay_high: Optional[int] = None
+  experience: Optional[str] = None
+  expires_at: Optional[datetime] = None
+  match_score: float
+  job_score: float
+  recommendation_score: float
+  qualification_tier: str
+  knockout_failed: bool
+  shortlisted: bool = False
+  interested: bool = False
+  explanation: Optional[str] = None
+  gap_profile: Optional[dict] = None
+  recruiter_name: Optional[str] = None
+  recruiter_email: Optional[str] = None
+
+  class Config:
+    from_attributes = True
+
+
+# ─── MATCHES ──────────────────────────────────────────────────────────────────
+
+class TriggerRequest(BaseModel):
+  job_id: int
+
+class ShortlistUpdate(BaseModel):
+  shortlisted: bool
+
+
+class MatchResponse(BaseModel):
+  match_id: int
+  candidate_id: int
+  job_id: int
+  match_score: Optional[float] = None
+  recommendation_score: Optional[float] = None
+  knockout_failed: bool = False
+  shortlisted: bool = False
+  interested: bool = False
+  qualification_tier: Optional[str] = None
+  gap_profile: Optional[dict] = None
+  explanation: Optional[str] = None
+  created_at: datetime
+
+  class Config:
+    from_attributes = True
+
+
+# ─── NOTIFICATIONS ─────────────────────────────────────────────────────────────
+
+class NotificationResponse(BaseModel):
+  notification_id: int
+  user_id: int
+  type: str
+  title: str
+  description: Optional[str] = None
+  link: Optional[str] = None
+  read: bool
+  match_id: Optional[int] = None
+  created_at: datetime
+
+  class Config:
+    from_attributes = True
+
+
+# ─── PUBLIC PROFILES ──────────────────────────────────────────────────────────
+
+class PublicCandidateCompetencyEntry(BaseModel):
+  competency_name: str
+  category: Optional[str] = None
+  level_score: Optional[float] = None
+
+
+class MatchForCandidateProfile(BaseModel):
+  match_id: int
+  job_id: int
+  job_title: str
+  match_score: float
+  coverage: float
+  job_score: float
+  qualification_tier: str
+  knockout_failed: bool
+  gap_profile: Optional[dict] = None
+  explanation: Optional[str] = None
+
+
+class PublicCandidateProfile(BaseModel):
+  candidate_id: int
+  name: str
+  email: Optional[str] = None
+  avatar: Optional[str] = None
+  tech_keywords: Optional[List[str]] = []
+  competencies: List[PublicCandidateCompetencyEntry]
+  matches: List[MatchForCandidateProfile]
+
+
+class MatchForEmployerProfile(BaseModel):
+  match_id: int
+  match_score: float
+  recommendation_score: float
+  qualification_tier: str
+  knockout_failed: bool
+
+
+class PublicJobSummary(BaseModel):
+  job_id: int
+  title: str
+  is_active: bool
+  created_at: datetime
+  match: Optional[MatchForEmployerProfile] = None
+
+
+class PublicEmployerProfile(BaseModel):
+  employer_id: int
+  company_name: Optional[str] = None
+  jobs: List[PublicJobSummary]

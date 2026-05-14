@@ -1,0 +1,104 @@
+/* UploadPanel.css */
+
+.upload-panel-current-file {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: var(--acc-light);
+    border: 1px solid var(--acc-mid);
+    margin-bottom: 10px;
+}
+
+.upload-panel-current-file-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--acc-hero);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.upload-panel-current-file-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.upload-panel-delete {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 13px;
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 4px;
+    line-height: 1;
+    transition: color .15s, background .15s;
+}
+
+.upload-panel-delete:hover {
+    color: #a32d2d;
+    background: #fde8e8;
+}
+
+.upload-panel-current-file-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 1px;
+}
+
+.upload-panel-current-file-date {
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.upload-panel-dropzone {
+    display: block;
+    border: 2px dashed var(--acc-mid);
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
+    cursor: pointer;
+    background: #FAFCFF;
+}
+
+.upload-panel-dropzone:hover {
+    border-color: var(--acc);
+    background: var(--acc-light);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.upload-panel-dropzone:active {
+    box-shadow: none;
+}
+
+.upload-panel-dropzone-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--acc-light);
+    border-radius: 8px;
+    margin: 0 auto 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 
+        transform 0.15s ease, 
+        translateY(-2px);
+}
+
+.upload-panel-dropzone-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--acc-dark);
+    margin-bottom: 2px;
+}
+
+.upload-panel-dropzone-subtext {
+    font-size: 11px;
+    color: var(--muted);
+}
